@@ -33,6 +33,7 @@ button:hover {
 
 	<jsp:include page="../include/header.jsp" />
 
+asdf
 	<div class="button-container">
 		<button
 			onclick="location.href='<%=request.getContextPath()%>/parking_in.go'">입차</button>
