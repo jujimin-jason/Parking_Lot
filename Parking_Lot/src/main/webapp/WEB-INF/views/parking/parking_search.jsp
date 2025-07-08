@@ -49,6 +49,7 @@ h1 {
 </head>
 <body>
 
+	<jsp:include page="../../include/header.jsp" />
 
 	<div class="container">
 		<h1>현재 주차 차량 리스트</h1>
