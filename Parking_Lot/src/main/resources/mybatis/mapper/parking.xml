@@ -45,7 +45,7 @@
 		'%'
 	</select>
 
-	<select id="pkSearch" parameterType="page"
+	<select id="pkSearchDetail" parameterType="page"
 		resultType="parking">
 		<![CDATA[
 			select * from

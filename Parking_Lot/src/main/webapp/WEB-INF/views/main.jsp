@@ -33,8 +33,6 @@ button:hover {
 
 	<jsp:include page="../include/header.jsp" />
 
-	<div>teste</div>
-
 
 	<div class="button-container">
 		<button

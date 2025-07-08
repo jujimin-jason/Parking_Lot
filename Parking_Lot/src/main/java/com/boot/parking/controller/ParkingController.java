@@ -124,12 +124,12 @@ public class ParkingController {
 			@RequestParam("car_num") String car_num, Model model) {
 
 		// 차량 번호로 검색된 기록의 수를 반환하는 메서드.
-		totalRecord = this.mapper.sCountCnum(car_num);
+		totalRecord = this.mapper.sCount(car_num);
 
 		// 매개변수로 던져줄 페이징 객체 생성.
 		Page pagingCnum = new Page(page, rowsize, totalRecord, car_num);
 
-		List<Parking> searchList = this.mapper.pkSearchCnum(pagingCnum);
+		List<Parking> searchList = this.mapper.pkSearchDetail(pagingCnum);
 
 		model.addAttribute("SearchList", searchList);
 		model.addAttribute("Paging", pagingCnum);
