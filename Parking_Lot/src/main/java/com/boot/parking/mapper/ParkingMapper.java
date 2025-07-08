@@ -25,10 +25,10 @@ public interface ParkingMapper {
 	List<Parking> pkList(Page paging);
 
 	// 차량 번호로 검색된 게시물의 수를 반환하는 메서드.
-	int sCountCnum(String car_num);
+	int sCount(String car_num);
 
 	// 차량 번호로 기록을 조회하는 메서드.
-	List<Parking> pkSearchCnum(Page paging);
+	List<Parking> pkSearchDetail(Page paging);
 
 //	-------------------------------------------------------------------
 
