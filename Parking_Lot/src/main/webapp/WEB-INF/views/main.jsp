@@ -9,7 +9,7 @@
 <style>
 .button-container {
 	display: flex;
-	gap: 40px; /* 버튼 사이 간격 */		
+	gap: 40px; /* 버튼 사이 간격 */
 }
 
 button {
@@ -33,7 +33,7 @@ button:hover {
 
 	<jsp:include page="../include/header.jsp" />
 
-asdf
+
 	<div class="button-container">
 		<button
 			onclick="location.href='<%=request.getContextPath()%>/parking_in.go'">입차</button>
