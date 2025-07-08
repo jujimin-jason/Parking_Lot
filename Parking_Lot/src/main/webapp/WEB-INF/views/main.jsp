@@ -32,7 +32,7 @@ button:hover {
 <body>
 
 	<jsp:include page="../include/header.jsp" />
-
+121212
 	<div class="button-container">
 		<button
 			onclick="location.href='<%=request.getContextPath()%>/parking_in.go'">입차</button>
