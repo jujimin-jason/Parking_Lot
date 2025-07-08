@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.boot.parking.mapper.ParkingMapper">
+
+	<!-- 차량 번호판 등록(입차) -->
+	<insert id="entry" parameterType="parking"
+		useGeneratedKeys="true">
+		<selectKey keyProperty="pid" resultType="int" order="BEFORE">
+			SELECT
+			nvl(MAX(pid), 0) + 1 FROM parking
+		</selectKey>
+
+		insert into parking values( #{pid}, #{car_num}, sysdate, '', default)
+	</insert>
+
+	<!-- parking table total count -->
+	<select id="count" resultType="int">
+		select count(*) from parking
+	</select>
+
+	<!-- -->
+	<select id="pkList" parameterType="page" resultType="parking">
+		<![CDATA[
+			select * from
+			(select row_number() over(order by pid desc) rnum, p.* from parking p)
+			where rnum >= #{startNo} and rnum <= #{endNo}
+		]]>
+	</select>
+
+	<select id="sCountCnum" parameterType="String" resultType="int">
+		select count(*) from parking
+		where car_num like '%' || #{car_num} ||
+		'%'
+	</select>
+
+	<select id="pkSearchCnum" parameterType="page"
+		resultType="parking">
+		<![CDATA[
+			select * from
+			(select row_number() over(order by pid desc) rnum, p.* from parking p
+			where car_num like '%' || #{car_num} || '%' ) 
+			where rnum >= #{startNo} and rnum <= #{endNo}
+			order by pid desc
+		]]>
+	</select>
+
+	<!-- ================================================================================= -->
+
+	<!-- 주차된 차량 조회(뒷 4자리로 조회 / 중복 차량 리스트로 출력) -->
+	<select id="search" resultType="parking">
+		select * from parking where
+		car_num like'%' || #{keyword} || '%' and state = 'Y'
+	</select>
+
+	<!-- 주차된 차량 조회(전체 번호로 조회하여 특정 차량 한 대만 출력) -->
+	<select id="pcar" parameterType="String" resultType="parking">
+		select *
+		from parking where car_num = #{cnum}
+	</select>
+
+	<!-- 주차 요금 정산 정보 저장 -->
+	<insert id="insertAmount" parameterType="amount">
+		INSERT INTO amount (aid,
+		car_num, amount, pay_time)
+		VALUES (#{aid}, #{car_num}, #{amount},
+		TO_DATE(#{pay_time},
+		'YYYY-MM-DD
+		HH24:MI:SS'))
+	</insert>
+
+	<!-- parking TABLE 출차 차량 정보 업데이트 -->
+	<update id="updateParkingOut" parameterType="map">
+		UPDATE parking
+		SET
+		state = 'N',
+		out_time = TO_DATE(#{pay_time}, 'YYYY-MM-DD HH24:MI:SS')
+		WHERE car_num = #{car_num}
+	</update>
+
+</mapper>

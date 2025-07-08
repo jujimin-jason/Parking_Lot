@@ -1,0 +1,12 @@
+1. 쿼리문이 저장될 xml 파일
+2. DTD 부터 설정 필요.
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+3. mapper 태그로 매퍼 설정 필요.
+
+* <![CDATA[
+
+]]>
+태그는 <=, => 같은 부등호 사용시 필요함.
