@@ -38,6 +38,12 @@ public class ParkingController {
 
 	// DB 상의 전체 기록 수
 	private int totalRecord = 0;
+	
+	// 무작위로 생성될 차량 번호.
+	String bun = null;
+	
+	// 동일번호판의 차량이 있는지 확인할 Parking 객체
+	Parking chkDupl = null;
 
 	@GetMapping("/")
 	public String main() {
@@ -48,54 +54,45 @@ public class ParkingController {
 
 	@GetMapping("/parking_in.go")
 	public void entry(HttpServletResponse response, Model model) throws IOException {
-		// 입차 비지니스 로직. // 입차번호 생성후 중복인 경우를 위한 예외처리 필요
-		// 1. 랜덤으로 차량번호를 만들자.
-
-		// 난수 발생을 위한 클래스 객체 생성.
-		Random rand = new Random();
-
-		// 랜덤으로 생성시킬 차량 가운데 한글자. (32개)
-		String[] kor = { "가", "나", "다", "라", "마", "거", "너", "더", "러", "머", "버", "서", "어", "저", "고", "노", "도", "로", "모",
-				"보", "소", "오", "조", "구", "누", "두", "루", "무", "부", "수", "우", "주" };
-
-		// 문자열로 변환시킬 차량 번호
-		String bun;
-
-		// 1-1. 앞번호 - 01 ~ 699
-		int ran1 = (int) (Math.random() * 699) + 1;
-
-		String num = Integer.toString(ran1);
-		String string1 = num.replaceFirst("^0+", "");
-		int num1 = Integer.parseInt(string1);
-
-		// System.out.println(num1);
-
-		// 1-2. 중간 한글
-		String kor1 = kor[rand.nextInt(kor.length)];
-
-		// 1-3. 뒷번호 - 0100 ~ 9999
-		int num2 = (int) (Math.random() * 9900) + 100;
-
-		if (num1 > 100) {
-			bun = String.format("%03d", num1) + kor1 + " " + String.format("%04d", num2);
-		} else {
-			bun = String.format("%02d", num1) + kor1 + " " + String.format("%04d", num2);
-		}
-
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter out = response.getWriter();
-
+		
+		// 무작위로 번호판을 생성. -> bun 전역 변수에 저장.
+		MakeRandomCarnum mrc = MakeRandomCarnum.getInstance();
+		bun = mrc.mrc();
+		
+		// DB에 동일번호판의 차량이 현재 입차상태인지 확인하는 메서드. -> chkDupl 객체에 저장.
+		chkDupl = this.mapper.checkDupl(bun);
+		
+		if(chkDupl != null) {
+			
+			while(true) {
+				bun = mrc.mrc();
+				
+				chkDupl = this.mapper.checkDupl(bun);
+				
+				if(chkDupl == null) {
+					out.println("<script>");
+					out.println("alert('중복 데이터 처리 완료')");
+					out.println("</script>");
+					
+					break;	
+				}
+			}
+		}
+		
+		// 페이징 처리를 위한 페이징 객체 생성
 		Parking pdto = new Parking();
 		pdto.setCar_num(bun);
-
+		
 		int chk = this.mapper.entry(pdto);
-
-		if (chk > 0) {
+		
+		if(chk > 0) {
 			out.println("<script>");
-			out.println("alert('차량번호 " + bun + " 입차되었습니다.')");
+			out.println("alert('차량번호 "+bun+" 입차되었습니다.')");
 			out.println("history.back()");
 			out.println("</script>");
-		} else {
+		}else {
 			out.println("<script>");
 			out.println("alert('입차 실패')");
 			out.println("history.back()");
@@ -122,7 +119,7 @@ public class ParkingController {
 		return "parking/pk_list";
 	}
 
-	@RequestMapping("/pk_search_cnum.go")
+	@RequestMapping("/pk_search_detail.go")
 	public String search_cnum(@RequestParam(value = "page", defaultValue = "1") int page,
 			@RequestParam("car_num") String car_num, Model model) {
 
@@ -136,24 +133,6 @@ public class ParkingController {
 
 		model.addAttribute("SearchList", searchList);
 		model.addAttribute("Paging", pagingCnum);
-
-		return "parking/pk_search_list";
-	}
-
-	// 날짜로 검색
-	@RequestMapping("/pk_search_date.go")
-	public String search_date(@RequestParam(value = "page", defaultValue = "1") int page,
-			@RequestParam("date") String date, Model model) {
-		// 날짜로 검색된 기록의 수를 반환하는 메서드.
-		totalRecord = this.mapper.sCountIntime(date);
-
-		// 매개변수로 던져줄 페이징 객체 생성.
-		Page paging = new Page(page, rowsize, totalRecord, date, 0);
-
-		List<Parking> searchList = this.mapper.pkSearchIntime(paging);
-
-		model.addAttribute("SearchList", searchList);
-		model.addAttribute("Paging", paging);
 
 		return "parking/pk_search_list";
 	}

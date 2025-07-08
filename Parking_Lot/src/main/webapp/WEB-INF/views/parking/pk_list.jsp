@@ -86,17 +86,16 @@
 
 		<!-- 검색 폼 영역 -->
 		<form method="post"
-			action="<%=request.getContextPath()%>/pk_search_cnum.go">
-			<span>차량번호로 검색</span> <input type="text" name="car_num"> <input
-				type="submit" value="검색">
+			action="<%=request.getContextPath()%>/pk_search_detail.go">
+			
+			<b>상세 정보로 검색</b>
+			<br>
+			<input type="text" name="car_num" placeholder="차량 뒤 네자리 입력"> 
+			<br>
+			<input type="date" name="date">
+			<input type="submit" value="검색">
 		</form>
-		<br>
-
-		<form method="post"
-			action="<%=request.getContextPath()%>/pk_search_date.go">
-			<span>입차시간으로 검색</span> <input type="date" name="date"> <input
-				type="submit" value="검색">
-		</form>
+		
 
 	</div>
 
