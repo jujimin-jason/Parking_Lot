@@ -11,6 +11,9 @@ import com.boot.parking.model.Parking;
 
 @Mapper
 public interface ParkingMapper {
+	
+	// DB에 동일번호판의 차량이 현재 입차상태인지 확인하는 메서드.
+	Parking checkDupl(String car_num);
 
 	// 차량번호를 매개변수로 DB에 입차 데이터를 생성해주는 메서드.
 	int entry(Parking pdto);
