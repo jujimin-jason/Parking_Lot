@@ -30,7 +30,7 @@ button:hover {
 
 </head>
 <body>
-123
+
 	<jsp:include page="../include/header.jsp" />
 
 	<div class="button-container">
