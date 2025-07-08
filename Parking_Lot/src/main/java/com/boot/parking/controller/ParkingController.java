@@ -119,7 +119,7 @@ public class ParkingController {
 		return "parking/pk_list";
 	}
 
-	@RequestMapping("/pk_search_cnum.go")
+	@RequestMapping("/pk_search_detail.go")
 	public String search_cnum(@RequestParam(value = "page", defaultValue = "1") int page,
 			@RequestParam("car_num") String car_num, Model model) {
 
@@ -133,24 +133,6 @@ public class ParkingController {
 
 		model.addAttribute("SearchList", searchList);
 		model.addAttribute("Paging", pagingCnum);
-
-		return "parking/pk_search_list";
-	}
-
-	// 날짜로 검색
-	@RequestMapping("/pk_search_date.go")
-	public String search_date(@RequestParam(value = "page", defaultValue = "1") int page,
-			@RequestParam("date") String date, Model model) {
-		// 날짜로 검색된 기록의 수를 반환하는 메서드.
-		totalRecord = this.mapper.sCountIntime(date);
-
-		// 매개변수로 던져줄 페이징 객체 생성.
-		Page paging = new Page(page, rowsize, totalRecord, date, 0);
-
-		List<Parking> searchList = this.mapper.pkSearchIntime(paging);
-
-		model.addAttribute("SearchList", searchList);
-		model.addAttribute("Paging", paging);
 
 		return "parking/pk_search_list";
 	}
