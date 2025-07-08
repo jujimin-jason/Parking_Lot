@@ -9,7 +9,7 @@
 <style>
 .button-container {
 	display: flex;
-	gap: 40px; /* 버튼 사이 간격 */		
+	gap: 40px; /* 버튼 사이 간격 */
 }
 
 button {
@@ -32,6 +32,9 @@ button:hover {
 <body>
 
 	<jsp:include page="../include/header.jsp" />
+
+	<div>teste</div>
+
 
 	<div class="button-container">
 		<button
