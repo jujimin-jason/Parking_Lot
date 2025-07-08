@@ -9,7 +9,7 @@
 <style>
 .button-container {
 	display: flex;
-	gap: 40px; /* 버튼 사이 간격 */
+	gap: 40px; /* 버튼 사이 간격 */		
 }
 
 button {
