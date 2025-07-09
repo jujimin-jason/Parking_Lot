@@ -6,6 +6,28 @@
 <head>
 <meta charset="UTF-8">
 <title>주차 기록 view 페이지</title>
+<script type="text/javascript">
+	
+	// 검색 관련 유효성 검사
+	function chk() {
+		let car_num = document.querySelector("#s_car_num");
+		let regex = /^[0-9]*$/; 
+		
+		if(car_num.value.length != 4) {
+			alert("차량 뒤 네자리를 입력하세요.");
+			car_num.focus();
+			return false;
+		}
+		
+		if(!regex.test(car_num.value)) {
+			alert("숫자입력필요");
+			car_num.focus();
+			return false;
+		}
+		
+	}
+	
+</script>
 </head>
 <body>
 
@@ -86,16 +108,18 @@
 
 		<!-- 검색 폼 영역 -->
 		<form method="post"
-			action="<%=request.getContextPath()%>/pk_search_detail.go">
+			action="<%=request.getContextPath()%>/pk_search_detail.go"
+			id="searchform" onsubmit="return chk()">
 			
 			<b>상세 정보로 검색</b>
 			<br>
-			<input type="text" name="car_num" placeholder="차량 뒤 네자리 입력"> 
+			<input id="s_car_num" name="car_num" placeholder="차량 뒤 네자리 입력"> 
 			<br>
 			<input type="date" name="date">
 			<input type="submit" value="검색">
 		</form>
 		
+
 
 	</div>
 

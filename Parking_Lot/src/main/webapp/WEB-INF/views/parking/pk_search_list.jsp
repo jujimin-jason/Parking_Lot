@@ -16,7 +16,7 @@
 
 		<c:set var="pkList" value="${SearchList }" />
 		<c:set var="paging" value="${Paging }" />
-		<c:set var="Date" value="${Date }" />
+		
 
 		<table border="1" width="500">
 
