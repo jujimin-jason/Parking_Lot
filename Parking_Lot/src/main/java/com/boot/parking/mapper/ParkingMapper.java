@@ -41,5 +41,6 @@ public interface ParkingMapper {
 	int insertAmount(Amount amount);
 
 	int updateParkingOut(Map<String, String> map);
+	
 
 }
