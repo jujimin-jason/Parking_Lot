@@ -39,10 +39,12 @@
 		]]>
 	</select>
 
-	<select id="sCount" parameterType="String" resultType="int">
+	<select id="sCount" parameterType="parking" resultType="int">
 		select count(*) from parking
-		where car_num like '%' || #{car_num} ||
-		'%'
+		where car_num like '%' || #{car_num} || '%'
+		<if test="in_time != null">
+			and in_time like '%' || #{in_time} || '%'
+		</if>
 	</select>
 
 	<select id="pkSearchDetail" parameterType="page"
@@ -50,7 +52,13 @@
 		<![CDATA[
 			select * from
 			(select row_number() over(order by pid desc) rnum, p.* from parking p
-			where car_num like '%' || #{car_num} || '%' ) 
+			where car_num like '%' || #{car_num} || '%' 
+		]]>
+			<if test="in_time != null">
+				and in_time like '%' || #{in_time} || '%'
+			</if>
+		<![CDATA[
+			) 
 			where rnum >= #{startNo} and rnum <= #{endNo}
 			order by pid desc
 		]]>
