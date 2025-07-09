@@ -9,17 +9,6 @@
 <meta charset="EUC-KR">
 <title>Insert title here</title>
 <style type="text/css">
-body {
-	margin: 0;
-	padding: 0;
-	height: 100vh;
-	display: flex;
-	justify-content: center; /* 수평 중앙 */
-	align-items: center; /* 수직 중앙 */
-	font-family: sans-serif;
-	background-color: #f9f9f9;
-}
-
 .container {
 	text-align: center;
 }
