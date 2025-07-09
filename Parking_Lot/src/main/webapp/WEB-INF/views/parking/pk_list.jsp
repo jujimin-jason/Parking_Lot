@@ -11,18 +11,20 @@
 	// 검색 관련 유효성 검사
 	function chk() {
 		let car_num = document.querySelector("#s_car_num");
+		let regex = /^[0-9]*$/; 
 		
-		if(car_num.length != 4) {
+		if(car_num.value.length != 4) {
 			alert("차량 뒤 네자리를 입력하세요.");
 			car_num.focus();
 			return false;
 		}
 		
-		if(!car_num.test("/^[0-9]$/")) {
-			alert("차량 뒤 네자리를 입력하세요.");
+		if(!regex.test(car_num.value)) {
+			alert("숫자입력필요");
 			car_num.focus();
 			return false;
 		}
+		
 	}
 	
 </script>
