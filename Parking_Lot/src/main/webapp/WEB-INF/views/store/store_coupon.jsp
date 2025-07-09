@@ -13,7 +13,7 @@
     <form action="coupon_buy.go" method="post">
         <label>할인권 종류:</label>
         <select name="coupon_type" required>
-            <option value="">-- 선택하세요 --</option>
+            <option value="">--- 선택하세요 ---</option>
             <option value="30분">30분 할인권</option>
             <option value="1시간">1시간 할인권</option>
         </select>
