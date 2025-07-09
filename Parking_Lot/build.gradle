@@ -47,7 +47,7 @@ dependencies {
 	
 	providedCompile 'javax.servlet:javax.servlet-api:4.0.1'		
 	
-	
+	implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
 
 tasks.named('test') {
