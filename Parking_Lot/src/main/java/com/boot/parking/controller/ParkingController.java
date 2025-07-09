@@ -38,10 +38,10 @@ public class ParkingController {
 
 	// DB 상의 전체 기록 수
 	private int totalRecord = 0;
-	
+
 	// 무작위로 생성될 차량 번호.
 	String bun = null;
-	
+
 	// 동일번호판의 차량이 있는지 확인할 Parking 객체
 	Parking chkDupl = null;
 
@@ -56,43 +56,43 @@ public class ParkingController {
 	public void entry(HttpServletResponse response, Model model) throws IOException {
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter out = response.getWriter();
-		
+
 		// 무작위로 번호판을 생성. -> bun 전역 변수에 저장.
 		MakeRandomCarnum mrc = MakeRandomCarnum.getInstance();
 		bun = mrc.mrc();
-		
+
 		// DB에 동일번호판의 차량이 현재 입차상태인지 확인하는 메서드. -> chkDupl 객체에 저장.
 		chkDupl = this.mapper.checkDupl(bun);
-		
-		if(chkDupl != null) {
-			
-			while(true) {
+
+		if (chkDupl != null) {
+
+			while (true) {
 				bun = mrc.mrc();
-				
+
 				chkDupl = this.mapper.checkDupl(bun);
-				
-				if(chkDupl == null) {
+
+				if (chkDupl == null) {
 					out.println("<script>");
 					out.println("alert('중복 데이터 처리 완료')");
 					out.println("</script>");
-					
-					break;	
+
+					break;
 				}
 			}
 		}
-		
+
 		// 페이징 처리를 위한 페이징 객체 생성
 		Parking pdto = new Parking();
 		pdto.setCar_num(bun);
-		
+
 		int chk = this.mapper.entry(pdto);
-		
-		if(chk > 0) {
+
+		if (chk > 0) {
 			out.println("<script>");
-			out.println("alert('차량번호 "+bun+" 입차되었습니다.')");
+			out.println("alert('차량번호 " + bun + " 입차되었습니다.')");
 			out.println("history.back()");
 			out.println("</script>");
-		}else {
+		} else {
 			out.println("<script>");
 			out.println("alert('입차 실패')");
 			out.println("history.back()");
