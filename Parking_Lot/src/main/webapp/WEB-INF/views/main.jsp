@@ -9,6 +9,7 @@
 <style>
 .button-container {
 	display: flex;
+	justify-content: center;
 	gap: 40px; /* 버튼 사이 간격 */
 }
 
