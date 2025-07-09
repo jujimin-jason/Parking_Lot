@@ -241,5 +241,35 @@ public class ParkingController {
 		}
 
 	}
+	
+	@GetMapping("/store_parking.go")
+	public String storeParking() {
+	    return "store/store_parking";
+	}
+
+	@GetMapping("/store_parking_ok.go")
+	public String storeParking(@RequestParam("car_back") String carBack, Model model) {
+	    List<Parking> carList = mapper.search(carBack);	    
+	    Parking car = null;
+	    if (!carList.isEmpty()) {
+	        car = carList.get(0);
+
+	        String inTimeStr = car.getIn_time();
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	        LocalDateTime inTime = LocalDateTime.parse(inTimeStr, formatter);
+	        LocalDateTime now = LocalDateTime.now();
+	        long diffMinutes = Duration.between(inTime, now).toMinutes();
+
+	        model.addAttribute("car", car);
+	        model.addAttribute("parkingTime", diffMinutes);
+	        model.addAttribute("discountedTime", diffMinutes);
+	    }
+	    return "store/store_parking";
+	}
+
+	@GetMapping("/store_coupon.go")
+	public String storeCoupin() {
+	    return "store/store_coupon";
+	}
 
 }
