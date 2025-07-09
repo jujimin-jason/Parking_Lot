@@ -50,7 +50,7 @@ public class MemController {
 
 			out.println("<script>");
 			out.println("alert('로그인 성공!')");
-			out.println("location.href='/'");
+			out.println("location.href='store_page.go'");// test를 위해서 location.href='store_page.go 변경 원래("location.href='/';")
 			out.println("</script>");
 		} else {
 			out.println("<script>");
@@ -74,4 +74,10 @@ public class MemController {
 		out.println("location.href='/';");
 		out.println("</script>");
 	}
+	
+	@GetMapping("/store_page.go")
+	public String storePage() {
+	    return "store/store_page"; // JSP 위치 기준
+	}
+
 }
