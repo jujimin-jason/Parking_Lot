@@ -16,6 +16,7 @@
 
 		<c:set var="pkList" value="${SearchList }" />
 		<c:set var="paging" value="${Paging }" />
+		<c:set var="Date" value="${Date }" />
 
 		<table border="1" width="500">
 
@@ -57,30 +58,30 @@
 		<!-- 페이징 처리 영역 -->
 		<c:if test="${paging.page > paging.block }">
 			<a
-				href="<%=request.getContextPath() %>/pk_search_cnum.go?page=1&car_num=${paging.car_num }">맨
+				href="<%=request.getContextPath() %>/pk_search_detail.go?page=1&car_num=${paging.car_num }&date=${Date }">맨
 				처음</a>
 			<a
-				href="<%=request.getContextPath() %>/pk_search_cnum.go?page=${paging.startBlock - 1 }&car_num=${paging.car_num }">◀</a>
+				href="<%=request.getContextPath() %>/pk_search_detail.go?page=${paging.startBlock - 1 }&car_num=${paging.car_num }&date=${Date }">◀</a>
 		</c:if>
 
 		<c:forEach begin="${paging.startBlock }" end="${paging.endBlock }"
 			var="i">
 			<c:if test="${i == paging.page }">
 				<b><a
-					href="<%=request.getContextPath() %>/pk_search_cnum.go?page=${i }&car_num=${paging.car_num }">${i }</a></b>
+					href="<%=request.getContextPath() %>/pk_search_detail.go?page=${i }&car_num=${paging.car_num }&date=${Date }">${i }</a></b>
 			</c:if>
 
 			<c:if test="${i != paging.page }">
 				<a
-					href="<%=request.getContextPath() %>/pk_search_cnum.go?page=${i }&car_num=${paging.car_num }">${i }</a>
+					href="<%=request.getContextPath() %>/pk_search_detail.go?page=${i }&car_num=${paging.car_num }&date=${Date }">${i }</a>
 			</c:if>
 		</c:forEach>
 
 		<c:if test="${paging.endBlock < paging.allPage }">
 			<a
-				href="<%=request.getContextPath() %>/pk_search_cnum.go?page=${paging.endBlock + 1}&car_num=${paging.car_num }">▶</a>
+				href="<%=request.getContextPath() %>/pk_search_detail.go?page=${paging.endBlock + 1}&car_num=${paging.car_num }&date=${Date }">▶</a>
 			<a
-				href="<%=request.getContextPath() %>/pk_search_cnum.go?page=${paging.allPage }&car_num=${paging.car_num }">맨
+				href="<%=request.getContextPath() %>/pk_search_detail.go?page=${paging.allPage }&car_num=${paging.car_num }&date=${Date }">맨
 				마지막</a>
 		</c:if>
 
@@ -89,16 +90,14 @@
 
 		<!-- 검색 폼 영역 -->
 		<form method="post"
-			action="<%=request.getContextPath()%>/pk_search_cnum.go">
-			<span>차량번호로 검색</span> <input type="text" name="car_num"> <input
-				type="submit" value="검색">
-		</form>
-		<br>
-
-		<form method="post"
-			action="<%=request.getContextPath()%>/pk_search_date.go">
-			<span>입차시간으로 검색</span> <input type="date" name="date"> <input
-				type="submit" value="검색">
+			action="<%=request.getContextPath()%>/pk_search_detail.go">
+			
+			<b>상세 정보로 검색</b>
+			<br>
+			<input type="text" name="car_num" placeholder="차량 뒤 네자리 입력"> 
+			<br>
+			<input type="date" name="date">
+			<input type="submit" value="검색">
 		</form>
 
 	</div>

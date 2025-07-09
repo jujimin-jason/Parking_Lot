@@ -44,6 +44,8 @@ public class ParkingController {
 	
 	// 동일번호판의 차량이 있는지 확인할 Parking 객체
 	Parking chkDupl = null;
+	
+	String in_time = null;
 
 	@GetMapping("/")
 	public String main() {
@@ -121,18 +123,33 @@ public class ParkingController {
 
 	@RequestMapping("/pk_search_detail.go")
 	public String search_cnum(@RequestParam(value = "page", defaultValue = "1") int page,
-			@RequestParam("car_num") String car_num, Model model) {
+			@RequestParam("car_num") String car_num,
+			@RequestParam("date") String date,
+			Model model) {
+		
+		// DB 조회를 위해 in_time 변수의 형식을 바꿔줘야 함. 
+		// ex) java : 2025-07-08 / oracle sql : 25/07/08
+		if(date.length() == 10) {
+			in_time = date.substring(2, 10).replaceAll("-", "/");
+		}else {
+			in_time = date;
+		}
+		
+		Parking pk = new Parking();
+		pk.setCar_num(car_num);
+		pk.setIn_time(in_time);
 
 		// 차량 번호로 검색된 기록의 수를 반환하는 메서드.
-		totalRecord = this.mapper.sCount(car_num);
+		totalRecord = this.mapper.sCount(pk);
 
 		// 매개변수로 던져줄 페이징 객체 생성.
-		Page pagingCnum = new Page(page, rowsize, totalRecord, car_num);
+		Page pagingCnum = new Page(page, rowsize, totalRecord, car_num, in_time);
 
 		List<Parking> searchList = this.mapper.pkSearchDetail(pagingCnum);
 
 		model.addAttribute("SearchList", searchList);
 		model.addAttribute("Paging", pagingCnum);
+		model.addAttribute("Date", date);
 
 		return "parking/pk_search_list";
 	}
