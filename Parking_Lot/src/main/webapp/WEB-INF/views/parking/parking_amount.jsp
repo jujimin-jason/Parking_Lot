@@ -75,12 +75,43 @@ h1 {
   IMP.init("imp87828078"); // 가맹점 식별 코드
 
   function requestPay() {
+    const amount = ${amount.amount}; // 서버에서 전달받은 결제금액
+
+    // 결제 금액이 0원이면 바로 출차 처리
+    if (amount === 0) {
+      alert("무료 주차입니다. 출차를 진행합니다.");
+
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = "<%=request.getContextPath()%>/parking_out_ok.go";
+
+      const params = {
+        car_num: "${pking.car_num}",
+        pay_time: "${amount.pay_time}",
+        amount: "${amount.amount}",
+        aid: "${pking.pid}"
+      };
+
+      for (const key in params) {
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = key;
+        input.value = params[key];
+        form.appendChild(input);
+      }
+
+      document.body.appendChild(form);
+      form.submit();
+      return; // 결제창 띄우지 않음
+    }
+
+    // 결제 금액이 1원 이상이면 결제창 띄움
     IMP.request_pay({
-      pg: "mobilians", // 결제 회사
+      pg: "mobilians",
       pay_method: "card",
       merchant_uid: "test_" + new Date().getTime(),
       name: "주차장 정산",
-      amount: ${amount.amount},  // JSP에서 넘긴 금액 (숫자만)
+      amount: amount,
       buyer_email: "test@example.com",
       buyer_name: "홍길동",
       buyer_tel: "01012345678",
@@ -90,7 +121,6 @@ h1 {
       if (rsp.success) {
         alert("결제 성공!");
 
-        // 결제 성공 시 서버로 POST 전송
         const form = document.createElement("form");
         form.method = "POST";
         form.action = "<%=request.getContextPath()%>/parking_out_ok.go";
@@ -119,6 +149,7 @@ h1 {
     });
   }
 </script>
+
 
 </body>
 </html>
