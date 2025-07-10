@@ -1,9 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
@@ -12,7 +12,7 @@
 
 	<div align="center">
 		<hr width="65%" color="gray">
-		<h3>ÁÖÂ÷°üÁ¦½Ã½ºÅÛ °ü¸®ÀÚ ·Î±×ÀÎ ÆäÀÌÁö</h3>
+		<h3>ì£¼ì°¨ê´€ì œì‹œìŠ¤í…œ ë¡œê·¸ì¸ íŽ˜ì´ì§€</h3>
 		<hr width="65%" color="gray">
 		<br> <br>
 
@@ -20,18 +20,18 @@
 			action="<%=request.getContextPath()%>/admin_login_ok.go">
 			<table border="1" width="400">
 				<tr>
-					<th>°ü¸®ÀÚ ¾ÆÀÌµð</th>
+					<th>ì•„ì´ë””</th>
 					<td><input name="mem_id"></td>
 				</tr>
 
 				<tr>
-					<th>°ü¸®ÀÚ ºñ¹Ð¹øÈ£</th>
+					<th>ë¹„ë°€ë²ˆí˜¸</th>
 					<td><input type="password" name="mem_pwd"></td>
 				</tr>
 
 				<tr>
 					<td colspan="2" align="center"><input type="submit"
-						value="·Î±×ÀÎ">&nbsp;&nbsp; <input type="reset" value="´Ù½ÃÀÛ¼º">
+						value="ë¡œê·¸ì¸">&nbsp;&nbsp; <input type="reset" value="ë‹¤ì‹œìž‘ì„±">
 					</td>
 				</tr>
 			</table>
