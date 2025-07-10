@@ -10,7 +10,7 @@
 <title>관리자 메인</title>
 </head>
 <body>
-
+	<jsp:include page="../../include/header.jsp" />
 	<div align="center">
 		<h2>관리자 메인 페이지</h2>
 	
