@@ -18,9 +18,10 @@
 		<p>로그인 PWD : ${loginMember.mem_pwd}</p>
 	
 		<div style="display: flex; justify-content: center; gap: 20px;">
-			<form action="<%=request.getContextPath()%>/parepay_list.go" method="post">
-				<input type="submit" value="주차 사전 정산 페이지" />
-			</form>
+			<!-- 주차 정산 페이지 이동 버튼 -->
+		    <a href="store_parking.go">
+		        <button>주차 정산 이동</button>
+		    </a>
 	
 			<form action="<%=request.getContextPath()%>/parking_hitsory.go" method="post">
 				<input type="submit" value="주차장 사용 내역" />
