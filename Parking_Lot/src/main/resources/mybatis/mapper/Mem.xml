@@ -7,11 +7,8 @@
 <mapper namespace="com.boot.parking.mapper.MemMapper">
 
 	<select id="login" parameterType="map" resultType="member">
-<<<<<<< HEAD
-		select * 
-=======
+
 		select *
->>>>>>> branch 'main' of https://github.com/suhyun-dev/Parking_Lot.git
 		from mem
 		where mem_id = #{mem_id}
 		and mem_pwd = #{mem_pwd}
