@@ -7,6 +7,8 @@
 <title>할인권 구매 페이지</title>
 </head>
 <body>
+	<jsp:include page="../../include/header.jsp" />
+	
     <h1>할인권 구매 페이지</h1>
     
     <!-- 할인권 선택 폼 -->
@@ -19,7 +21,7 @@
         </select>
         <br><br>
         <label>수량:</label>
-        <input type="number" name="quantity" min="1" max ="999" value="1" required>
+        <input type="number" name="quantity" min="1" value="1" required>
         <br><br>
         <button type="submit">구매하기</button>
     </form>

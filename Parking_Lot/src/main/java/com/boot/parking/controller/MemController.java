@@ -41,18 +41,17 @@ public class MemController {
 		response.setContentType("text/html; charset=UTF-8");
 
 		PrintWriter out = response.getWriter();
+		
+		Member login = this.mapper.login(mem_id, mem_pwd);		
 
-		Member login = this.mapper.login(mem_id, mem_pwd);
-
-		if (login != null) {
-
+		if (login != null) {		
 			session.setAttribute("loginMember", login);
 
 			out.println("<script>");
 			out.println("alert('로그인 성공!')");
 			out.println("location.href='store_page.go'");// test를 위해서 location.href='store_page.go 변경 원래("location.href='/';")
 			out.println("</script>");
-		} else {
+		} else {			
 			out.println("<script>");
 			out.println("alert('로그인 실패!')");
 			out.println("history.back()");
