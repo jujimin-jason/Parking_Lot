@@ -8,9 +8,13 @@ import org.apache.ibatis.annotations.Mapper;
 import com.boot.parking.model.Amount;
 import com.boot.parking.model.Page;
 import com.boot.parking.model.Parking;
+import com.boot.parking.model.Plist;
 
 @Mapper
 public interface ParkingMapper {
+	
+	// DB에 동일번호판의 차량이 현재 입차상태인지 확인하는 메서드.
+	Parking checkDupl(String car_num);
 
 	// 차량번호를 매개변수로 DB에 입차 데이터를 생성해주는 메서드.
 	int entry(Parking pdto);
@@ -18,20 +22,14 @@ public interface ParkingMapper {
 	// DB 상의 전체 기록 수를 반환하는 메서드.
 	int count();
 
-	// 현재 입차 현황을 조회하는 메서드.
-	List<Parking> pkList(Page paging);
+	// 전체 주차 기록을 조회하는 메서드.
+	List<Plist> pkList(Page paging);
 
 	// 차량 번호로 검색된 게시물의 수를 반환하는 메서드.
-	int sCountCnum(String car_num);
+	int sCount(Parking pk);
 
 	// 차량 번호로 기록을 조회하는 메서드.
-	List<Parking> pkSearchCnum(Page paging);
-
-	// 차량 번호로 검색된 기록의 수를 반환하는 메서드.
-	int sCountIntime(String in_time);
-
-	// 차량 번호로 기록을 조회하는 메서드.
-	List<Parking> pkSearchIntime(Page paging);
+	List<Plist> pkSearchDetail(Page paging);
 
 //	-------------------------------------------------------------------
 
@@ -44,5 +42,6 @@ public interface ParkingMapper {
 	int insertAmount(Amount amount);
 
 	int updateParkingOut(Map<String, String> map);
+	
 
 }

@@ -50,16 +50,12 @@ public class Page {
 
 	} // 페이징 처리 인자 생성자
 
-	// 차량번호로 검색할때 사용될 페이징 처리 인자 생성자
-	public Page(int page, int rowsize, int totalRecord, String car_num) {
+	// 검색할때 사용될 페이징 처리 인자 생성자
+	public Page(int page, int rowsize, int totalRecord, String car_num, String in_time) {
 		this(page, rowsize, totalRecord);
 		this.car_num = car_num;
-	}
-
-	// 입차시간으로 검색할때 사용될 페이징 처리 인자 생성자
-	public Page(int page, int rowsize, int totalRecord, String in_time, int none) {
-		this(page, rowsize, totalRecord);
 		this.in_time = in_time;
 	}
 
+	
 }

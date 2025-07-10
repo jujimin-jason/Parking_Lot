@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import java.util.List;
-import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,24 +21,49 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.boot.parking.mapper.AdminMapper;
 import com.boot.parking.mapper.ParkingMapper;
 import com.boot.parking.model.Amount;
 import com.boot.parking.model.Page;
 import com.boot.parking.model.Parking;
+import com.boot.parking.model.Plist;
+
+
+
+
+
+
+
+import com.boot.parking.model.Admin;
+import com.boot.parking.model.Member;
+
 
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 
 @Controller
 public class ParkingController {
 
 	@Autowired
 	private ParkingMapper mapper;
+	
+	@Autowired
+	private AdminMapper adminMapper;
 
 	// 한 페이지당 보여질 기록 수
 	private final int rowsize = 10;
 
 	// DB 상의 전체 기록 수
 	private int totalRecord = 0;
+
+	// 무작위로 생성될 차량 번호.
+	String bun = null;
+
+	// 동일번호판의 차량이 있는지 확인할 Parking 객체
+	Parking chkDupl = null;
+
+	String in_time = null;
 
 	@GetMapping("/")
 	public String main() {
@@ -48,43 +74,34 @@ public class ParkingController {
 
 	@GetMapping("/parking_in.go")
 	public void entry(HttpServletResponse response, Model model) throws IOException {
-		// 입차 비지니스 로직. // 입차번호 생성후 중복인 경우를 위한 예외처리 필요
-		// 1. 랜덤으로 차량번호를 만들자.
-
-		// 난수 발생을 위한 클래스 객체 생성.
-		Random rand = new Random();
-
-		// 랜덤으로 생성시킬 차량 가운데 한글자. (32개)
-		String[] kor = { "가", "나", "다", "라", "마", "거", "너", "더", "러", "머", "버", "서", "어", "저", "고", "노", "도", "로", "모",
-				"보", "소", "오", "조", "구", "누", "두", "루", "무", "부", "수", "우", "주" };
-
-		// 문자열로 변환시킬 차량 번호
-		String bun;
-
-		// 1-1. 앞번호 - 01 ~ 699
-		int ran1 = (int) (Math.random() * 699) + 1;
-
-		String num = Integer.toString(ran1);
-		String string1 = num.replaceFirst("^0+", "");
-		int num1 = Integer.parseInt(string1);
-
-		// System.out.println(num1);
-
-		// 1-2. 중간 한글
-		String kor1 = kor[rand.nextInt(kor.length)];
-
-		// 1-3. 뒷번호 - 0100 ~ 9999
-		int num2 = (int) (Math.random() * 9900) + 100;
-
-		if (num1 > 100) {
-			bun = String.format("%03d", num1) + kor1 + " " + String.format("%04d", num2);
-		} else {
-			bun = String.format("%02d", num1) + kor1 + " " + String.format("%04d", num2);
-		}
-
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter out = response.getWriter();
 
+		// 무작위로 번호판을 생성. -> bun 전역 변수에 저장.
+		MakeRandomCarnum mrc = MakeRandomCarnum.getInstance();
+		bun = mrc.mrc();
+
+		// DB에 동일번호판의 차량이 현재 입차상태인지 확인하는 메서드. -> chkDupl 객체에 저장.
+		chkDupl = this.mapper.checkDupl(bun);
+
+		if (chkDupl != null) {
+
+			while (true) {
+				bun = mrc.mrc();
+
+				chkDupl = this.mapper.checkDupl(bun);
+
+				if (chkDupl == null) {
+					out.println("<script>");
+					out.println("alert('중복 데이터 처리 완료')");
+					out.println("</script>");
+
+					break;
+				}
+			}
+		}
+
+		// 페이징 처리를 위한 페이징 객체 생성
 		Parking pdto = new Parking();
 		pdto.setCar_num(bun);
 
@@ -114,7 +131,9 @@ public class ParkingController {
 		Page paging = new Page(page, rowsize, totalRecord);
 
 		// 페이징 조건에 맞춰 주차 기록 리스트를 반환하는 메서드 호출.
-		List<Parking> pkList = this.mapper.pkList(paging);
+		List<Plist> pkList = this.mapper.pkList(paging);
+
+		// System.out.println(pkList);
 
 		model.addAttribute("pkList", pkList);
 		model.addAttribute("Paging", paging);
@@ -122,38 +141,68 @@ public class ParkingController {
 		return "parking/pk_list";
 	}
 
-	@RequestMapping("/pk_search_cnum.go")
+	@RequestMapping("/pk_search_detail.go")
 	public String search_cnum(@RequestParam(value = "page", defaultValue = "1") int page,
-			@RequestParam("car_num") String car_num, Model model) {
+			@RequestParam("car_num") String car_num, @RequestParam("date") String date, Model model,
+			HttpServletResponse response) throws IOException {
+		
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		
+		// car_num 유효성 검사
+		Pattern p = Pattern.compile("^[0-9]{4}$"); 
+		Matcher m = p.matcher(car_num);		// 문제있을시 false, 없으면 true
+		
+		if(car_num == "" && date == "") {
+			out.println("<script>");
+			out.println("alert('차량 번호 혹은 입차일을 입력하세요.')");
+			out.println("history.back()");
+			out.println("</script>");
+			return null;
+		}else if(!m.matches() && date == "") {
+			out.println("<script>");
+			out.println("alert('차량번호 뒷자리 4자리를 입력하세요.')");
+			out.println("history.back()");
+			out.println("</script>");
+			return null;
+		}
+		
+		if(date != "") {
+			if(car_num != "") {
+				if(!m.matches()) {
+					out.println("<script>");
+					out.println("alert('차량번호 뒷자리 4자리를 입력하세요.')");
+					out.println("history.back()");
+					out.println("</script>");
+					return null;
+				}
+			}
+		}
+		
+		// DB 조회를 위해 in_time 변수의 형식을 바꿔줘야 함.
+		// ex) java : 2025-07-08 / oracle sql : 25/07/08
+		if (date.length() == 10) {
+			in_time = date.substring(2, 10).replaceAll("-", "/");
+		} else {
+			in_time = date;
+		}
+
+		Parking pk = new Parking();
+		pk.setCar_num(car_num);
+		pk.setIn_time(in_time);
 
 		// 차량 번호로 검색된 기록의 수를 반환하는 메서드.
-		totalRecord = this.mapper.sCountCnum(car_num);
+		totalRecord = this.mapper.sCount(pk);
 
 		// 매개변수로 던져줄 페이징 객체 생성.
-		Page pagingCnum = new Page(page, rowsize, totalRecord, car_num);
+		Page pagingCnum = new Page(page, rowsize, totalRecord, car_num, in_time);
 
-		List<Parking> searchList = this.mapper.pkSearchCnum(pagingCnum);
+		// 전체 주차 기록 조회를 하는 메서드.
+		List<Plist> searchList = this.mapper.pkSearchDetail(pagingCnum);
 
 		model.addAttribute("SearchList", searchList);
 		model.addAttribute("Paging", pagingCnum);
-
-		return "parking/pk_search_list";
-	}
-
-	// 날짜로 검색
-	@RequestMapping("/pk_search_date.go")
-	public String search_date(@RequestParam(value = "page", defaultValue = "1") int page,
-			@RequestParam("date") String date, Model model) {
-		// 날짜로 검색된 기록의 수를 반환하는 메서드.
-		totalRecord = this.mapper.sCountIntime(date);
-
-		// 매개변수로 던져줄 페이징 객체 생성.
-		Page paging = new Page(page, rowsize, totalRecord, date, 0);
-
-		List<Parking> searchList = this.mapper.pkSearchIntime(paging);
-
-		model.addAttribute("SearchList", searchList);
-		model.addAttribute("Paging", paging);
+		model.addAttribute("Date", date);
 
 		return "parking/pk_search_list";
 	}
@@ -245,5 +294,152 @@ public class ParkingController {
 		}
 
 	}
+	
+	// 매장 주차 정산 페이지 이동 (검색폼 페이지)
+	@GetMapping("/store_parking.go")
+	public String storeParking() {
+	    return "store/store_parking";
+	}
+
+	// 차량 검색 및 주차 시간 계산 후 정보 출력
+	@GetMapping("/store_parking_ok.go")
+	public String storeParking(@RequestParam("car_back") String carBack, Model model, HttpSession session) {
+	    // 차량 번호 뒷자리로 검색
+	    List<Parking> carList = mapper.search(carBack);
+	    Parking car = null;
+	    if (!carList.isEmpty()) {
+	        car = carList.get(0);
+
+	        // 입차 시간 문자열을 LocalDateTime으로 변환
+	        String inTimeStr = car.getIn_time();
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	        LocalDateTime inTime = LocalDateTime.parse(inTimeStr, formatter);
+	        LocalDateTime now = LocalDateTime.now();
+	        long diffMinutes = Duration.between(inTime, now).toMinutes();
+
+	        // 시간+분 문자열로 변환
+	        String parkingTimeStr = (diffMinutes / 60) + "시간 " + (diffMinutes % 60) + "분";
+
+	        model.addAttribute("car", car);
+	        model.addAttribute("parkingTime", diffMinutes);
+	        model.addAttribute("parkingTimeStr", parkingTimeStr);
+	        model.addAttribute("discountedTime", diffMinutes);
+	        model.addAttribute("discountedTimeStr", parkingTimeStr);
+	    }
+
+	    // 로그인한 매장 정보 가져오기
+	    Member loginMember = (Member) session.getAttribute("loginMember");
+	    int storeCode = loginMember.getStore_code();
+
+	    // 매장에 해당하는 관리자 쿠폰 정보 가져오기
+	    Admin admin = adminMapper.getAdminByStoreCode(storeCode);
+	    if (admin != null) {
+	        model.addAttribute("adminCoupons", admin);
+	    }
+
+	    return "store/store_parking";
+	}
+
+	// 할인 쿠폰 적용 처리
+	@PostMapping("/apply_coupon.go")
+	public String applyCoupon(@RequestParam("car_num") String carNum,
+	                          @RequestParam("discount") int discount,
+	                          HttpSession session, Model model) {
+
+	    // 로그인한 매장 정보 가져오기
+	    Member loginMember = (Member) session.getAttribute("loginMember");
+	    int storeCode = loginMember.getStore_code();
+
+	    // 매장 관리자 쿠폰 정보 가져오기
+	    Admin admin = adminMapper.getAdminByStoreCode(storeCode);
+
+	    // 세션에 저장된 누적 할인 시간 가져오기
+	    Integer accumulatedDiscount = (Integer) session.getAttribute("accumulatedDiscount");
+	    if (accumulatedDiscount == null) {
+	        accumulatedDiscount = 0;
+	    }
+
+	    // 할인 쿠폰 사용 처리
+	    if (discount == 30 && admin.getDc_coupon_30m() > 0) {
+	        admin.setDc_coupon_30m(admin.getDc_coupon_30m() - 1);
+	        accumulatedDiscount += 30;
+	    } else if (discount == 60 && admin.getDc_coupon_1h() > 0) {
+	        admin.setDc_coupon_1h(admin.getDc_coupon_1h() - 1);
+	        accumulatedDiscount += 60;
+	    } else {
+	        // 쿠폰 부족 시 메시지 표시 후 리턴
+	        model.addAttribute("msg", "쿠폰이 부족합니다!");
+	        return "store/store_parking";
+	    }
+
+	    // 쿠폰 수량 DB 업데이트
+	    adminMapper.updateCoupons(admin);
+
+	    // 세션에 누적 할인 시간 저장
+	    session.setAttribute("accumulatedDiscount", accumulatedDiscount);
+
+	    // 차량 정보 다시 가져오기
+	    Parking car = mapper.pcar(carNum);
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	    LocalDateTime inTime = LocalDateTime.parse(car.getIn_time(), formatter);
+	    LocalDateTime now = LocalDateTime.now();
+
+	    long diffMinutes = Duration.between(inTime, now).toMinutes();
+	    long discountedTime = diffMinutes - accumulatedDiscount;
+	    if (discountedTime < 0) discountedTime = 0;
+
+	    // 시간+분 문자열로 변환
+	    String parkingTimeStr = (diffMinutes / 60) + "시간 " + (diffMinutes % 60) + "분";
+	    String discountedTimeStr = (discountedTime / 60) + "시간 " + (discountedTime % 60) + "분";
+
+	    // 뷰에 필요한 데이터 세팅
+	    model.addAttribute("car", car);
+	    model.addAttribute("parkingTime", diffMinutes);
+	    model.addAttribute("parkingTimeStr", parkingTimeStr);
+	    model.addAttribute("discountedTime", discountedTime);
+	    model.addAttribute("discountedTimeStr", discountedTimeStr);
+	    model.addAttribute("discountTime", accumulatedDiscount);
+	    model.addAttribute("adminCoupons", admin);
+
+	    return "store/store_parking";
+	}
+
+	// 쿠폰 구매 페이지 이동
+	@GetMapping("/store_coupon.go")
+	public String storeCoupin() {
+	    return "store/store_coupon";
+	}
+
+	// 쿠폰 구매 처리
+	@PostMapping("/coupon_buy.go")
+	public String buyCoupon(@RequestParam("coupon_type") String couponType,
+	                        @RequestParam("quantity") int quantity,
+	                        HttpSession session, Model model) {
+
+	    // 로그인한 매장 정보 가져오기
+	    Member loginMember = (Member) session.getAttribute("loginMember");
+	    int storeCode = loginMember.getStore_code();
+
+	    // 매장 관리자 쿠폰 정보 가져오기
+	    Admin admin = adminMapper.getAdminByStoreCode(storeCode);
+
+	    // 선택된 쿠폰 타입에 따라 수량 증가
+	    if (couponType.equals("30분")) {
+	        admin.setDc_coupon_30m(admin.getDc_coupon_30m() + quantity);
+	    } else if (couponType.equals("1시간")) {
+	        admin.setDc_coupon_1h(admin.getDc_coupon_1h() + quantity);
+	    }
+
+	    // DB 업데이트
+	    adminMapper.updateCoupons(admin);
+
+	    // 성공 메시지 및 최신 쿠폰 정보 뷰에 전달
+	    model.addAttribute("msg", "쿠폰이 성공적으로 구매되었습니다!");
+	    model.addAttribute("adminCoupons", admin);
+
+	    return "store/store_coupon";
+	}
+
+
 
 }

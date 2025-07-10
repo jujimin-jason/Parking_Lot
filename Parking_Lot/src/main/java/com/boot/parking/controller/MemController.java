@@ -43,33 +43,21 @@ public class MemController {
 		PrintWriter out = response.getWriter();
 
 		Member login = this.mapper.login(mem_id, mem_pwd);
-	
-		
-		
-		
-		
 
 		if (login != null) {
-
 			session.setAttribute("loginMember", login);
-			
+
 			int storeCode = login.getStore_code();
 
 			out.println("<script>");
 			out.println("alert('로그인 성공!')");
-			
-			
-			
-			
-			if(storeCode == 0) {
+
+			if (storeCode == 0) {
 				out.println("location.href='/admin_main.go';");
-			}else {
-				out.println("location.href='/store_main.go?storeCode="+storeCode+"';");
+			} else {
+				out.println("location.href='/store_main.go?storeCode=" + storeCode + "';");
 			}
-		 
-			
-			
-			
+
 			out.println("</script>");
 		} else {
 			out.println("<script>");
@@ -93,44 +81,27 @@ public class MemController {
 		out.println("location.href='/';");
 		out.println("</script>");
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	@GetMapping("/admin_main.go")
 	public String adminmain(HttpSession session) {
 		Member loginMember = (Member) session.getAttribute("loginMember");
-		if(loginMember == null || loginMember.getStore_code() != 0) {
+		if (loginMember == null || loginMember.getStore_code() != 0) {
 			return "redirect:/admin_login.go";
 		}
-		
+
 		return "admin/admin_main";
 	}
-	
-	
+
 	@GetMapping("/store_main.go")
 	public String storeMain(@RequestParam("storeCode") int storeCode, HttpSession session) {
 		Member loginMember = (Member) session.getAttribute("loginMember");
 		if (loginMember == null || loginMember.getStore_code() != storeCode) {
 			return "redirect:/admin_login.go";
 		}
-		
+
 		session.setAttribute("storeCode", storeCode);
-		
+
 		return "store/store_main";
 	}
-	
+
 }

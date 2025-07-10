@@ -2,9 +2,22 @@ package com.boot.parking.controller;
 
 import java.util.Random;
 
+//싱글톤 패턴을 통해 객체 생성 + 무작위로 번호판을 생성해주는 메서드
 public class MakeRandomCarnum {
+	
+	private static MakeRandomCarnum instance = null;
+	
+	// 외부에서 기본생성자의 접근 막는 과정.
+	private MakeRandomCarnum() { }
+	
+	public static MakeRandomCarnum getInstance() {
+		if(instance == null) {
+			instance = new MakeRandomCarnum();
+		}
+		return instance;
+	}
 
-	public String MakeRandomCarnum() {
+	public String mrc() {
 		// 입차 비지니스 로직.		// 입차번호 생성후 중복인 경우를 위한 예외처리 필요
 		// 1. 랜덤으로 차량번호를 만들자.
 		

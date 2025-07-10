@@ -7,6 +7,15 @@
 
 <mapper namespace="com.boot.parking.mapper.ParkingMapper">
 
+	<!-- 차량 번호판 생성 시 잘못된 데이터 필터 -->
+	<select id="checkDupl" parameterType="String"
+		resultType="parking">
+		select * from parking
+		where car_num like '%' || #{car_num}
+		|| '%'
+		and state = 'Y'
+	</select>
+
 	<!-- 차량 번호판 등록(입차) -->
 	<insert id="entry" parameterType="parking"
 		useGeneratedKeys="true">
@@ -18,32 +27,46 @@
 		insert into parking values( #{pid}, #{car_num}, sysdate, '', default)
 	</insert>
 
-	<!-- parking table total count -->
+	<!-- parking table 전체 데이터의 수를 반환 -->
 	<select id="count" resultType="int">
 		select count(*) from parking
 	</select>
 
-	<!-- -->
-	<select id="pkList" parameterType="page" resultType="parking">
+	<!-- parking table 전체 데이터 리스트를 반환 -->
+	<select id="pkList" parameterType="page" resultType="plist">
 		<![CDATA[
-			select * from
-			(select row_number() over(order by pid desc) rnum, p.* from parking p)
+			select p.*, a.amount from
+			(select row_number() over(order by pid desc) rnum, p.* from parking p) p
+			left join amount a on a.aid = p.pid
 			where rnum >= #{startNo} and rnum <= #{endNo}
 		]]>
 	</select>
 
-	<select id="sCountCnum" parameterType="String" resultType="int">
+
+
+	<!-- 조건에 맞는 검색된 기록의 수를 반환 -->
+	<select id="sCount" parameterType="parking" resultType="int">
 		select count(*) from parking
 		where car_num like '%' || #{car_num} ||
 		'%'
+		<if test="in_time != null">
+			and in_time like '%' || #{in_time} || '%'
+		</if>
 	</select>
 
-	<select id="pkSearchCnum" parameterType="page"
-		resultType="parking">
+	<!-- 조건에 맞는 검색 결과 리스트를 반환 -->
+	<select id="pkSearchDetail" parameterType="page"
+		resultType="plist">
 		<![CDATA[
-			select * from
+			select p.*, a.amount from
 			(select row_number() over(order by pid desc) rnum, p.* from parking p
-			where car_num like '%' || #{car_num} || '%' ) 
+			where car_num like '%' || #{car_num} || '%' 
+		]]>
+		<if test="in_time != null">
+			and in_time like '%' || #{in_time} || '%'
+		</if>
+		<![CDATA[
+			) p left join amount a on a.aid = p.pid
 			where rnum >= #{startNo} and rnum <= #{endNo}
 			order by pid desc
 		]]>
