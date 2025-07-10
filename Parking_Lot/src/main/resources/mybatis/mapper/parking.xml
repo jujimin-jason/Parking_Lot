@@ -42,8 +42,6 @@
 		]]>
 	</select>
 
-
-
 	<!-- 조건에 맞는 검색된 기록의 수를 반환 -->
 	<select id="sCount" parameterType="parking" resultType="int">
 		select count(*) from parking
@@ -70,6 +68,11 @@
 			where rnum >= #{startNo} and rnum <= #{endNo}
 			order by pid desc
 		]]>
+	</select>
+	
+	<!-- pspace 테이블 전체 리스트를 반환 -->
+	<select id="getPspace" resultType="pspace" parameterType="int">
+		select * from pspace where floor = #{floor}
 	</select>
 
 	<!-- ================================================================================= -->
