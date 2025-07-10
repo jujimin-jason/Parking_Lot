@@ -7,6 +7,8 @@
 <title>매장 페이지</title>
 </head>
 <body>
+	<jsp:include page="../../include/header.jsp" />
+	
     <h1>매장 페이지</h1>
     
     <!-- 주차 정산 페이지 이동 버튼 -->
