@@ -27,6 +27,7 @@ import com.boot.parking.model.Amount;
 import com.boot.parking.model.Page;
 import com.boot.parking.model.Parking;
 import com.boot.parking.model.Plist;
+import com.boot.parking.model.Pspace;
 
 
 
@@ -133,8 +134,6 @@ public class ParkingController {
 		// 페이징 조건에 맞춰 주차 기록 리스트를 반환하는 메서드 호출.
 		List<Plist> pkList = this.mapper.pkList(paging);
 
-		// System.out.println(pkList);
-
 		model.addAttribute("pkList", pkList);
 		model.addAttribute("Paging", paging);
 
@@ -142,7 +141,7 @@ public class ParkingController {
 	}
 
 	@RequestMapping("/pk_search_detail.go")
-	public String search_cnum(@RequestParam(value = "page", defaultValue = "1") int page,
+	public String search_detail(@RequestParam(value = "page", defaultValue = "1") int page,
 			@RequestParam("car_num") String car_num, @RequestParam("date") String date, Model model,
 			HttpServletResponse response) throws IOException {
 		
@@ -206,7 +205,19 @@ public class ParkingController {
 
 		return "parking/pk_search_list";
 	}
-
+	
+	@GetMapping("pk_now.go")
+	public String pnow(Model model, @RequestParam(value = "floor", defaultValue = "1") int floor) {
+		
+		// 특정 층수를 매개변수로 주차장 현황 리스트를 가져오는 메서드.
+		List<Pspace> pspace = this.mapper.getPspace(floor);
+		
+		model.addAttribute("Pspace", pspace)
+			.addAttribute("floor", floor);
+		
+		return "parking/pk_now";
+	}
+ 
 	@GetMapping("parking_out.go")
 	public String pout() {
 

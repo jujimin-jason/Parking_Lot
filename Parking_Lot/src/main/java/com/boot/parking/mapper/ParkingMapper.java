@@ -9,6 +9,7 @@ import com.boot.parking.model.Amount;
 import com.boot.parking.model.Page;
 import com.boot.parking.model.Parking;
 import com.boot.parking.model.Plist;
+import com.boot.parking.model.Pspace;
 
 @Mapper
 public interface ParkingMapper {
@@ -25,11 +26,14 @@ public interface ParkingMapper {
 	// 전체 주차 기록을 조회하는 메서드.
 	List<Plist> pkList(Page paging);
 
-	// 차량 번호로 검색된 게시물의 수를 반환하는 메서드.
+	// 상세정보를 통해 검색된 기록의 수를 반환하는 메서드.
 	int sCount(Parking pk);
 
-	// 차량 번호로 기록을 조회하는 메서드.
+	// 상세정보를 통해 기록을 조회하는 메서드.
 	List<Plist> pkSearchDetail(Page paging);
+	
+	// 특정 층수를 매개변수로 주차장 현황 리스트를 가져오는 메서드.
+	List<Pspace> getPspace(int floor);
 
 //	-------------------------------------------------------------------
 

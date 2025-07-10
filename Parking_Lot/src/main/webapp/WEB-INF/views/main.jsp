@@ -42,6 +42,8 @@ button:hover {
 			onclick="location.href='<%=request.getContextPath()%>/parking_out.go'">출차</button>
 		<button
 			onclick="location.href='<%=request.getContextPath()%>/pk_list.go'">주차기록</button>
+		<button
+			onclick="location.href='<%=request.getContextPath()%>/pk_now.go'">주차장 현황</button>
 	</div>
 </body>
 </html>
