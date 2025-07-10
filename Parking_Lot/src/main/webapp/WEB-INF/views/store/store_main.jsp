@@ -10,23 +10,24 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+	<jsp:include page="../../include/header.jsp" />
 	<div align="center">
-	   <h2>매장 메인 페이지</h2>
+		<h2>매장 메인 페이지</h2>
 	   
-	   <p>로그인 ID : ${loginMember.mem_id }</p>
-	   <p>매장 Code : ${loginMember.store_code }</p>
+	   	<p>로그인 ID : ${loginMember.mem_id }</p>
+	   	<p>매장 Code : ${loginMember.store_code }</p>
 	   
-	   <div style="display: flex; justify-content: center; gap: 20px;">
-	      <form method="post" action="<%=request.getContextPath()%>/store_payment.go">
-	         <input type="submit" value="주차 정산" />
-	      </form>
-	      
-	      <form method="post" action="<%=request.getContextPath()%>/store_discount_ticket.go">
-	         <input type="submit" value="할인권 구매" />
-	      </form>
-	   
-	   </div>
+		<div style="display: flex; justify-content: center; gap: 20px;">
+		    <!-- 주차 정산 페이지 이동 버튼 -->
+		    <a href="store_parking.go">
+		        <button>주차 정산 이동</button>
+		    </a>
+		
+		    <!-- 할인권 구매 페이지 이동 버튼 -->
+		    <a href="store_coupon.go">
+		        <button>할인권 구매 이동</button>
+		    </a>	
+	   	</div>
 	</div>
 </body>
 </html>
