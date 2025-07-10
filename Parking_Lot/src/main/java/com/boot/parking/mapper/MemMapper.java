@@ -7,6 +7,5 @@ import com.boot.parking.model.Member;
 
 @Mapper
 public interface MemMapper {
-
-	Member login(@Param("mem_id") String mem_id, @Param("mem_pwd") String mem_pwd);
+    Member login(@Param("mem_id") String mem_id, @Param("mem_pwd") String mem_pwd);
 }

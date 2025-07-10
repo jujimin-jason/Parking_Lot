@@ -7,8 +7,7 @@
 <mapper namespace="com.boot.parking.mapper.MemMapper">
 
 	<select id="login" parameterType="map" resultType="member">
-		select mid,
-		mem_id, mem_pwd from mem
+		select * from mem
 		where mem_id = #{mem_id}
 		and mem_pwd =
 		#{mem_pwd}
