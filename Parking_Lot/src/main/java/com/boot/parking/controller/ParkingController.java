@@ -295,6 +295,11 @@ public class ParkingController {
 
 	}
 	
+	@GetMapping("/store_page.go")
+	public String storePage() {
+	    return "store/store_main";
+	}
+
 	// 매장 주차 정산 페이지 이동 (검색폼 페이지)
 	@GetMapping("/store_parking.go")
 	public String storeParking() {
