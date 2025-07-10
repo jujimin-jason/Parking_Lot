@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import java.util.List;
-import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +25,7 @@ import com.boot.parking.mapper.ParkingMapper;
 import com.boot.parking.model.Amount;
 import com.boot.parking.model.Page;
 import com.boot.parking.model.Parking;
+import com.boot.parking.model.Plist;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -44,7 +46,7 @@ public class ParkingController {
 
 	// 동일번호판의 차량이 있는지 확인할 Parking 객체
 	Parking chkDupl = null;
-	
+
 	String in_time = null;
 
 	@GetMapping("/")
@@ -113,7 +115,9 @@ public class ParkingController {
 		Page paging = new Page(page, rowsize, totalRecord);
 
 		// 페이징 조건에 맞춰 주차 기록 리스트를 반환하는 메서드 호출.
-		List<Parking> pkList = this.mapper.pkList(paging);
+		List<Plist> pkList = this.mapper.pkList(paging);
+
+		// System.out.println(pkList);
 
 		model.addAttribute("pkList", pkList);
 		model.addAttribute("Paging", paging);
@@ -123,18 +127,50 @@ public class ParkingController {
 
 	@RequestMapping("/pk_search_detail.go")
 	public String search_cnum(@RequestParam(value = "page", defaultValue = "1") int page,
-			@RequestParam("car_num") String car_num,
-			@RequestParam("date") String date,
-			Model model) {
+			@RequestParam("car_num") String car_num, @RequestParam("date") String date, Model model,
+			HttpServletResponse response) throws IOException {
 		
-		// DB 조회를 위해 in_time 변수의 형식을 바꿔줘야 함. 
-		// ex) java : 2025-07-08 / oracle sql : 25/07/08
-		if(date.length() == 10) {
-			in_time = date.substring(2, 10).replaceAll("-", "/");
-		}else {
-			in_time = date;
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		
+		// car_num 유효성 검사
+		Pattern p = Pattern.compile("^[0-9]{4}$"); 
+		Matcher m = p.matcher(car_num);		// 문제있을시 false, 없으면 true
+		
+		if(car_num == "" && date == "") {
+			out.println("<script>");
+			out.println("alert('차량 번호 혹은 입차일을 입력하세요.')");
+			out.println("history.back()");
+			out.println("</script>");
+			return null;
+		}else if(!m.matches() && date == "") {
+			out.println("<script>");
+			out.println("alert('차량번호 뒷자리 4자리를 입력하세요.')");
+			out.println("history.back()");
+			out.println("</script>");
+			return null;
 		}
 		
+		if(date != "") {
+			if(car_num != "") {
+				if(!m.matches()) {
+					out.println("<script>");
+					out.println("alert('차량번호 뒷자리 4자리를 입력하세요.')");
+					out.println("history.back()");
+					out.println("</script>");
+					return null;
+				}
+			}
+		}
+		
+		// DB 조회를 위해 in_time 변수의 형식을 바꿔줘야 함.
+		// ex) java : 2025-07-08 / oracle sql : 25/07/08
+		if (date.length() == 10) {
+			in_time = date.substring(2, 10).replaceAll("-", "/");
+		} else {
+			in_time = date;
+		}
+
 		Parking pk = new Parking();
 		pk.setCar_num(car_num);
 		pk.setIn_time(in_time);
@@ -145,7 +181,8 @@ public class ParkingController {
 		// 매개변수로 던져줄 페이징 객체 생성.
 		Page pagingCnum = new Page(page, rowsize, totalRecord, car_num, in_time);
 
-		List<Parking> searchList = this.mapper.pkSearchDetail(pagingCnum);
+		// 전체 주차 기록 조회를 하는 메서드.
+		List<Plist> searchList = this.mapper.pkSearchDetail(pagingCnum);
 
 		model.addAttribute("SearchList", searchList);
 		model.addAttribute("Paging", pagingCnum);
