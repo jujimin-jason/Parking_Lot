@@ -44,6 +44,10 @@ public class MemController {
 
 		Member login = this.mapper.login(mem_id, mem_pwd);
 	
+		
+		
+		
+		
 
 		if (login != null) {
 
@@ -54,12 +58,18 @@ public class MemController {
 			out.println("<script>");
 			out.println("alert('로그인 성공!')");
 			
+			
+			
+			
 			if(storeCode == 0) {
 				out.println("location.href='/admin_main.go';");
 			}else {
 				out.println("location.href='/store_main.go?storeCode="+storeCode+"';");
 			}
 		 
+			
+			
+			
 			out.println("</script>");
 		} else {
 			out.println("<script>");
@@ -83,6 +93,21 @@ public class MemController {
 		out.println("location.href='/';");
 		out.println("</script>");
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	@GetMapping("/admin_main.go")
