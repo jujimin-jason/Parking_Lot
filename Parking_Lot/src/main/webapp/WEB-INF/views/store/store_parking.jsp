@@ -31,16 +31,11 @@
         <!-- 할인 쿠폰 적용 폼 -->
         <form action="apply_coupon.go" method="post">
             <input type="hidden" name="car_num" value="${car.car_num}">
-            <button type="submit" name="discount" value="30">30분 할인</button>
-            <button type="submit" name="discount" value="60">1시간 할인</button>
+            <button type="submit" name="discount" value="30">30분 할인적용</button>
+            <button type="submit" name="discount" value="60">1시간 할인적용</button>
         </form>
         <br>
-        <!-- 최종 할인 적용 버튼 폼 (실제 동작에 맞게 사용 여부 결정) -->
-	    <form action="apply_coupon_ok.go" method="post">
-		    <input type="hidden" name="car_num" value="${car.car_num}">
-		    <button type="submit">할인 적용</button>
-		</form>
-		<br>
+        
     </c:if>
 
     <c:if test="${empty car}">
