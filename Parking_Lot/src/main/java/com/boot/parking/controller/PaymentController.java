@@ -26,6 +26,9 @@ public class PaymentController {
 	@PostConstruct
 	public void init() {
 
+		System.out.println(apiKey);
+		System.out.println(apiSecret);
+		
 		try {
 
 			this.iamportClient = new IamportClient(apiKey, apiSecret);

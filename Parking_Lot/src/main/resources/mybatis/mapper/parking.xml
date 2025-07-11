@@ -11,8 +11,7 @@
 	<select id="checkDupl" parameterType="String"
 		resultType="parking">
 		select * from parking
-		where car_num like '%' || #{car_num}
-		|| '%'
+		where car_num = #{car_num}
 		and state = 'Y'
 	</select>
 
@@ -24,7 +23,7 @@
 			nvl(MAX(pid), 0) + 1 FROM parking
 		</selectKey>
 
-		insert into parking values( #{pid}, #{car_num}, sysdate, '', default)
+		insert into parking values( #{pid}, #{car_num}, sysdate, '', default, #{sid})
 	</insert>
 
 	<!-- parking table 전체 데이터의 수를 반환 -->
