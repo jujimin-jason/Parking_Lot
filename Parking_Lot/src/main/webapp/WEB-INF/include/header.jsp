@@ -40,7 +40,6 @@ body {
 	justify-content: space-between;
 	align-items: center;
 	padding: 20px 20px 0px 20px;
-	
 }
 
 a {
@@ -59,7 +58,20 @@ a:hover {
 <body>
 
 	<div class="body_div">
-		<a href="<%=request.getContextPath()%>/">header</a>
+		<c:choose>
+			<c:when test="${sessionScope.loginMember.store_code == 0}">
+				<a href="<%=request.getContextPath()%>/admin_main.go">header</a>
+			</c:when>
+			<c:when test="${sessionScope.loginMember.store_code > 0}">
+				<a href="<%=request.getContextPath()%>/store_main.go">header</a>
+			</c:when>
+			<c:otherwise>
+				<a href="<%=request.getContextPath()%>/">header</a>
+			</c:otherwise>
+		</c:choose>
+
+
+
 		<div>
 			<button class="btn btn-secondary"
 				onclick="location.href='<%=request.getContextPath()%>/parking_in.go'">입차</button>
