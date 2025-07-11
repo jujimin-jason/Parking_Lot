@@ -4,9 +4,8 @@ import lombok.Data;
 
 @Data
 public class Pspace {
-	private int sid;		// 식별용 id
-	private int floor;		// 주차장 층
-	private String sno; 	// 주차 위치
-	private String state; 	// 현재 입차 여부
-	private String car_num;	// 차량 번호판
+    private int sid;      // 식별용 id
+    private int floor;    // 층수
+    private String sno;   // 자리 번호
+    private String state; // 자리 사용 여부
 }
