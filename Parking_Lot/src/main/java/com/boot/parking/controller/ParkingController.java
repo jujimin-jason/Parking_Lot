@@ -29,26 +29,18 @@ import com.boot.parking.model.Parking;
 import com.boot.parking.model.Plist;
 import com.boot.parking.model.Pspace;
 
-
-
-
-
-
-
 import com.boot.parking.model.Admin;
 import com.boot.parking.model.Member;
 
-
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
 
 @Controller
 public class ParkingController {
 
 	@Autowired
 	private ParkingMapper mapper;
-	
+
 	@Autowired
 	private AdminMapper adminMapper;
 
@@ -144,31 +136,31 @@ public class ParkingController {
 	public String search_detail(@RequestParam(value = "page", defaultValue = "1") int page,
 			@RequestParam("car_num") String car_num, @RequestParam("date") String date, Model model,
 			HttpServletResponse response) throws IOException {
-		
+
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter out = response.getWriter();
-		
+
 		// car_num 유효성 검사
-		Pattern p = Pattern.compile("^[0-9]{4}$"); 
-		Matcher m = p.matcher(car_num);		// 문제있을시 false, 없으면 true
-		
-		if(car_num == "" && date == "") {
+		Pattern p = Pattern.compile("^[0-9]{4}$");
+		Matcher m = p.matcher(car_num); // 문제있을시 false, 없으면 true
+
+		if (car_num == "" && date == "") {
 			out.println("<script>");
 			out.println("alert('차량 번호 혹은 입차일을 입력하세요.')");
 			out.println("history.back()");
 			out.println("</script>");
 			return null;
-		}else if(!m.matches() && date == "") {
+		} else if (!m.matches() && date == "") {
 			out.println("<script>");
 			out.println("alert('차량번호 뒷자리 4자리를 입력하세요.')");
 			out.println("history.back()");
 			out.println("</script>");
 			return null;
 		}
-		
-		if(date != "") {
-			if(car_num != "") {
-				if(!m.matches()) {
+
+		if (date != "") {
+			if (car_num != "") {
+				if (!m.matches()) {
 					out.println("<script>");
 					out.println("alert('차량번호 뒷자리 4자리를 입력하세요.')");
 					out.println("history.back()");
@@ -177,7 +169,7 @@ public class ParkingController {
 				}
 			}
 		}
-		
+
 		// DB 조회를 위해 in_time 변수의 형식을 바꿔줘야 함.
 		// ex) java : 2025-07-08 / oracle sql : 25/07/08
 		if (date.length() == 10) {
@@ -205,27 +197,25 @@ public class ParkingController {
 
 		return "parking/pk_search_list";
 	}
-	
+
 	@GetMapping("pk_now.go")
 	public String pnow(Model model, @RequestParam(value = "floor", defaultValue = "1") int floor) {
-		
+
 		// 특정 층수를 매개변수로 주차장 현황 리스트를 가져오는 메서드.
 		List<Pspace> pspace = this.mapper.getPspace(floor);
-		
-		model.addAttribute("Pspace", pspace)
-			.addAttribute("floor", floor);
-		
+
+		model.addAttribute("Pspace", pspace).addAttribute("floor", floor);
+
 		return "parking/pk_now";
 	}
-	
+
 	@GetMapping("pk_now_detail.go")
 	public String pnow_detail(Model model, @RequestParam("sid") int sid) {
 		this.mapper.getPspaceDetail(sid);
-		
-		
-		
+
 		return "";
 	}
+
 	@GetMapping("parking_out.go")
 	public String pout() {
 
@@ -313,108 +303,104 @@ public class ParkingController {
 		}
 
 	}
-	
+
 	@GetMapping("/store_page.go")
 	public String storePage() {
-	    return "store/store_main";
+		return "store/store_main";
 	}
 
 	// 매장 주차 정산 페이지 이동 (검색폼 페이지)
 	@GetMapping("/store_parking_list.go")
 	public String storeParking() {
-	    return "store/store_parking_list";
+		return "store/store_parking_list";
 	}
-	
+
 	// 차량 선택(검색) 후 리스트 페이지 이동
 	@GetMapping("/store_parking_list_ok.go")
 	public String storeParkingList(@RequestParam("car_back") String carBack, Model model) {
-	    // 뒷자리로 차량 검색
-	    List<Parking> carList = mapper.search(carBack);
-	    // 검색된 차량 리스트를 JSP에 전달
-	    model.addAttribute("carList", carList);
-	    // 차량 선택 리스트 페이지로 이동
-	    return "store/store_parking_list";
+		// 뒷자리로 차량 검색
+		List<Parking> carList = mapper.search(carBack);
+		// 검색된 차량 리스트를 JSP에 전달
+		model.addAttribute("carList", carList);
+		// 차량 선택 리스트 페이지로 이동
+		return "store/store_parking_list";
 	}
 
 	// 선택한 차량의 상세 정보 페이지
 	@GetMapping("/store_parking.go")
 	public String storeParking(@RequestParam("car_num") String carNum, Model model, HttpSession session) {
-	    // 차량 번호로 차량 정보 조회
-	    Parking car = mapper.pcar(carNum);
+		// 차량 번호로 차량 정보 조회
+		Parking car = mapper.pcar(carNum);
 
-	    if (car != null) {
-	        // 입차 시간 문자열 → LocalDateTime 변환
-	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-	        LocalDateTime inTime = LocalDateTime.parse(car.getIn_time(), formatter);
-	        LocalDateTime now = LocalDateTime.now();
-	        // 입차 후 경과 시간(분) 계산
-	        long diffMinutes = Duration.between(inTime, now).toMinutes();
+		if (car != null) {
+			// 입차 시간 문자열 → LocalDateTime 변환
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			LocalDateTime inTime = LocalDateTime.parse(car.getIn_time(), formatter);
+			LocalDateTime now = LocalDateTime.now();
+			// 입차 후 경과 시간(분) 계산
+			long diffMinutes = Duration.between(inTime, now).toMinutes();
 
-	        // "X시간 Y분" 형태 문자열 생성
-	        String parkingTimeStr = (diffMinutes / 60) + "시간 " + (diffMinutes % 60) + "분";
+			// "X시간 Y분" 형태 문자열 생성
+			String parkingTimeStr = (diffMinutes / 60) + "시간 " + (diffMinutes % 60) + "분";
 
-	        // JSP에 전달할 데이터 세팅
-	        model.addAttribute("car", car);
-	        model.addAttribute("parkingTime", diffMinutes);
-	        model.addAttribute("parkingTimeStr", parkingTimeStr);
-	        model.addAttribute("discountedTime", diffMinutes);
-	        model.addAttribute("discountedTimeStr", parkingTimeStr);
-	    }
+			// JSP에 전달할 데이터 세팅
+			model.addAttribute("car", car);
+			model.addAttribute("parkingTime", diffMinutes);
+			model.addAttribute("parkingTimeStr", parkingTimeStr);
+			model.addAttribute("discountedTime", diffMinutes);
+			model.addAttribute("discountedTimeStr", parkingTimeStr);
+		}
 
-	    // 로그인한 매장 관리자 정보 가져오기
-	    Member loginMember = (Member) session.getAttribute("loginMember");
-	    int storeCode = loginMember.getStore_code();
+		// 로그인한 매장 관리자 정보 가져오기
+		Member loginMember = (Member) session.getAttribute("loginMember");
+		int storeCode = loginMember.getStore_code();
 
-	    // 매장 관리자 쿠폰 정보 가져오기
-	    Admin admin = adminMapper.getAdminByStoreCode(storeCode);
-	    if (admin != null) {
-	        // JSP에 관리자 쿠폰 정보 전달
-	        model.addAttribute("adminCoupons", admin);
-	    }
+		// 매장 관리자 쿠폰 정보 가져오기
+		Admin admin = adminMapper.getAdminByStoreCode(storeCode);
+		if (admin != null) {
+			// JSP에 관리자 쿠폰 정보 전달
+			model.addAttribute("adminCoupons", admin);
+		}
 
-	    // 차량 상세 정보 페이지로 이동
-	    return "store/store_parking";
+		// 차량 상세 정보 페이지로 이동
+		return "store/store_parking";
 	}
 
 	// 쿠폰 구매 페이지 이동
 	@GetMapping("/store_coupon.go")
 	public String storeCoupin() {
-	    // 단순히 쿠폰 구매 페이지로 이동
-	    return "store/store_coupon";
+		// 단순히 쿠폰 구매 페이지로 이동
+		return "store/store_coupon";
 	}
 
 	// 쿠폰 구매 처리
 	@PostMapping("/coupon_buy.go")
-	public String buyCoupon(@RequestParam("coupon_type") String couponType,
-	                        @RequestParam("quantity") int quantity,
-	                        HttpSession session, Model model) {
+	public String buyCoupon(@RequestParam("coupon_type") String couponType, @RequestParam("quantity") int quantity,
+			HttpSession session, Model model) {
 
-	    // 로그인한 매장 관리자 정보 가져오기
-	    Member loginMember = (Member) session.getAttribute("loginMember");
-	    int storeCode = loginMember.getStore_code();
+		// 로그인한 매장 관리자 정보 가져오기
+		Member loginMember = (Member) session.getAttribute("loginMember");
+		int storeCode = loginMember.getStore_code();
 
-	    // 매장 관리자 쿠폰 정보 가져오기
-	    Admin admin = adminMapper.getAdminByStoreCode(storeCode);
+		// 매장 관리자 쿠폰 정보 가져오기
+		Admin admin = adminMapper.getAdminByStoreCode(storeCode);
 
-	    // 선택된 쿠폰 종류에 따라 수량 증가
-	    if (couponType.equals("30분")) {
-	        admin.setDc_coupon_30m(admin.getDc_coupon_30m() + quantity);
-	    } else if (couponType.equals("1시간")) {
-	        admin.setDc_coupon_1h(admin.getDc_coupon_1h() + quantity);
-	    }
+		// 선택된 쿠폰 종류에 따라 수량 증가
+		if (couponType.equals("30분")) {
+			admin.setDc_coupon_30m(admin.getDc_coupon_30m() + quantity);
+		} else if (couponType.equals("1시간")) {
+			admin.setDc_coupon_1h(admin.getDc_coupon_1h() + quantity);
+		}
 
-	    // DB에 업데이트
-	    adminMapper.updateCoupons(admin);
+		// DB에 업데이트
+		adminMapper.updateCoupons(admin);
 
-	    // 성공 메시지 및 최신 쿠폰 정보 JSP에 전달
-	    model.addAttribute("msg", "쿠폰이 성공적으로 구매되었습니다!");
-	    model.addAttribute("adminCoupons", admin);
+		// 성공 메시지 및 최신 쿠폰 정보 JSP에 전달
+		model.addAttribute("msg", "쿠폰이 성공적으로 구매되었습니다!");
+		model.addAttribute("adminCoupons", admin);
 
-	    // 쿠폰 구매 페이지로 다시 이동
-	    return "store/store_coupon";
+		// 쿠폰 구매 페이지로 다시 이동
+		return "store/store_coupon";
 	}
-
-
-
 
 }
