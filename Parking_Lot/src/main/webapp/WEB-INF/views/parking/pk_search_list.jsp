@@ -11,49 +11,52 @@
 
 	<jsp:include page="../../include/header.jsp" />
 
-	<div align="center">
-		<h2>차량 번호 검색 view 페이지</h2>
-
+	<div id="listpage" class="container">
 		<c:set var="pkList" value="${SearchList }" />
 		<c:set var="paging" value="${Paging }" />
 		
-
-		<table border="1" width="500">
-
-			<tr>
-				<td colspan="5" align="right">전체 입차 기록 수 : ${paging.totalRecord }
-					개</td>
-			</tr>
-
-			<tr>
-				<th>ID</th>
-				<th>차량 번호</th>
-				<th>입차 시간</th>
-				<th>출차 시간</th>
-				<th>현재 상태</th>
-			</tr>
-
-			<c:if test="${empty pkList }">
-				<tr>
-					<td colspan="5">입차목록이 없습니다.</td>
-				</tr>
-			</c:if>
-
-			<c:if test="${!empty pkList }">
-				<c:forEach items="${pkList }" var="dto">
-					<tr>
-						<td>${dto.pid }</td>
-						<td>${dto.car_num }</td>
-						<td>${dto.in_time }</td>
-						<td>${dto.out_time }</td>
-						<td><c:if test="${dto.state == 'Y' }">입차상태</c:if> <c:if
-								test="${dto.state == 'N' }">출차상태</c:if></td>
-
+		<div class="d-flex justify-content-center">
+			<table class="table">	
+	
+				<thead>
+					<tr class="table-dark">
+						<td colspan="5" align="right">검색된 데이터 수 : ${paging.totalRecord }
+							</td>
 					</tr>
-				</c:forEach>
-			</c:if>
-		</table>
-		<br> <br>
+					
+					<tr class="table-secondary">
+						<th>ID</th>
+						<th>차량 번호</th>
+						<th>입차 시간</th>
+						<th>출차 시간</th>
+						<th>정산 요금</th>
+					</tr>	
+				</thead>
+	
+				<tbody>
+					<c:if test="${empty pkList }">
+						<tr>
+							<td colspan="5">입차목록이 없습니다.</td>
+						</tr>
+					</c:if>
+		
+					<c:if test="${!empty pkList }">
+						<c:forEach items="${pkList }" var="dto">
+							<tr>
+								<td>${dto.pid }</td>
+								<td>${dto.car_num }</td>
+								<td>${dto.in_time }</td>
+								<td>${dto.out_time }</td>
+								<td>${dto.amount } 원</td>
+							</tr>
+						</c:forEach>
+					</c:if>
+				</tbody>
+				
+			</table>
+			
+			</div>
+		<br><br>
 
 		<!-- 페이징 처리 영역 -->
 		<c:if test="${paging.page > paging.block }">
@@ -85,16 +88,20 @@
 				마지막</a>
 		</c:if>
 
-		<br> <br>
+		<br><br>
+		
+		<button
+			onclick="location.href='<%=request.getContextPath()%>/pk_list.go'"
+			class="btn btn-secondary">전체 목록</button>
 
-
+		<br><br>
+		
 		<!-- 검색 폼 영역 -->
 		<form method="post"
-			action="<%=request.getContextPath()%>/pk_search_detail.go">
-			
+			action="<%=request.getContextPath()%>/pk_search_detail.go">	
 			<b>상세 정보로 검색</b>
 			<br>
-			<input type="text" name="car_num" placeholder="차량 뒤 네자리 입력"> 
+			<input name="car_num" placeholder="차량 뒤 네자리 입력"> 
 			<br>
 			<input type="date" name="date">
 			<input type="submit" value="검색">
