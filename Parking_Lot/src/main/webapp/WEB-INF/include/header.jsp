@@ -40,7 +40,6 @@ body {
 	justify-content: space-between;
 	align-items: center;
 	padding: 20px 20px 0px 20px;
-	
 }
 
 a {
@@ -60,12 +59,14 @@ a:hover {
 
 	<div class="body_div">
 		<a href="<%=request.getContextPath()%>/">header</a>
+
 		<div>
 			<button class="btn btn-secondary"
-				onclick="location.href='<%=request.getContextPath()%>/parking_in.go'">입차</button>
+				onclick="location.href='<%=request.getContextPath()%>/parking_in.go?floor=1'">입차</button>
 			<button class="btn btn-secondary"
 				onclick="location.href='<%=request.getContextPath()%>/parking_out.go'">출차</button>
 		</div>
+
 		<div>
 			<c:choose>
 				<c:when test="${empty sessionScope.loginMember}">
@@ -76,8 +77,9 @@ a:hover {
 				</c:otherwise>
 			</c:choose>
 		</div>
+
 	</div>
-	<hr style="width:">
+	<hr>
 
 </body>
 </html>

@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+
 import java.io.IOException;
 import com.siot.IamportRestClient.*;
 import com.siot.IamportRestClient.response.Payment;
@@ -25,7 +28,12 @@ public class PaymentController {
 
 	@PostConstruct
 	public void init() {
+		
+		System.out.println(apiKey);
 
+		System.out.println(apiKey);
+		System.out.println(apiSecret);
+		
 		try {
 
 			this.iamportClient = new IamportClient(apiKey, apiSecret);
