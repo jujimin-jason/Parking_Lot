@@ -105,20 +105,20 @@
 	<!-- 주차 요금 정산 정보 저장 -->
 	<insert id="insertAmount" parameterType="amount">
 		INSERT INTO amount (aid,
-		car_num, amount, pay_time)
-		VALUES (#{aid}, #{car_num}, #{amount},
+		parking_id, amount, pay_time)
+		VALUES (#{aid}, #{parking_id}, #{amount},
 		TO_DATE(#{pay_time},
 		'YYYY-MM-DD
 		HH24:MI:SS'))
 	</insert>
 
 	<!-- parking TABLE 출차 차량 정보 업데이트 -->
-	<update id="updateParkingOut" parameterType="map">
+	<update id="updateParkingOut" parameterType="parking">
 		UPDATE parking
 		SET
 		state = 'N',
-		out_time = TO_DATE(#{pay_time}, 'YYYY-MM-DD HH24:MI:SS')
-		WHERE car_num = #{car_num}
+		out_time = TO_DATE(#{out_time}, 'YYYY-MM-DD HH24:MI:SS')
+		WHERE pid = #{pid}
 	</update>
 	
 	 <!-- 할인 시간(dc_time) 업데이트 -->
