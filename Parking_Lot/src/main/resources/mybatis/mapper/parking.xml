@@ -117,5 +117,12 @@
 		out_time = TO_DATE(#{pay_time}, 'YYYY-MM-DD HH24:MI:SS')
 		WHERE car_num = #{car_num}
 	</update>
+	
+	 <!-- 할인 시간(dc_time) 업데이트 -->
+    <update id="updateDcTime" parameterType="map">
+        update parking
+        set dc_time = #{dc_time}
+        where pid = #{pid}
+    </update>
 
 </mapper>
