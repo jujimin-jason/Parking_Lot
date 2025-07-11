@@ -34,6 +34,9 @@ public interface ParkingMapper {
 	
 	// 특정 층수를 매개변수로 주차장 현황 리스트를 가져오는 메서드.
 	List<Pspace> getPspace(int floor);
+	
+	// 특정 주차위치를 매개변수로 현재 주차 정보(pspace + 입차시간)를 가져오는 메서드.
+	Pspace getPspaceDetail(int sid);
 
 //	-------------------------------------------------------------------
 

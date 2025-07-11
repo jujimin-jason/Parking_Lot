@@ -217,7 +217,15 @@ public class ParkingController {
 		
 		return "parking/pk_now";
 	}
- 
+	
+	@GetMapping("pk_now_detail.go")
+	public String pnow_detail(Model model, @RequestParam("sid") int sid) {
+		this.mapper.getPspaceDetail(sid);
+		
+		
+		
+		return "";
+	}
 	@GetMapping("parking_out.go")
 	public String pout() {
 
