@@ -11,6 +11,5 @@ public class Parking {
 	private String out_time; // 출차 시간
 	private String state; // 현재 입차 여부
 	private int pspace_id; // pspace table id
-	private int dc_time;	// 할인 적용 시간
-	
+	private int dc_time;
 }

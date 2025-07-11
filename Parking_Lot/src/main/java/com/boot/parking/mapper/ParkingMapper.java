@@ -52,7 +52,7 @@ public interface ParkingMapper {
 
 	int insertAmount(Amount amount);
 
-	int updateParkingOut(Map<String, String> map);
+	int updateParkingOut(Parking parking);
 	
 	// 할인 시간 업데이트 메서드 추가
     int updateDcTime(Map<String, Object> map);
