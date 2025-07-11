@@ -23,8 +23,13 @@
 			nvl(MAX(pid), 0) + 1 FROM parking
 		</selectKey>
 
-		insert into parking values(#{pid}, #{car_num}, sysdate, '', default, DEFAULT, 100)
+		insert into parking values(#{pid}, #{car_num}, sysdate, '', default, DEFAULT, #{pspace_id})
 	</insert>
+	
+	<!-- sid 를 매개변수로 pspace 테이블에 해당 컬럼을 입차상태로 업데이트 -->
+	<update id="updatePspace" parameterType="int">
+		update pspace set state = 'Y' where sid = #{sid}
+	</update>
 
 	<!-- parking table 전체 데이터의 수를 반환 -->
 	<select id="count" resultType="int">
@@ -76,11 +81,9 @@
 	
 	<!-- pspace 테이블의 sid를 매개변수로 PspaceDetail 객체를 반환 -->
 	<select id="getPspaceDetail" parameterType="int" resultType="pspacedetail">
-		
-		select p.*, a.amount from
-		(select row_number() over(order by pid desc) rnum, p.* from parking p) p
-		left join amount a on a.aid = p.pid
-		
+		select s.*, p.car_num, p.in_time from pspace s, parking p
+		where s.sid = #{sid}
+		and s.sid = p.pspace_id
 		
 	</select>
 	

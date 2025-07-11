@@ -39,14 +39,16 @@
 		    <c:forEach items="${pspace}" var="space" varStatus="status">
 		    	<c:if test="${space.state == 'N'}">
 		      		<button class="btn btn-info" id="full" 
-		      		onclick="location.href='pk_now_detail.go?sid=${space.sid}'">
+		      		onclick="if(confirm('${space.floor }층 ${space.sno } 에 입차하시겠습니까?')) {
+		      					location.href='parking_in_ok.go?sid=${space.sid }'
+		      					}else { return; }">
 		      			${space.sno}
 		      		</button>
 		      	</c:if>
 		      	
 		      	<c:if test="${space.state == 'Y'}">
 		      		<button class="btn btn-danger" id="empty" 
-		      		onclick="location.href='pk_now_detail.go?sid=${space.sid}'">
+		      		onclick="alert('해당 자리에는 차량이 있습니다. 빈 자리를 찾아주세요.')">
 		      			${space.sno}
 		      		</button>
 		      	</c:if>
@@ -62,12 +64,12 @@
 		    <c:forEach var="i" begin="1" end="3">
 		        <c:choose>
 		            <c:when test="${param.floor == i}">
-		                <button class="btn btn-primary" onclick="location.href='<%=request.getContextPath() %>/pk_now.go?floor=${i}'">
+		                <button class="btn btn-primary" onclick="location.href='<%=request.getContextPath() %>/parking_in.go?floor=${i}'">
 		                    ${i}층
 		                </button>
 		            </c:when>
 		            <c:otherwise>
-		                <button class="btn btn-secondary" onclick="location.href='<%=request.getContextPath() %>/pk_now.go?floor=${i}'">
+		                <button class="btn btn-secondary" onclick="location.href='<%=request.getContextPath() %>/parking_in.go?floor=${i}'">
 		                    ${i}층
 		                </button>
 		            </c:otherwise>
