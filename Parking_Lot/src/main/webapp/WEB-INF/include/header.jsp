@@ -38,7 +38,9 @@ body {
 .body_div {
 	display: flex;
 	justify-content: space-between;
-	padding: 20px;
+	align-items: center;
+	padding: 20px 20px 0px 20px;
+	
 }
 
 a {
@@ -58,6 +60,12 @@ a:hover {
 
 	<div class="body_div">
 		<a href="<%=request.getContextPath()%>/">header</a>
+		<div>
+			<button class="btn btn-secondary"
+				onclick="location.href='<%=request.getContextPath()%>/parking_in.go'">입차</button>
+			<button class="btn btn-secondary"
+				onclick="location.href='<%=request.getContextPath()%>/parking_out.go'">출차</button>
+		</div>
 		<div>
 			<c:choose>
 				<c:when test="${empty sessionScope.loginMember}">

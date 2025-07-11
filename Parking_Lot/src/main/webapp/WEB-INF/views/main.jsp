@@ -37,9 +37,7 @@ button:hover {
 
 	<div class="button-container">
 		<button
-			onclick="location.href='<%=request.getContextPath()%>/parking_in.go'">입차</button>
-		<button
-			onclick="location.href='<%=request.getContextPath()%>/parking_out.go'">출차</button>
+			onclick="location.href='<%=request.getContextPath()%>/parking_out.go'">사전정산</button>
 		<button
 			onclick="location.href='<%=request.getContextPath()%>/pk_list.go'">주차기록</button>
 	</div>
