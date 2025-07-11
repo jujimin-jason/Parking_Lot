@@ -73,6 +73,17 @@
 	<select id="getPspace" resultType="pspace" parameterType="int">
 		select * from pspace where floor = #{floor}
 	</select>
+	
+	<!-- pspace 테이블의 sid를 매개변수로 PspaceDetail 객체를 반환 -->
+	<select id="getPspaceDetail" parameterType="int" resultType="pspacedetail">
+		
+		select p.*, a.amount from
+		(select row_number() over(order by pid desc) rnum, p.* from parking p) p
+		left join amount a on a.aid = p.pid
+		
+		
+	</select>
+	
 
 	<!-- ================================================================================= -->
 

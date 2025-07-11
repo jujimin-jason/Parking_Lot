@@ -19,8 +19,8 @@
 	   
 		<div style="display: flex; justify-content: center; gap: 20px;">
 		    <!-- 주차 정산 페이지 이동 버튼 -->
-		    <a href="store_parking.go">
-		        <button>주차 정산 이동</button>
+		    <a href="store_parking_list.go">
+		        <button>주차 차량선택 이동</button>
 		    </a>
 		
 		    <!-- 할인권 구매 페이지 이동 버튼 -->

@@ -2,6 +2,7 @@ package com.boot.parking.model;
 
 import lombok.Data;
 
+//쿼리문 결과를 위한 부가 모델
 @Data
 public class Plist {
 	private int pid; // 입차 식별용 id
