@@ -305,6 +305,8 @@ public class ParkingController {
 			@RequestParam("amount") int amount, HttpServletResponse response)
 			throws IOException {
 
+		System.out.println("12");
+		
 		Amount dto = new Amount();
 		dto.setParking_id(parking_id);
 		dto.setPay_time(payTime);
@@ -324,6 +326,8 @@ public class ParkingController {
 
 		PrintWriter out = response.getWriter();
 
+		System.out.println(parking_id);
+		
 		if (res > 0) {
 			// 출차 성공 후 pspace 테이블 업데이트
 			this.mapper.updatePspaceOut(parking_id);
