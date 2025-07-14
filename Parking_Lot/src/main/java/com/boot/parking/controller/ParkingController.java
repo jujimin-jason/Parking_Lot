@@ -520,6 +520,7 @@ public class ParkingController {
 	    out.println("location.href='store_page.go'");
 	    out.println("</script>");
 	}
+	
 
 
 }
