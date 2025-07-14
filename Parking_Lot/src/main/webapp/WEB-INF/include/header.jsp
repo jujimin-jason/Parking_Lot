@@ -63,7 +63,7 @@ a:hover {
 				<a href="<%=request.getContextPath()%>/admin_main.go">header</a>
 			</c:when>
 			<c:when test="${sessionScope.loginMember.store_code > 0}">
-				<a href="<%=request.getContextPath()%>/store_main.go">header</a>
+				<a href="<%=request.getContextPath()%>/store_page.go">header</a>
 			</c:when>
 			<c:otherwise>
 				<a href="<%=request.getContextPath()%>/">header</a>
