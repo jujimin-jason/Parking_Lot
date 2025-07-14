@@ -365,42 +365,46 @@ public class ParkingController {
 	// 선택한 차량의 상세 정보 페이지
 	@GetMapping("/store_parking.go")
 	public String storeParking(@RequestParam("car_num") String carNum, Model model, HttpSession session) {
-		// 차량 번호로 차량 정보 조회
-		Parking car = mapper.pcar(carNum);
+	    // 차량 정보 조회
+	    Parking car = mapper.pcar(carNum);
 
-		if (car != null) {
-			// 입차 시간 문자열 → LocalDateTime 변환
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-			LocalDateTime inTime = LocalDateTime.parse(car.getIn_time(), formatter);
-			LocalDateTime now = LocalDateTime.now();
-			// 입차 후 경과 시간(분) 계산
-			long diffMinutes = Duration.between(inTime, now).toMinutes();
+	    if (car != null) {
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	        LocalDateTime inTime = LocalDateTime.parse(car.getIn_time(), formatter);
+	        LocalDateTime now = LocalDateTime.now();
+	        long diffMinutes = Duration.between(inTime, now).toMinutes();
 
-			// "X시간 Y분" 형태 문자열 생성
-			String parkingTimeStr = (diffMinutes / 60) + "시간 " + (diffMinutes % 60) + "분";
+	        // DB에서 할인 시간 가져오기
+	        int currentDcTime = car.getDc_time();
+	        if (currentDcTime < 0) {
+	            currentDcTime = 0;
+	        }
 
-			// JSP에 전달할 데이터 세팅
-			model.addAttribute("car", car);
-			model.addAttribute("parkingTime", diffMinutes);
-			model.addAttribute("parkingTimeStr", parkingTimeStr);
-			model.addAttribute("discountedTime", diffMinutes);
-			model.addAttribute("discountedTimeStr", parkingTimeStr);
-		}
+	        long discountedTime = diffMinutes - currentDcTime;
+	        if (discountedTime < 0) discountedTime = 0;
 
-		// 로그인한 매장 관리자 정보 가져오기
-		Member loginMember = (Member) session.getAttribute("loginMember");
-		int storeCode = loginMember.getStore_code();
+	        String parkingTimeStr = (diffMinutes / 60) + "시간 " + (diffMinutes % 60) + "분";
+	        String discountedTimeStr = (discountedTime / 60) + "시간 " + (discountedTime % 60) + "분";
 
-		// 매장 관리자 쿠폰 정보 가져오기
-		Admin admin = adminMapper.getAdminByStoreCode(storeCode);
-		if (admin != null) {
-			// JSP에 관리자 쿠폰 정보 전달
-			model.addAttribute("adminCoupons", admin);
-		}
+	        model.addAttribute("car", car);
+	        model.addAttribute("parkingTime", diffMinutes);
+	        model.addAttribute("parkingTimeStr", parkingTimeStr);
+	        model.addAttribute("discountedTime", discountedTime);
+	        model.addAttribute("discountedTimeStr", discountedTimeStr);
+	        model.addAttribute("discountTime", currentDcTime);
+	    }
 
-		// 차량 상세 정보 페이지로 이동
-		return "store/store_parking";
+	    // 로그인한 매장 정보 가져오기
+	    Member loginMember = (Member) session.getAttribute("loginMember");
+	    int storeCode = loginMember.getStore_code();
+	    Admin admin = adminMapper.getAdminByStoreCode(storeCode);
+	    if (admin != null) {
+	        model.addAttribute("adminCoupons", admin);
+	    }
+
+	    return "store/store_parking";
 	}
+
 
 	// 쿠폰 구매 페이지 이동
 	@GetMapping("/store_coupon.go")
@@ -410,94 +414,72 @@ public class ParkingController {
 	}
 
 	@PostMapping("/apply_coupon.go")
-	public String applyCoupon(@RequestParam("car_num") String carNum, @RequestParam("discount") int discount,
-			HttpSession session, Model model) {
+	public String applyCoupon(@RequestParam("car_num") String carNum,
+	                          @RequestParam("discount") int discount,
+	                          HttpSession session, Model model) {
 
-		// 로그인한 매장 정보 가져오기
-		Member loginMember = (Member) session.getAttribute("loginMember");
-		int storeCode = loginMember.getStore_code();
+	    // 로그인한 매장 정보 가져오기
+	    Member loginMember = (Member) session.getAttribute("loginMember");
+	    int storeCode = loginMember.getStore_code();
 
-		// 매장 관리자 쿠폰 정보 가져오기
-		Admin admin = adminMapper.getAdminByStoreCode(storeCode);
+	    // 매장 관리자 쿠폰 정보 가져오기
+	    Admin admin = adminMapper.getAdminByStoreCode(storeCode);
 
-		// 세션에 저장된 누적 할인 시간 가져오기 (없으면 0)
-		Integer accumulatedDiscount = (Integer) session.getAttribute("accumulatedDiscount");
-		if (accumulatedDiscount == null) {
-			accumulatedDiscount = 0;
-		}
+	    // 차량 정보 가져오기
+	    Parking car = mapper.pcar(carNum);
 
-		// 할인 쿠폰 사용 처리
-		if (discount == 30 && admin.getDc_coupon_30m() > 0) {
-			admin.setDc_coupon_30m(admin.getDc_coupon_30m() - 1);
-			accumulatedDiscount += 30;
-		} else if (discount == 60 && admin.getDc_coupon_1h() > 0) {
-			admin.setDc_coupon_1h(admin.getDc_coupon_1h() - 1);
-			accumulatedDiscount += 60;
-		} else {
-			// 쿠폰 부족 시 메시지 출력
-			model.addAttribute("msg", "쿠폰이 부족합니다!");
-			return "store/store_parking";
-		}
+	    // 현재까지 할인 시간 가져오기
+	    int currentDcTime = car.getDc_time();
 
-		// DB에 관리자 쿠폰 정보 업데이트
-		adminMapper.updateCoupons(admin);
+	    // 할인 쿠폰 사용 처리
+	    if (discount == 30 && admin.getDc_coupon_30m() > 0) {
+	        admin.setDc_coupon_30m(admin.getDc_coupon_30m() - 1);
+	        currentDcTime += 30;
+	    } else if (discount == 60 && admin.getDc_coupon_1h() > 0) {
+	        admin.setDc_coupon_1h(admin.getDc_coupon_1h() - 1);
+	        currentDcTime += 60;
+	    } else {
+	        model.addAttribute("msg", "쿠폰이 부족합니다!");
+	        return "store/store_parking";
+	    }
 
-		// 세션에 누적 할인 시간 저장
-		session.setAttribute("accumulatedDiscount", accumulatedDiscount);
+	    // DB에 관리자 쿠폰 정보 업데이트
+	    adminMapper.updateCoupons(admin);
 
-		// 차량 정보 다시 조회
-		Parking car = mapper.pcar(carNum);
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-		LocalDateTime inTime = LocalDateTime.parse(car.getIn_time(), formatter);
-		LocalDateTime now = LocalDateTime.now();
+	    // DB에 할인 시간 업데이트
+	    Map<String, Object> map = new HashMap<>();
+	    map.put("pid", car.getPid());
+	    map.put("dc_time", currentDcTime);
+	    mapper.updateDcTime(map);
 
-		long diffMinutes = Duration.between(inTime, now).toMinutes();
-		long discountedTime = diffMinutes - accumulatedDiscount;
-		if (discountedTime < 0)
-			discountedTime = 0;
+	    // 차량 정보 다시 조회
+	    car = mapper.pcar(carNum);
 
-		String parkingTimeStr = (diffMinutes / 60) + "시간 " + (diffMinutes % 60) + "분";
-		String discountedTimeStr = (discountedTime / 60) + "시간 " + (discountedTime % 60) + "분";
+	    // 입차 시간과 현재 시간 비교
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	    LocalDateTime inTime = LocalDateTime.parse(car.getIn_time(), formatter);
+	    LocalDateTime now = LocalDateTime.now();
+	    long diffMinutes = Duration.between(inTime, now).toMinutes();
 
-		model.addAttribute("car", car);
-		model.addAttribute("parkingTime", diffMinutes);
-		model.addAttribute("parkingTimeStr", parkingTimeStr);
-		model.addAttribute("discountedTime", discountedTime);
-		model.addAttribute("discountedTimeStr", discountedTimeStr);
-		model.addAttribute("discountTime", accumulatedDiscount);
-		model.addAttribute("adminCoupons", admin);
+	    long discountedTime = diffMinutes - currentDcTime;
+	    if (discountedTime < 0) discountedTime = 0;
 
-		return "store/store_parking";
+	    String parkingTimeStr = (diffMinutes / 60) + "시간 " + (diffMinutes % 60) + "분";
+	    String discountedTimeStr = (discountedTime / 60) + "시간 " + (discountedTime % 60) + "분";
+
+	    model.addAttribute("car", car);
+	    model.addAttribute("parkingTime", diffMinutes);
+	    model.addAttribute("parkingTimeStr", parkingTimeStr);
+	    model.addAttribute("discountedTime", discountedTime);
+	    model.addAttribute("discountedTimeStr", discountedTimeStr);
+	    model.addAttribute("discountTime", currentDcTime);
+	    model.addAttribute("adminCoupons", admin);
+
+	    return "store/store_parking";
 	}
 
-	@PostMapping("/apply_coupon_ok.go")
-	public String finalizeCoupon(@RequestParam("car_num") String carNum, HttpSession session, Model model) {
 
-		// 세션에 저장된 누적 할인 시간 가져오기
-		Integer accumulatedDiscount = (Integer) session.getAttribute("accumulatedDiscount");
-		if (accumulatedDiscount == null) {
-			accumulatedDiscount = 0;
-		}
-
-		// 차량 정보 조회
-		Parking car = mapper.pcar(carNum);
-
-		// DB에 할인 시간 업데이트
-		Map<String, Object> map = new HashMap<>();
-		map.put("pid", car.getPid());
-		map.put("dc_time", accumulatedDiscount);
-
-		// mapper.updateDcTime(map) 등의 방식으로 DB에 반영 (예제용)
-		mapper.updateDcTime(map);
-
-		// 세션 할인 정보 초기화
-		session.removeAttribute("accumulatedDiscount");
-
-		// 메시지 전달
-		model.addAttribute("msg", "할인이 최종 적용되었습니다!");
-
-		return "redirect:/store_page.go";
-	}
+	
 
 	// 쿠폰 구매 처리
 	@PostMapping("/coupon_buy.go")
