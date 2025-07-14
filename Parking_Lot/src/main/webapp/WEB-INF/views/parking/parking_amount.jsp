@@ -57,12 +57,15 @@ h1 {
 			<th>차량 번호</th>
 			<th>입차 시간</th>
 			<th>출차 시간</th>
+			<th>주차위치</th>
 			<th>총 요금</th>
+			
 		</tr>
-		<tr>
+		<tr class="table-info">
 			<td>${pking.car_num}</td>
 			<td>${pking.in_time}</td>
 			<td>${amount.pay_time}</td>
+			<td>${psdetail.floor }층 ${psdetail.sno }</td>
 			<td>${amount.amount}원</td>
 		</tr>
 	</table>
