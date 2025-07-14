@@ -45,7 +45,7 @@
 			select p.*, a.amount from
 			(select row_number() over(order by pid desc) rnum, p.* from parking p) p
 			left join amount a on a.parking_id = p.pid
-			where rnum >= #{startNo} and rnum <= #{endNo}
+			where rnum >= #{startNo} and rnum <= #{endNo} order by p.rnum
 		]]>
 	</select>
 
@@ -87,7 +87,7 @@
 	<select id="getPspaceDetail" parameterType="int"
 		resultType="pspacedetail">
 		select s.*, p.car_num, p.in_time from pspace s, parking p
-		where s.sid = #{sid}
+		where s.sid = #{sid} and p.state = 'Y'
 		and s.sid = p.pspace_id
 
 	</select>

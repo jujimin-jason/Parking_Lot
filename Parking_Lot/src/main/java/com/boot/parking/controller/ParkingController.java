@@ -490,32 +490,37 @@ public class ParkingController {
 
 	// 쿠폰 구매 처리
 	@PostMapping("/coupon_buy.go")
-	public String buyCoupon(@RequestParam("coupon_type") String couponType, @RequestParam("quantity") int quantity,
-			HttpSession session, Model model) {
+	public void buyCoupon(@RequestParam("coupon_type") String couponType, 
+	                      @RequestParam("quantity") int quantity,
+	                      HttpSession session,
+	                      HttpServletResponse response) throws IOException {
 
-		// 로그인한 매장 관리자 정보 가져오기
-		Member loginMember = (Member) session.getAttribute("loginMember");
-		int storeCode = loginMember.getStore_code();
+	    // 로그인한 매장 관리자 정보 가져오기
+	    Member loginMember = (Member) session.getAttribute("loginMember");
+	    int storeCode = loginMember.getStore_code();
 
-		// 매장 관리자 쿠폰 정보 가져오기
-		Admin admin = adminMapper.getAdminByStoreCode(storeCode);
+	    // 매장 관리자 쿠폰 정보 가져오기
+	    Admin admin = adminMapper.getAdminByStoreCode(storeCode);
 
-		// 선택된 쿠폰 종류에 따라 수량 증가
-		if (couponType.equals("30분")) {
-			admin.setDc_coupon_30m(admin.getDc_coupon_30m() + quantity);
-		} else if (couponType.equals("1시간")) {
-			admin.setDc_coupon_1h(admin.getDc_coupon_1h() + quantity);
-		}
+	    // 선택된 쿠폰 종류에 따라 수량 증가
+	    if (couponType.equals("30분")) {
+	        admin.setDc_coupon_30m(admin.getDc_coupon_30m() + quantity);
+	    } else if (couponType.equals("1시간")) {
+	        admin.setDc_coupon_1h(admin.getDc_coupon_1h() + quantity);
+	    }
 
-		// DB에 업데이트
-		adminMapper.updateCoupons(admin);
+	    // DB 업데이트
+	    adminMapper.updateCoupons(admin);
 
-		// 성공 메시지 및 최신 쿠폰 정보 JSP에 전달
-		model.addAttribute("msg", "쿠폰이 성공적으로 구매되었습니다!");
-		model.addAttribute("adminCoupons", admin);
-
-		// 쿠폰 구매 페이지로 다시 이동
-		return "store/store_coupon";
+	    // 구매하기 누르면 alert 창 띄우고 메인 페이지로 이동
+	    response.setContentType("text/html; charset=UTF-8");
+	    PrintWriter out = response.getWriter();
+	    out.println("<script>");
+	    out.println("alert('쿠폰이 성공적으로 구매되었습니다!')");
+	    out.println("location.href='store_page.go'");
+	    out.println("</script>");
 	}
+	
+
 
 }

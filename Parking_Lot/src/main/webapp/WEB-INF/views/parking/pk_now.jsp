@@ -39,7 +39,7 @@
 		    <c:forEach items="${pspace}" var="space" varStatus="status">
 		    	<c:if test="${space.state == 'N'}">
 		      		<button class="btn btn-info" id="full" 
-		      		onclick="location.href='pk_now_detail.go?sid=${space.sid}'">
+		      		onclick="alert('해당 자리는 비어있습니다.')">
 		      			${space.sno}
 		      		</button>
 		      	</c:if>
