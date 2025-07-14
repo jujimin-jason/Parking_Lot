@@ -6,10 +6,6 @@
 <meta charset="UTF-8">
 <title>출차 결제</title>
 <script src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
-<<<<<<< HEAD
-=======
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
->>>>>>> branch 'main' of https://github.com/suhyun-dev/Parking_Lot.git
 
 <style>
 body {
@@ -54,21 +50,10 @@ h1 {
 </head>
 <body>
 
+	<jsp:include page="../../include/header.jsp" />	
+
 	<h1>출차 결제 진행</h1>
 
-<<<<<<< HEAD
-	<table border="1">
-		<tr>
-			<th>차량 번호</th>
-			<th>입차 시간</th>
-			<th>출차 시간</th>
-			<th>총 요금</th>
-		</tr>
-		<tr>
-			<td>${pking.car_num}</td>
-			<td>${pking.in_time}</td>
-			<td>${amount.pay_time}</td>
-=======
 	<table class="table table-success table-striped" style="width: 70%; margin: 0 auto;">
 		<tr>
 			<th>차량 번호</th>
@@ -83,7 +68,6 @@ h1 {
 			<td>${pking.in_time}</td>
 			<td>${amount.pay_time}</td>
 			<td>${psdetail.floor }층 ${psdetail.sno }</td>
->>>>>>> branch 'main' of https://github.com/suhyun-dev/Parking_Lot.git
 			<td>${amount.amount}원</td>
 		</tr>
 	</table>

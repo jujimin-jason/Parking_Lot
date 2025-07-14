@@ -128,13 +128,13 @@ public class ParkingController {
 
 		if (chk1 > 0) {
 			int chk2 = this.mapper.updatePspaceIn(sid);
-			
-			if(chk2 > 0) {
+
+			if (chk2 > 0) {
 				out.println("<script>");
 				out.println("alert('차량번호 " + bun + " 입차되었습니다.')");
-				out.println("location.href='parking_in.go?floor="+floor+"'");
+				out.println("location.href='parking_in.go?floor=" + floor + "'");
 				out.println("</script>");
-			}else {
+			} else {
 				out.println("<script>");
 				out.println("alert('입차 실패')");
 				out.println("history.back()");
@@ -275,7 +275,9 @@ public class ParkingController {
 
 		// 입차 정보 조회
 		Parking pking = this.mapper.pcar(car_num);
-		
+
+		System.out.println(pking);
+
 		// 차량 주차 위치
 		PspaceDetail psdetail = this.mapper.getPspaceDetail(pking.getPspace_id());
 
@@ -284,13 +286,13 @@ public class ParkingController {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		String nowStr = now.format(formatter);
 
+		System.out.println("*/******************************************");
 		// 입차 시간 → LocalDateTime 변환
 		LocalDateTime inTime = LocalDateTime.parse(pking.getIn_time(), formatter);
 
 		// 요금 계산 (10분당 500원)
 		long minutes = Duration.between(inTime, now).toMinutes();
 		int price = (int) (Math.ceil(minutes / 10.0) * 500);
-
 		// amount 객체 만들기 (아직 DB에 저장 X)
 		Amount amount = new Amount();
 		amount.setParking_id(pking.getPid());
@@ -306,11 +308,10 @@ public class ParkingController {
 
 	@PostMapping("/parking_out_ok.go")
 	public void processOut(@RequestParam("parking_id") int parking_id, @RequestParam("pay_time") String payTime,
-			@RequestParam("amount") int amount, HttpServletResponse response)
-			throws IOException {
+			@RequestParam("amount") int amount, HttpServletResponse response) throws IOException {
 
 		System.out.println("12");
-		
+
 		Amount dto = new Amount();
 		dto.setParking_id(parking_id);
 		dto.setPay_time(payTime);
@@ -322,16 +323,16 @@ public class ParkingController {
 		Parking pk = new Parking();
 		pk.setPid(parking_id);
 		pk.setOut_time(payTime);
-		
+
 		// res = 출차 성공 여부
 		int res = this.mapper.updateParkingOut(pk);
-		
+
 		response.setContentType("text/html; charset=UTF-8");
 
 		PrintWriter out = response.getWriter();
 
 		System.out.println(parking_id);
-		
+
 		if (res > 0) {
 			// 출차 성공 후 pspace 테이블 업데이트
 			this.mapper.updatePspaceOut(parking_id);
@@ -376,46 +377,46 @@ public class ParkingController {
 	// 선택한 차량의 상세 정보 페이지
 	@GetMapping("/store_parking.go")
 	public String storeParking(@RequestParam("car_num") String carNum, Model model, HttpSession session) {
-	    // 차량 정보 조회
-	    Parking car = mapper.pcar(carNum);
+		// 차량 정보 조회
+		Parking car = mapper.pcar(carNum);
 
-	    if (car != null) {
-	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-	        LocalDateTime inTime = LocalDateTime.parse(car.getIn_time(), formatter);
-	        LocalDateTime now = LocalDateTime.now();
-	        long diffMinutes = Duration.between(inTime, now).toMinutes();
+		if (car != null) {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			LocalDateTime inTime = LocalDateTime.parse(car.getIn_time(), formatter);
+			LocalDateTime now = LocalDateTime.now();
+			long diffMinutes = Duration.between(inTime, now).toMinutes();
 
-	        // DB에서 할인 시간 가져오기
-	        int currentDcTime = car.getDc_time();
-	        if (currentDcTime < 0) {
-	            currentDcTime = 0;
-	        }
+			// DB에서 할인 시간 가져오기
+			int currentDcTime = car.getDc_time();
+			if (currentDcTime < 0) {
+				currentDcTime = 0;
+			}
 
-	        long discountedTime = diffMinutes - currentDcTime;
-	        if (discountedTime < 0) discountedTime = 0;
+			long discountedTime = diffMinutes - currentDcTime;
+			if (discountedTime < 0)
+				discountedTime = 0;
 
-	        String parkingTimeStr = (diffMinutes / 60) + "시간 " + (diffMinutes % 60) + "분";
-	        String discountedTimeStr = (discountedTime / 60) + "시간 " + (discountedTime % 60) + "분";
+			String parkingTimeStr = (diffMinutes / 60) + "시간 " + (diffMinutes % 60) + "분";
+			String discountedTimeStr = (discountedTime / 60) + "시간 " + (discountedTime % 60) + "분";
 
-	        model.addAttribute("car", car);
-	        model.addAttribute("parkingTime", diffMinutes);
-	        model.addAttribute("parkingTimeStr", parkingTimeStr);
-	        model.addAttribute("discountedTime", discountedTime);
-	        model.addAttribute("discountedTimeStr", discountedTimeStr);
-	        model.addAttribute("discountTime", currentDcTime);
-	    }
+			model.addAttribute("car", car);
+			model.addAttribute("parkingTime", diffMinutes);
+			model.addAttribute("parkingTimeStr", parkingTimeStr);
+			model.addAttribute("discountedTime", discountedTime);
+			model.addAttribute("discountedTimeStr", discountedTimeStr);
+			model.addAttribute("discountTime", currentDcTime);
+		}
 
-	    // 로그인한 매장 정보 가져오기
-	    Member loginMember = (Member) session.getAttribute("loginMember");
-	    int storeCode = loginMember.getStore_code();
-	    Admin admin = adminMapper.getAdminByStoreCode(storeCode);
-	    if (admin != null) {
-	        model.addAttribute("adminCoupons", admin);
-	    }
+		// 로그인한 매장 정보 가져오기
+		Member loginMember = (Member) session.getAttribute("loginMember");
+		int storeCode = loginMember.getStore_code();
+		Admin admin = adminMapper.getAdminByStoreCode(storeCode);
+		if (admin != null) {
+			model.addAttribute("adminCoupons", admin);
+		}
 
-	    return "store/store_parking";
+		return "store/store_parking";
 	}
-
 
 	// 쿠폰 구매 페이지 이동
 	@GetMapping("/store_coupon.go")
@@ -425,106 +426,99 @@ public class ParkingController {
 	}
 
 	@PostMapping("/apply_coupon.go")
-	public String applyCoupon(@RequestParam("car_num") String carNum,
-	                          @RequestParam("discount") int discount,
-	                          HttpSession session, Model model) {
+	public String applyCoupon(@RequestParam("car_num") String carNum, @RequestParam("discount") int discount,
+			HttpSession session, Model model) {
 
-	    // 로그인한 매장 정보 가져오기
-	    Member loginMember = (Member) session.getAttribute("loginMember");
-	    int storeCode = loginMember.getStore_code();
+		// 로그인한 매장 정보 가져오기
+		Member loginMember = (Member) session.getAttribute("loginMember");
+		int storeCode = loginMember.getStore_code();
 
-	    // 매장 관리자 쿠폰 정보 가져오기
-	    Admin admin = adminMapper.getAdminByStoreCode(storeCode);
+		// 매장 관리자 쿠폰 정보 가져오기
+		Admin admin = adminMapper.getAdminByStoreCode(storeCode);
 
-	    // 차량 정보 가져오기
-	    Parking car = mapper.pcar(carNum);
+		// 차량 정보 가져오기
+		Parking car = mapper.pcar(carNum);
 
-	    // 현재까지 할인 시간 가져오기
-	    int currentDcTime = car.getDc_time();
+		// 현재까지 할인 시간 가져오기
+		int currentDcTime = car.getDc_time();
 
-	    // 할인 쿠폰 사용 처리
-	    if (discount == 30 && admin.getDc_coupon_30m() > 0) {
-	        admin.setDc_coupon_30m(admin.getDc_coupon_30m() - 1);
-	        currentDcTime += 30;
-	    } else if (discount == 60 && admin.getDc_coupon_1h() > 0) {
-	        admin.setDc_coupon_1h(admin.getDc_coupon_1h() - 1);
-	        currentDcTime += 60;
-	    } else {
-	        model.addAttribute("msg", "쿠폰이 부족합니다!");
-	        return "store/store_parking";
-	    }
+		// 할인 쿠폰 사용 처리
+		if (discount == 30 && admin.getDc_coupon_30m() > 0) {
+			admin.setDc_coupon_30m(admin.getDc_coupon_30m() - 1);
+			currentDcTime += 30;
+		} else if (discount == 60 && admin.getDc_coupon_1h() > 0) {
+			admin.setDc_coupon_1h(admin.getDc_coupon_1h() - 1);
+			currentDcTime += 60;
+		} else {
+			model.addAttribute("msg", "쿠폰이 부족합니다!");
+			return "store/store_parking";
+		}
 
-	    // DB에 관리자 쿠폰 정보 업데이트
-	    adminMapper.updateCoupons(admin);
+		// DB에 관리자 쿠폰 정보 업데이트
+		adminMapper.updateCoupons(admin);
 
-	    // DB에 할인 시간 업데이트
-	    Map<String, Object> map = new HashMap<>();
-	    map.put("pid", car.getPid());
-	    map.put("dc_time", currentDcTime);
-	    mapper.updateDcTime(map);
+		// DB에 할인 시간 업데이트
+		Map<String, Object> map = new HashMap<>();
+		map.put("pid", car.getPid());
+		map.put("dc_time", currentDcTime);
+		mapper.updateDcTime(map);
 
-	    // 차량 정보 다시 조회
-	    car = mapper.pcar(carNum);
+		// 차량 정보 다시 조회
+		car = mapper.pcar(carNum);
 
-	    // 입차 시간과 현재 시간 비교
-	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-	    LocalDateTime inTime = LocalDateTime.parse(car.getIn_time(), formatter);
-	    LocalDateTime now = LocalDateTime.now();
-	    long diffMinutes = Duration.between(inTime, now).toMinutes();
+		// 입차 시간과 현재 시간 비교
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		LocalDateTime inTime = LocalDateTime.parse(car.getIn_time(), formatter);
+		LocalDateTime now = LocalDateTime.now();
+		long diffMinutes = Duration.between(inTime, now).toMinutes();
 
-	    long discountedTime = diffMinutes - currentDcTime;
-	    if (discountedTime < 0) discountedTime = 0;
+		long discountedTime = diffMinutes - currentDcTime;
+		if (discountedTime < 0)
+			discountedTime = 0;
 
-	    String parkingTimeStr = (diffMinutes / 60) + "시간 " + (diffMinutes % 60) + "분";
-	    String discountedTimeStr = (discountedTime / 60) + "시간 " + (discountedTime % 60) + "분";
+		String parkingTimeStr = (diffMinutes / 60) + "시간 " + (diffMinutes % 60) + "분";
+		String discountedTimeStr = (discountedTime / 60) + "시간 " + (discountedTime % 60) + "분";
 
-	    model.addAttribute("car", car);
-	    model.addAttribute("parkingTime", diffMinutes);
-	    model.addAttribute("parkingTimeStr", parkingTimeStr);
-	    model.addAttribute("discountedTime", discountedTime);
-	    model.addAttribute("discountedTimeStr", discountedTimeStr);
-	    model.addAttribute("discountTime", currentDcTime);
-	    model.addAttribute("adminCoupons", admin);
+		model.addAttribute("car", car);
+		model.addAttribute("parkingTime", diffMinutes);
+		model.addAttribute("parkingTimeStr", parkingTimeStr);
+		model.addAttribute("discountedTime", discountedTime);
+		model.addAttribute("discountedTimeStr", discountedTimeStr);
+		model.addAttribute("discountTime", currentDcTime);
+		model.addAttribute("adminCoupons", admin);
 
-	    return "store/store_parking";
+		return "store/store_parking";
 	}
-
-
-	
 
 	// 쿠폰 구매 처리
 	@PostMapping("/coupon_buy.go")
-	public void buyCoupon(@RequestParam("coupon_type") String couponType, 
-	                      @RequestParam("quantity") int quantity,
-	                      HttpSession session,
-	                      HttpServletResponse response) throws IOException {
+	public void buyCoupon(@RequestParam("coupon_type") String couponType, @RequestParam("quantity") int quantity,
+			HttpSession session, HttpServletResponse response) throws IOException {
 
-	    // 로그인한 매장 관리자 정보 가져오기
-	    Member loginMember = (Member) session.getAttribute("loginMember");
-	    int storeCode = loginMember.getStore_code();
+		// 로그인한 매장 관리자 정보 가져오기
+		Member loginMember = (Member) session.getAttribute("loginMember");
+		int storeCode = loginMember.getStore_code();
 
-	    // 매장 관리자 쿠폰 정보 가져오기
-	    Admin admin = adminMapper.getAdminByStoreCode(storeCode);
+		// 매장 관리자 쿠폰 정보 가져오기
+		Admin admin = adminMapper.getAdminByStoreCode(storeCode);
 
-	    // 선택된 쿠폰 종류에 따라 수량 증가
-	    if (couponType.equals("30분")) {
-	        admin.setDc_coupon_30m(admin.getDc_coupon_30m() + quantity);
-	    } else if (couponType.equals("1시간")) {
-	        admin.setDc_coupon_1h(admin.getDc_coupon_1h() + quantity);
-	    }
+		// 선택된 쿠폰 종류에 따라 수량 증가
+		if (couponType.equals("30분")) {
+			admin.setDc_coupon_30m(admin.getDc_coupon_30m() + quantity);
+		} else if (couponType.equals("1시간")) {
+			admin.setDc_coupon_1h(admin.getDc_coupon_1h() + quantity);
+		}
 
-	    // DB 업데이트
-	    adminMapper.updateCoupons(admin);
+		// DB 업데이트
+		adminMapper.updateCoupons(admin);
 
-	    // 구매하기 누르면 alert 창 띄우고 메인 페이지로 이동
-	    response.setContentType("text/html; charset=UTF-8");
-	    PrintWriter out = response.getWriter();
-	    out.println("<script>");
-	    out.println("alert('쿠폰이 성공적으로 구매되었습니다!')");
-	    out.println("location.href='store_page.go'");
-	    out.println("</script>");
+		// 구매하기 누르면 alert 창 띄우고 메인 페이지로 이동
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		out.println("<script>");
+		out.println("alert('쿠폰이 성공적으로 구매되었습니다!')");
+		out.println("location.href='store_page.go'");
+		out.println("</script>");
 	}
-	
-
 
 }

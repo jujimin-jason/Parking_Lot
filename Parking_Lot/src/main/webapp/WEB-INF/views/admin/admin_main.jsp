@@ -76,11 +76,13 @@
     <hr class="custom-divider" />
 
     <div class="btn-wrapper">
+    <button onclick="location.href='/parking_out.go'">? 주차 사전 정산 페이지</button>
+    <button onclick="location.href='/pk_list.go'">? 주차 사전 정산 페이지</button>
       <form action="${pageContext.request.contextPath}/parepay_list.go" method="post">
         <input type="submit" value="🔧 주차 사전 정산 페이지" />
       </form>
 
-      <form action="${pageContext.request.contextPath}/parking_hitsory.go" method="post">
+      <form action="${pageContext.request.contextPath}/pk_list.go" method="post">
         <input type="submit" value="📋 주차장 사용 내역" />
       </form>
     </div>
