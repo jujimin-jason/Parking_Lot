@@ -302,11 +302,10 @@ public class ParkingController {
 
 	@PostMapping("/parking_out_ok.go")
 	public void processOut(@RequestParam("parking_id") int parking_id, @RequestParam("pay_time") String payTime,
-			@RequestParam("amount") int amount, @RequestParam("aid") int aid, HttpServletResponse response)
+			@RequestParam("amount") int amount, HttpServletResponse response)
 			throws IOException {
 
 		Amount dto = new Amount();
-		dto.setAid(aid);
 		dto.setParking_id(parking_id);
 		dto.setPay_time(payTime);
 		dto.setAmount(amount);
