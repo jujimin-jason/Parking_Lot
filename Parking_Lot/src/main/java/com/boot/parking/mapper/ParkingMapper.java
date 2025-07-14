@@ -22,7 +22,7 @@ public interface ParkingMapper {
 	int entry(Parking pdto);
 	
 	// sid 를 매개변수로 pspace 테이블에 해당 sid 컬럼을 입차상태로 바꿔주는 메서드.
-	int updatePspace(int sid);
+	int updatePspaceIn(int sid);
 
 	// DB 상의 전체 기록 수를 반환하는 메서드.
 	int count();
@@ -54,6 +54,9 @@ public interface ParkingMapper {
 
 	int updateParkingOut(Parking parking);
 	
+	// 출차시 pspace 테이블 업데이트 메서드.
+	void updatePspaceOut(int parking_id);
+	
 	// 할인 시간 업데이트 메서드 추가
-    int updateDcTime(Map<String, Object> map);
+    int updateDcTime(Map<String, Object> map);	
 }

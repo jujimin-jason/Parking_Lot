@@ -27,7 +27,7 @@
 	</insert>
 	
 	<!-- sid 를 매개변수로 pspace 테이블에 해당 컬럼을 입차상태로 업데이트 -->
-	<update id="updatePspace" parameterType="int">
+	<update id="updatePspaceIn" parameterType="int">
 		update pspace set state = 'Y' where sid = #{sid}
 	</update>
 
@@ -119,6 +119,14 @@
 		state = 'N',
 		out_time = TO_DATE(#{out_time}, 'YYYY-MM-DD HH24:MI:SS')
 		WHERE pid = #{pid}
+	</update>
+	
+	<!-- amount table의 parking_id 를 매개변수로 pspace table의 state를 업데이트 -->
+	<update id="updatePspaceOut" parameterType="int">
+		<selectKey keyProperty="sid" resultType="int" order="BEFORE">
+			select pspace_id from parking where pid = #{pid}
+		</selectKey>
+		update pspace set state = 'N' where sid = #{sid}
 	</update>
 	
 	 <!-- 할인 시간(dc_time) 업데이트 -->
