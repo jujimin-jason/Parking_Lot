@@ -11,9 +11,9 @@
 	<select id="checkDupl" parameterType="String"
 		resultType="parking">
 		select * from parking
-		where car_num like '%' || #{car_num}
-		|| '%'
-		and state = 'Y'
+		where car_num = #{car_num}
+		and state =
+		'Y'
 	</select>
 
 	<!-- 차량 번호판 등록(입차) -->
@@ -24,8 +24,15 @@
 			nvl(MAX(pid), 0) + 1 FROM parking
 		</selectKey>
 
-		insert into parking values( #{pid}, #{car_num}, sysdate, '', default)
+		insert into parking values(#{pid}, #{car_num}, sysdate, '', default,
+		DEFAULT, #{pspace_id})
 	</insert>
+
+	<!-- sid 를 매개변수로 pspace 테이블에 해당 컬럼을 입차상태로 업데이트 -->
+	<update id="updatePspaceIn" parameterType="int">
+		update pspace set
+		state = 'Y' where sid = #{sid}
+	</update>
 
 	<!-- parking table 전체 데이터의 수를 반환 -->
 	<select id="count" resultType="int">
@@ -37,12 +44,10 @@
 		<![CDATA[
 			select p.*, a.amount from
 			(select row_number() over(order by pid desc) rnum, p.* from parking p) p
-			left join amount a on a.aid = p.pid
-			where rnum >= #{startNo} and rnum <= #{endNo}
+			left join amount a on a.parking_id = p.pid
+			where rnum >= #{startNo} and rnum <= #{endNo} order by p.rnum
 		]]>
 	</select>
-
-
 
 	<!-- 조건에 맞는 검색된 기록의 수를 반환 -->
 	<select id="sCount" parameterType="parking" resultType="int">
@@ -66,11 +71,27 @@
 			and in_time like '%' || #{in_time} || '%'
 		</if>
 		<![CDATA[
-			) p left join amount a on a.aid = p.pid
+			) p left join amount a on a.parking_id = p.pid
 			where rnum >= #{startNo} and rnum <= #{endNo}
 			order by pid desc
 		]]>
 	</select>
+
+	<!-- pspace 테이블 전체 리스트를 반환 -->
+	<select id="getPspace" resultType="pspace" parameterType="int">
+		select
+		* from pspace where floor = #{floor}
+	</select>
+
+	<!-- pspace 테이블의 sid를 매개변수로 PspaceDetail 객체를 반환 -->
+	<select id="getPspaceDetail" parameterType="int"
+		resultType="pspacedetail">
+		select s.*, p.car_num, p.in_time from pspace s, parking p
+		where s.sid = #{sid} and p.state = 'Y'
+		and s.sid = p.pspace_id
+
+	</select>
+
 
 	<!-- ================================================================================= -->
 
@@ -89,20 +110,37 @@
 	<!-- 주차 요금 정산 정보 저장 -->
 	<insert id="insertAmount" parameterType="amount">
 		INSERT INTO amount (aid,
-		car_num, amount, pay_time)
-		VALUES (#{aid}, #{car_num}, #{amount},
+		parking_id, amount, pay_time)
+		VALUES ((SELECT COUNT(*) FROM AMOUNT) +
+		1, #{parking_id}, #{amount},
 		TO_DATE(#{pay_time},
 		'YYYY-MM-DD
 		HH24:MI:SS'))
 	</insert>
 
 	<!-- parking TABLE 출차 차량 정보 업데이트 -->
-	<update id="updateParkingOut" parameterType="map">
+	<update id="updateParkingOut" parameterType="parking">
 		UPDATE parking
 		SET
 		state = 'N',
-		out_time = TO_DATE(#{pay_time}, 'YYYY-MM-DD HH24:MI:SS')
-		WHERE car_num = #{car_num}
+		out_time = TO_DATE(#{out_time}, 'YYYY-MM-DD HH24:MI:SS')
+		WHERE pid = #{pid}
+	</update>
+
+	<!-- amount table의 parking_id 를 매개변수로 pspace table의 state를 업데이트 -->
+	<update id="updatePspaceOut" parameterType="int">
+		update pspace set
+		state = 'N' where sid = (select
+		pspace_id from parking where pid =
+		#{parking_id})
+	</update>
+
+	<!-- 할인 시간(dc_time) 업데이트 -->
+	<update id="updateDcTime" parameterType="map">
+		update parking
+		set
+		dc_time = #{dc_time}
+		where pid = #{pid}
 	</update>
 
 </mapper>

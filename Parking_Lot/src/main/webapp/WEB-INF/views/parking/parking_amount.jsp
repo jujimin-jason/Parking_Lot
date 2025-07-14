@@ -6,6 +6,10 @@
 <meta charset="UTF-8">
 <title>출차 결제</title>
 <script src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+<<<<<<< HEAD
+=======
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+>>>>>>> branch 'main' of https://github.com/suhyun-dev/Parking_Lot.git
 
 <style>
 body {
@@ -52,6 +56,7 @@ h1 {
 
 	<h1>출차 결제 진행</h1>
 
+<<<<<<< HEAD
 	<table border="1">
 		<tr>
 			<th>차량 번호</th>
@@ -63,6 +68,22 @@ h1 {
 			<td>${pking.car_num}</td>
 			<td>${pking.in_time}</td>
 			<td>${amount.pay_time}</td>
+=======
+	<table class="table table-success table-striped" style="width: 70%; margin: 0 auto;">
+		<tr>
+			<th>차량 번호</th>
+			<th>입차 시간</th>
+			<th>출차 시간</th>
+			<th>주차위치</th>
+			<th>총 요금</th>
+			
+		</tr>
+		<tr class="table-info">
+			<td>${pking.car_num}</td>
+			<td>${pking.in_time}</td>
+			<td>${amount.pay_time}</td>
+			<td>${psdetail.floor }층 ${psdetail.sno }</td>
+>>>>>>> branch 'main' of https://github.com/suhyun-dev/Parking_Lot.git
 			<td>${amount.amount}원</td>
 		</tr>
 	</table>
@@ -81,7 +102,7 @@ h1 {
     const amount = ${amount.amount}; // 서버에서 전달받은 결제금액
 
     // 결제 금액이 0원이면 바로 출차 처리
-    if (amount === 0) {
+      if (true) {
       alert("무료 주차입니다. 출차를 진행합니다.");
 
       const form = document.createElement("form");
@@ -89,13 +110,13 @@ h1 {
       form.action = "<%=request.getContextPath()%>/parking_out_ok.go";
 
       const params = {
-        car_num: "${pking.car_num}",
+        parking_id: "${pking.pid}",
         pay_time: "${amount.pay_time}",
         amount: "${amount.amount}",
-        aid: "${pking.pid}"
       };
 
-      for (const key in params) {
+  for (const key in params) {
+	  console.log(key);
         const input = document.createElement("input");
         input.type = "hidden";
         input.name = key;

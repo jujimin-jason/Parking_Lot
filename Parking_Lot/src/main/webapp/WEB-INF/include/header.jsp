@@ -29,7 +29,6 @@ body {
 	height: 100vh;
 	width: 100vw;
 	max-width: 1080px;
-	background-color: #f5f5f5;
 	justify-content: center;
 	text-align: center;
 }
@@ -37,7 +36,8 @@ body {
 .body_div {
 	display: flex;
 	justify-content: space-between;
-	padding: 20px;
+	align-items: center;
+	padding: 20px 20px 0px 20px;
 }
 
 a {
@@ -56,7 +56,26 @@ a:hover {
 <body>
 
 	<div class="body_div">
-		<a href="<%=request.getContextPath()%>/">header</a>
+		<c:choose>
+			<c:when test="${sessionScope.loginMember.store_code == 0}">
+				<a href="<%=request.getContextPath()%>/admin_main.go">header</a>
+			</c:when>
+			<c:when test="${sessionScope.loginMember.store_code > 0}">
+				<a href="<%=request.getContextPath()%>/store_page.go">header</a>
+			</c:when>
+			<c:otherwise>
+				<a href="<%=request.getContextPath()%>/">header</a>
+			</c:otherwise>
+		</c:choose>
+
+		<div>
+			<button class="btn btn-secondary"
+				onclick="location.href='<%=request.getContextPath()%>/parking_in.go?floor=1'">입차</button>
+				
+			<button class="btn btn-secondary"
+				onclick="location.href='<%=request.getContextPath()%>/parking_out.go'">출차</button>
+		</div>
+
 		<div>
 			<c:choose>
 				<c:when test="${empty sessionScope.loginMember}">
@@ -67,8 +86,9 @@ a:hover {
 				</c:otherwise>
 			</c:choose>
 		</div>
+
 	</div>
-	<hr style="width:">
+	<hr>
 
 </body>
 </html>

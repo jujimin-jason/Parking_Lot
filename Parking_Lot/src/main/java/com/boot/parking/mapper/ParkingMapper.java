@@ -9,6 +9,8 @@ import com.boot.parking.model.Amount;
 import com.boot.parking.model.Page;
 import com.boot.parking.model.Parking;
 import com.boot.parking.model.Plist;
+import com.boot.parking.model.Pspace;
+import com.boot.parking.model.PspaceDetail;
 
 @Mapper
 public interface ParkingMapper {
@@ -18,6 +20,9 @@ public interface ParkingMapper {
 
 	// 차량번호를 매개변수로 DB에 입차 데이터를 생성해주는 메서드.
 	int entry(Parking pdto);
+	
+	// sid 를 매개변수로 pspace 테이블에 해당 sid 컬럼을 입차상태로 바꿔주는 메서드.
+	int updatePspaceIn(int sid);
 
 	// DB 상의 전체 기록 수를 반환하는 메서드.
 	int count();
@@ -25,11 +30,17 @@ public interface ParkingMapper {
 	// 전체 주차 기록을 조회하는 메서드.
 	List<Plist> pkList(Page paging);
 
-	// 차량 번호로 검색된 게시물의 수를 반환하는 메서드.
+	// 상세정보를 통해 검색된 기록의 수를 반환하는 메서드.
 	int sCount(Parking pk);
 
-	// 차량 번호로 기록을 조회하는 메서드.
+	// 상세정보를 통해 기록을 조회하는 메서드.
 	List<Plist> pkSearchDetail(Page paging);
+	
+	// 특정 층수를 매개변수로 주차장 현황 리스트를 가져오는 메서드.
+	List<Pspace> getPspace(int floor);
+	
+	// 특정 주차위치를 매개변수로 현재 주차 정보(pspace + 입차시간)를 가져오는 메서드.
+	PspaceDetail getPspaceDetail(int sid);
 
 //	-------------------------------------------------------------------
 
@@ -41,7 +52,11 @@ public interface ParkingMapper {
 
 	int insertAmount(Amount amount);
 
-	int updateParkingOut(Map<String, String> map);
+	int updateParkingOut(Parking parking);
 	
-
+	// 출차시 pspace 테이블 업데이트 메서드.
+	void updatePspaceOut(int parking_id);
+	
+	// 할인 시간 업데이트 메서드 추가
+    int updateDcTime(Map<String, Object> map);	
 }

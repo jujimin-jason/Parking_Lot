@@ -11,5 +11,7 @@
 		<typeAlias type="com.boot.parking.model.Member" alias="member"/>
 		<typeAlias type="com.boot.parking.model.Page" alias="page"/>
 		<typeAlias type="com.boot.parking.model.Plist" alias="plist"/>
+		<typeAlias type="com.boot.parking.model.Pspace" alias="pspace"/>
+		<typeAlias type="com.boot.parking.model.PspaceDetail" alias="pspacedetail"/>
 	</typeAliases>
 </configuration>
