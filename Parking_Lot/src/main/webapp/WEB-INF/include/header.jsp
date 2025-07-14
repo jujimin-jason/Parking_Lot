@@ -30,7 +30,6 @@ body {
 	width: 100vw;
 	max-width: 1080px;
 	justify-content: center;
-	justify-content: center;
 	text-align: center;
 }
 

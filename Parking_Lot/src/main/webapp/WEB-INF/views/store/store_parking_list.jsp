@@ -17,7 +17,7 @@
     table {
         margin: 20px auto;
         border-collapse: collapse;
-        width: 600px;
+        width: 600;
     }
 
     /* 테이블 테두리 스타일 */
@@ -37,7 +37,7 @@
 </style>
 </head>
 <body>
-    <!-- 공통 헤더 JSP 포함 -->
+    <!-- 공통 헤더 JSP 포함 (header.jsp를 불러옴) -->
     <jsp:include page="../../include/header.jsp" />
 
     <div class="container">
@@ -50,10 +50,11 @@
             <button type="submit">검색</button>
         </form>
 
-        <!-- 검색 결과가 있을 경우 -->
+        <!-- 검색 결과가 있을 경우에만 표시 -->
         <c:if test="${not empty carList}">
             <h3>검색 결과</h3>
 
+            <!-- 검색된 차량 목록 출력 테이블 -->
             <table>
                 <tr>
                     <th>차량번호</th>
@@ -61,10 +62,14 @@
                     <th>선택</th>
                 </tr>
 
+                <!-- 검색된 차량 리스트 반복 출력 -->
                 <c:forEach var="car" items="${carList}">
                     <tr>
+                        <!-- 차량번호 -->
                         <td>${car.car_num}</td>
+                        <!-- 입차 시간 -->
                         <td>${car.in_time}</td>
+                        <!-- 선택 버튼: 선택 시 해당 차량번호를 store_parking.go로 전달 -->
                         <td>
                             <form action="store_parking.go" method="get">
                                 <input type="hidden" name="car_num" value="${car.car_num}">
@@ -75,16 +80,11 @@
                 </c:forEach>
             </table>
         </c:if>
-
-        <!-- 검색 결과가 없을 경우 -->
-        <c:if test="${empty carList}">
-            <p>검색된 차량이 없습니다. 다시 입력해 주세요.</p>
-        </c:if>
-
         <!-- 매장 페이지로 돌아가기 버튼 -->
-        <a href="store_page.go">
-            <button>← 매장 페이지로 돌아가기</button>
-        </a>
+	    <a href="store_page.go">
+	        <button>← 매장 페이지로 돌아가기</button>
+	    </a>
     </div>
 </body>
 </html>
+

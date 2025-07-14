@@ -32,24 +32,25 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
-
+	
 	testImplementation 'org.springframework.boot:spring-boot-starter:3.0.3'
-	
 	providedRuntime 'org.springframework.boot:spring-boot-starter-test'
-
-	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'		
-
-	implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.0'	
-
-	implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1'	
-
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	
-	providedCompile 'javax.servlet:javax.servlet-api:4.0.1'		
+	
+	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+	implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.0'
+	implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1'
+
+	
+	implementation 'javax.servlet.jsp:javax.servlet.jsp-api:2.3.3'
+	
+	
+	providedCompile 'javax.servlet:javax.servlet-api:4.0.1'
 	
 	implementation fileTree(dir: 'libs', include: ['*.jar'])
+	
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
-
 tasks.named('test') {
 	useJUnitPlatform()
 }
