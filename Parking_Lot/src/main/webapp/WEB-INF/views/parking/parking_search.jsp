@@ -41,7 +41,7 @@ h1 {
 	<jsp:include page="../../include/header.jsp" />
 
 	<div class="container">
-		<h1>현재 주차 차량 리스트</h1>
+		<h1>차량 검색</h1>
 
 		<form method="post"
 			action="<%=request.getContextPath()%>/parking_search.go">

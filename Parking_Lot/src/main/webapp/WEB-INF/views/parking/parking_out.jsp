@@ -11,6 +11,7 @@
 <style>
 .container {
 	text-align: center;
+	height: full;
 }
 
 h1 {
@@ -23,14 +24,13 @@ h1 {
 	<jsp:include page="../../include/header.jsp" />
 
 	<div class="container">
-		<h1>현재 주차 차량 리스트</h1>
+		<h1>차량 검색</h1>
 
 		<form method="post"
 			action="<%=request.getContextPath()%>/parking_search.go">
 			<input name="keyword" placeholder="차량 뒤 4자리 입력"> <input
 				type="submit" value="검색">
 		</form>
-		<br> <br>
 
 	</div>
 

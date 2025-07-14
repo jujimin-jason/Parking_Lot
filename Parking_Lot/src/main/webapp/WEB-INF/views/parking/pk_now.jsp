@@ -59,6 +59,7 @@
 		<br>
 		
 		<div class="d-grid gap-2 col-3 mx-auto">
+
 		    <c:forEach var="i" begin="1" end="3">
 		        <c:choose>
 		            <c:when test="${param.floor == i}">
@@ -66,6 +67,7 @@
 		                    ${i}Ãþ
 		                </button>
 		            </c:when>
+
 		            <c:otherwise>
 		                <button class="btn btn-secondary" onclick="location.href='<%=request.getContextPath() %>/pk_now.go?floor=${i}'">
 		                    ${i}Ãþ

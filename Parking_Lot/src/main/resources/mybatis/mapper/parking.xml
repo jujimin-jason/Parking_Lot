@@ -44,7 +44,7 @@
 		<![CDATA[
 			select p.*, a.amount from
 			(select row_number() over(order by pid desc) rnum, p.* from parking p) p
-			left join amount a on a.aid = p.pid
+			left join amount a on a.parking_id = p.pid
 			where rnum >= #{startNo} and rnum <= #{endNo}
 		]]>
 	</select>
@@ -71,7 +71,7 @@
 			and in_time like '%' || #{in_time} || '%'
 		</if>
 		<![CDATA[
-			) p left join amount a on a.aid = p.pid
+			) p left join amount a on a.parking_id = p.pid
 			where rnum >= #{startNo} and rnum <= #{endNo}
 			order by pid desc
 		]]>

@@ -29,7 +29,6 @@ body {
 	height: 100vh;
 	width: 100vw;
 	max-width: 1080px;
-	background-color: #f5f5f5;
 	justify-content: center;
 	justify-content: center;
 	text-align: center;
@@ -73,6 +72,7 @@ a:hover {
 		<div>
 			<button class="btn btn-secondary"
 				onclick="location.href='<%=request.getContextPath()%>/parking_in.go?floor=1'">입차</button>
+				
 			<button class="btn btn-secondary"
 				onclick="location.href='<%=request.getContextPath()%>/parking_out.go'">출차</button>
 		</div>
