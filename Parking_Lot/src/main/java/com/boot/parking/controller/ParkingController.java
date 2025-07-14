@@ -275,6 +275,9 @@ public class ParkingController {
 
 		// 입차 정보 조회
 		Parking pking = this.mapper.pcar(car_num);
+		
+		// 차량 주차 위치
+		PspaceDetail psdetail = this.mapper.getPspaceDetail(pking.getPspace_id());
 
 		// 현재 시간 = 출차 시간
 		LocalDateTime now = LocalDateTime.now();
@@ -296,6 +299,7 @@ public class ParkingController {
 
 		model.addAttribute("pking", pking);
 		model.addAttribute("amount", amount);
+		model.addAttribute("psdetail", psdetail);
 
 		return "parking/parking_amount";
 	}
