@@ -57,7 +57,7 @@ public class ParkingController {
 	Parking chkDupl = null;
 
 	String in_time = null;
-	
+
 	// 지하주차장 층수.
 	int floor;
 	// 한층당 주차가능 가능 대수.
@@ -69,7 +69,7 @@ public class ParkingController {
 		return "main"; // application.properties 에서 JSP 경로 설정해둔 경로의 main.jsp 로 이동.
 
 	}
-	
+
 	@GetMapping("/parking_in.go")
 	public String entry(Model model, @RequestParam(value = "floor", defaultValue = "1") int floor) {
 		// 특정 층수를 매개변수로 주차장 현황 리스트를 가져오는 메서드.s
@@ -81,8 +81,7 @@ public class ParkingController {
 	}
 
 	@GetMapping("/parking_in_ok.go")
-	public void entry_ok(HttpServletResponse response, Model model,
-							@RequestParam("sid") int sid) throws IOException {
+	public void entry_ok(HttpServletResponse response, Model model, @RequestParam("sid") int sid) throws IOException {
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter out = response.getWriter();
 
@@ -113,18 +112,17 @@ public class ParkingController {
 		// 페이징 처리를 위한 페이징 객체 생성
 		Parking pdto = new Parking();
 		pdto.setCar_num(bun);
-		
+
 		// pspace 테이블에 주차 현황 정보 업데이트필요.
 		pdto.setPspace_id(sid);
-		
-		// 입차된 차량의 층수를 구하는 작업.
-		for(int i = 1; i <= 3; i++) {
-		    if (sid <= i * ava) {
-		        floor = i;
-		        break;
-		    }
-		}
 
+		// 입차된 차량의 층수를 구하는 작업.
+		for (int i = 1; i <= 3; i++) {
+			if (sid <= i * ava) {
+				floor = i;
+				break;
+			}
+		}
 
 		int chk1 = this.mapper.entry(pdto);
 
@@ -249,7 +247,7 @@ public class ParkingController {
 	@GetMapping("pk_now_detail.go")
 	public String pnow_detail(Model model, @RequestParam("sid") int sid) {
 		PspaceDetail psdetail = this.mapper.getPspaceDetail(sid);
-		
+
 		model.addAttribute("Psdetail", psdetail);
 
 		return "parking/pk_now_detail";
@@ -259,16 +257,13 @@ public class ParkingController {
 	public String pout() {
 
 		return "parking/parking_out";
+
 	}
 
 	@PostMapping("parking_search.go")
 	public String search(Model model, @RequestParam("keyword") String keyword) {
 
-		System.out.println(keyword);
-
 		List<Parking> list = this.mapper.search(keyword);
-
-		System.out.println(list);
 
 		model.addAttribute("list", list);
 
