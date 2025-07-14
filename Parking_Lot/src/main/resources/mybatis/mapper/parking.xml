@@ -87,7 +87,7 @@
 	<select id="getPspaceDetail" parameterType="int"
 		resultType="pspacedetail">
 		select s.*, p.car_num, p.in_time from pspace s, parking p
-		where s.sid = #{sid}
+		where s.sid = #{sid} and p.state = 'Y'
 		and s.sid = p.pspace_id
 
 	</select>
