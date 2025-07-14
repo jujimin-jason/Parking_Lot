@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="Parking_Lot/src/main/java"/>
+	<classpathentry kind="src" path="Parking_Lot/src/test/java"/>
+	<classpathentry kind="lib" path="Parking_Lot/gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="lib" path="Parking_Lot/libs/converter-gson-2.9.0.jar"/>
+	<classpathentry kind="lib" path="Parking_Lot/libs/gson-2.8.9.jar"/>
+	<classpathentry kind="lib" path="Parking_Lot/libs/iamport-rest-client-java-0.2.21.jar"/>
+	<classpathentry kind="lib" path="Parking_Lot/libs/okhttp-3.14.9.jar"/>
+	<classpathentry kind="lib" path="Parking_Lot/libs/okio-1.17.5.jar"/>
+	<classpathentry kind="lib" path="Parking_Lot/libs/retrofit-2.9.0.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
