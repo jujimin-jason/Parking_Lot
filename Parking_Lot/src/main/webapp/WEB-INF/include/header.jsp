@@ -31,7 +31,6 @@ body {
 	max-width: 1080px;
 	background-color: #f5f5f5;
 	justify-content: center;
-	justify-content: center;
 	text-align: center;
 }
 
