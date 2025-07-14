@@ -29,7 +29,7 @@
 				사용 내역</button>
 
 			<button class="btn btn-secondary"
-				onclick="location.href='<%=request.getContextPath()%>/pk_now.go'">주차장
+				onclick="location.href='<%=request.getContextPath()%>/pk_now.go?floor=1'">주차장
 				현황</button>
 		</div>
 	</div>
