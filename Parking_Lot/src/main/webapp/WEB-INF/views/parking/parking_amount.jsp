@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>출차 결제</title>
 <script src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
 body {
@@ -52,7 +53,7 @@ h1 {
 
 	<h1>출차 결제 진행</h1>
 
-	<table border="1">
+	<table class="table table-success table-striped" style="width: 70%; margin: 0 auto;">
 		<tr>
 			<th>차량 번호</th>
 			<th>입차 시간</th>
