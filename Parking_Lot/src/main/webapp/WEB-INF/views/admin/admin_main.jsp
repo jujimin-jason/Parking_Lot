@@ -23,7 +23,7 @@
 		        <button>주차 정산 이동</button>
 		    </a>
 	
-			<form action="<%=request.getContextPath()%>/pk_list.go" method="post">
+			<form action="<%=request.getContextPath()%>/pk_list.go" >
 				<input type="submit" value="주차장 사용 내역" />
 			</form>
 		</div>
