@@ -53,18 +53,14 @@ h1 {
 			<tr>
 				<th>차량 번호</th>
 				<th>입차 시간</th>
-				<th>출차</th>
 			</tr>
 
 
 			<c:if test="${!empty list }">
 				<c:forEach items="${list}" var="dto">
-					<tr>
+					<tr onclick="location.href='<%= request.getContextPath()%>/parking_amount.go?num=${dto.car_num}'" style="cursor: pointer;">
 						<td>${dto.car_num}</td>
 						<td>${dto.in_time.substring(0, 19)}</td>
-						<td><a
-							href="<%= request.getContextPath()%>/parking_amount.go?num=${dto.car_num}">출차</a>
-						</td>
 					</tr>
 				</c:forEach>
 			</c:if>
