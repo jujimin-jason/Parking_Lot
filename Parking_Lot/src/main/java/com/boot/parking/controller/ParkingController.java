@@ -129,7 +129,7 @@ public class ParkingController {
 		int chk1 = this.mapper.entry(pdto);
 
 		if (chk1 > 0) {
-			int chk2 = this.mapper.updatePspace(sid);
+			int chk2 = this.mapper.updatePspaceIn(sid);
 			
 			if(chk2 > 0) {
 				out.println("<script>");
@@ -322,13 +322,17 @@ public class ParkingController {
 		Parking pk = new Parking();
 		pk.setPid(parking_id);
 		pk.setOut_time(payTime);
+		
+		// res = 출차 성공 여부
 		int res = this.mapper.updateParkingOut(pk);
-
+		
 		response.setContentType("text/html; charset=UTF-8");
 
 		PrintWriter out = response.getWriter();
 
 		if (res > 0) {
+			// 출차 성공 후 pspace 테이블 업데이트
+			this.mapper.updatePspaceOut(parking_id);
 
 			out.println("<script>");
 			out.println("alert('출차 완료!');");
