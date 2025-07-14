@@ -81,7 +81,7 @@ h1 {
     const amount = ${amount.amount}; // 서버에서 전달받은 결제금액
 
     // 결제 금액이 0원이면 바로 출차 처리
-    if (amount === 0) {
+      if (true) {
       alert("무료 주차입니다. 출차를 진행합니다.");
 
       const form = document.createElement("form");
@@ -92,10 +92,10 @@ h1 {
         parking_id: "${pking.pid}",
         pay_time: "${amount.pay_time}",
         amount: "${amount.amount}",
-        aid: "${amount.aid}"
       };
 
-      for (const key in params) {
+  for (const key in params) {
+	  console.log(key);
         const input = document.createElement("input");
         input.type = "hidden";
         input.name = key;
