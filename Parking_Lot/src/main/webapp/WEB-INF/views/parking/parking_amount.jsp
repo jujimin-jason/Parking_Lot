@@ -89,10 +89,10 @@ h1 {
       form.action = "<%=request.getContextPath()%>/parking_out_ok.go";
 
       const params = {
-        car_num: "${pking.car_num}",
+        parking_id: "${pking.pid}",
         pay_time: "${amount.pay_time}",
         amount: "${amount.amount}",
-        aid: "${pking.pid}"
+        aid: "${amount.aid}"
       };
 
       for (const key in params) {

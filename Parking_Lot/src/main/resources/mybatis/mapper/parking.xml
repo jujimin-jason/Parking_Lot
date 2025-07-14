@@ -106,7 +106,7 @@
 	<insert id="insertAmount" parameterType="amount">
 		INSERT INTO amount (aid,
 		parking_id, amount, pay_time)
-		VALUES (#{aid}, #{parking_id}, #{amount},
+		VALUES ((SELECT COUNT(*) FROM AMOUNT) + 1, #{parking_id}, #{amount},
 		TO_DATE(#{pay_time},
 		'YYYY-MM-DD
 		HH24:MI:SS'))
