@@ -126,8 +126,7 @@ h1 {
 
         const form = document.createElement("form");
         form.method = "POST";
-        form.action = "<%=request.getContextPath()%>
-		/parking_out_ok.go";
+        form.action = "<%=request.getContextPath()%>/parking_out_ok.go";
 
 									const params = {
 										parking_id : "${pking.pid}",
