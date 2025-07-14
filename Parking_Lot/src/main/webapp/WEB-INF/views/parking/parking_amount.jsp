@@ -1,12 +1,13 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>출차 결제</title>
-    <script src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
-    <style>
+<meta charset="UTF-8">
+<title>출차 결제</title>
+<script src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+
+<style>
 body {
 	font-family: sans-serif;
 	background-color: #f4f4f4;
@@ -45,32 +46,34 @@ h1 {
 	cursor: pointer;
 }
 </style>
+
 </head>
 <body>
 
-<h1>출차 결제 진행</h1>
+	<h1>출차 결제 진행</h1>
 
-<table border="1">
-    <tr>
-        <th>차량 번호</th>
-        <th>입차 시간</th>
-        <th>출차 시간</th>
-        <th>총 요금</th>
-    </tr>
-    <tr>
-        <td>${pking.car_num}</td>
-        <td>${pking.in_time}</td>
-        <td>${amount.pay_time}</td>
-        <td>${amount.amount}원</td>
-    </tr>
-</table>
+	<table border="1">
+		<tr>
+			<th>차량 번호</th>
+			<th>입차 시간</th>
+			<th>출차 시간</th>
+			<th>총 요금</th>
+		</tr>
+		<tr>
+			<td>${pking.car_num}</td>
+			<td>${pking.in_time}</td>
+			<td>${amount.pay_time}</td>
+			<td>${amount.amount}원</td>
+		</tr>
+	</table>
 
-<br />
+	<br />
 
-<button onclick="requestPay()">결제하기</button>&nbsp;&nbsp;&nbsp;
-<button onclick="location.href='/'"> 취소</button>
+	<button onclick="requestPay()">결제하기</button>
+	&nbsp;&nbsp;&nbsp;
+	<button onclick="location.href='/'">취소</button>
 
-<script>
+	<script>
   var IMP = window.IMP;
   IMP.init("imp87828078"); // 가맹점 식별 코드
 
@@ -123,32 +126,34 @@ h1 {
 
         const form = document.createElement("form");
         form.method = "POST";
-        form.action = "<%=request.getContextPath()%>/parking_out_ok.go";
+        form.action = "<%=request.getContextPath()%>
+		/parking_out_ok.go";
 
-        const params = {
-          car_num: "${pking.car_num}",
-          pay_time: "${amount.pay_time}",
-          amount: "${amount.amount}",
-          aid: "${pking.pid}"
-        };
+									const params = {
+										parking_id : "${pking.pid}",
+										pay_time : "${amount.pay_time}",
+										amount : "${amount.amount}",
+										aid : "${pking.pid}"
+									};
 
-        for (const key in params) {
-          const input = document.createElement("input");
-          input.type = "hidden";
-          input.name = key;
-          input.value = params[key];
-          form.appendChild(input);
-        }
+									for ( const key in params) {
+										const input = document
+												.createElement("input");
+										input.type = "hidden";
+										input.name = key;
+										input.value = params[key];
+										form.appendChild(input);
+									}
 
-        document.body.appendChild(form);
-        form.submit();
+									document.body.appendChild(form);
+									form.submit();
 
-      } else {
-        alert("결제 실패: " + rsp.error_msg);
-      }
-    });
-  }
-</script>
+								} else {
+									alert("결제 실패: " + rsp.error_msg);
+								}
+							});
+		}
+	</script>
 
 
 </body>
