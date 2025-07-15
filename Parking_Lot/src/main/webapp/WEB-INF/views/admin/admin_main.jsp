@@ -78,7 +78,7 @@ h2 {
 		<hr class="custom-divider" />
 
 		<button class="btn btn-primary"
-			onclick="location.href='/parking_out.go'">🔧 주차 사전 정산 페이지</button>
+			onclick="location.href='/pk_now.go?floor=1'">🔧 주차장 현황 페이지</button>
 		<button class="btn btn-primary"
 			onclick="location.href='/pk_list.go'">🚗 주차장 사용 내역</button>
 	</div>
