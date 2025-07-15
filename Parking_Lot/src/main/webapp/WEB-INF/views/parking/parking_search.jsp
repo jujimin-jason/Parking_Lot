@@ -9,15 +9,65 @@
 <meta charset="EUC-KR">
 <title>Insert title here</title>
 <style type="text/css">
-.container {
+
+
+#main-holder {
+	max-width: 700px;
+	width: 100%;
+	background: #fff;
+	border-radius: 15px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+	padding: 40px 30px;
 	text-align: center;
+	margin: 0px auto;
+}
+
+#main-holder h3 {
+	font-size: 2.2rem;
+	font-weight: 800;
+	margin-bottom: 30px;
+	color: #0d6efd;
+}
+
+input[type="submit"] {
+border-radius: 50px;
+background-color: #0d6efd;
+color:#fff;
+flex: 1 1 45%;
+padding: 5px 10px;
+border: none;
 }
 
 table {
 	margin: 0 auto;
 	border-collapse: collapse;
-	width: 500px;
+	width: 600px;
 }
+
+input {
+border-radius: 50px;
+padding: 5px 10px;
+}
+input[type="submit"] {
+
+background-color: #0d6efd;
+color:#fff;
+flex: 1 1 45%;
+border: none;
+}
+
+input[type="submit"]:hover, [type="button"]:hover {
+	background-color: #0a58ca;
+}
+
+input[type="button"] {
+background-color: gray;
+color:#fff;
+flex: 1 1 45%;
+border: none;
+}
+
+
 
 table, th, td {
 	border: 1px solid #333;
@@ -28,24 +78,23 @@ th, td {
 }
 
 th {
-	background-color: #f0f0f0;
+	background-color: #0d6efd;
+	color:#fff;
 }
 
-h1 {
-	margin-bottom: 20px;
-}
+
 </style>
 </head>
 <body>
 
 	<jsp:include page="../../include/header.jsp" />
 
-	<div class="container">
-		<h1>차량 검색</h1>
+	<div id="main-holder">
+		<h3>차량 검색</h1>
 
 		<form method="post"
 			action="<%=request.getContextPath()%>/parking_search.go">
-			<input name="keyword"> <input type="submit" value="검색">
+			<input name="keyword"> <input type="submit" value="검색"> <input type="button" onclick="location.href='parking_out.go'" value="다시검색">
 		</form>
 		<br> <br>
 

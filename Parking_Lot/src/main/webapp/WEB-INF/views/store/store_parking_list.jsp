@@ -6,70 +6,127 @@
 <meta charset="UTF-8">
 <title>차량 선택 페이지</title>
 <style>
-    /* 컨테이너를 중앙 정렬 */
-    .container {
-        width: 80%;
-        margin: 0 auto;
-        text-align: center;
-    }
+/* 전체 배경 스타일 */
+body {
+   	background: linear-gradient(135deg, #bef7ed, #d0d7f7);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+/* 전체 컨테이너 스타일 */
+#main-holder {
+    max-width: 700px;
+	width: 100%;
+	background: #fff;
+	border-radius: 15px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+	padding: 40px 30px;
+	text-align: center;
+	margin: 0px auto;
+}
 
-    /* 테이블 중앙 정렬 및 스타일 */
-    table {
-        margin: 20px auto;
-        border-collapse: collapse;
-        width: 600;
-    }
+/* 제목 스타일 */
+#main-holder h3 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    color: #0d6efd;
+}
 
-    /* 테이블 테두리 스타일 */
-    table, th, td {
-        border: 1px solid #333;
-    }
+/* 부제목 스타일 */
+#main-holder p.sub-text {
+    margin-top: 0;
+    font-size: 1rem;
+    color: #6c757d;
+}
 
-    /* 테이블 셀 패딩 */
-    th, td {
-        padding: 10px;
-    }
+/* 구분선 스타일 */
+.custom-divider {
+    border-top: 2px solid #5c5c5c;
+    margin: 20px 0;
+}
 
-    /* 버튼 스타일 */
-    button {
-        padding: 5px 15px;
-    }
+/* 테이블 스타일 */
+table {
+    margin: 20px auto;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+thead {
+    background-color: #0d6efd;
+    color: #fff;
+}
+
+table, th, td {
+    border: 1px solid #dee2e6;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+}
+
+
+
+/* 버튼 스타일 */
+button {
+    padding: 8px 18px;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    border: none;
+    background-color: #0dcaf0;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* 검색 입력창 스타일 */
+input[type="text"] {
+    padding: 10px;
+    font-size: 1rem;
+    width: 180px;
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    margin-right: 10px;
+}
 </style>
+
 </head>
 <body>
-    <!-- 공통 헤더 JSP 포함 (header.jsp를 불러옴) -->
-    <jsp:include page="../../include/header.jsp" />
 
-    <div class="container">
-        <h1>차량 선택 페이지</h1>
+<jsp:include page="../../include/header.jsp" />
 
-        <!-- 차량번호 뒷자리 검색 폼 -->
-        <form action="store_parking_list_ok.go" method="get">
-            <label>차량번호 뒷자리 4자리:</label>
-            <input type="text" name="car_back" maxlength="4" required>
-            <button type="submit">검색</button>
-        </form>
+<div id="main-holder">
+    <h3>차량 선택 페이지 🚗</h3>
+    <p class="sub-text">검색 후 차량을 선택해 주세요.</p>
+    <hr class="custom-divider" />
 
-        <!-- 검색 결과가 있을 경우에만 표시 -->
-        <c:if test="${not empty carList}">
-            <h3>검색 결과</h3>
+    <!-- 차량번호 뒷자리 검색 폼 -->
+    <form action="store_parking_list_ok.go" method="get">
+        <input type="text" name="car_back" maxlength="4" placeholder="뒷자리 4자리 입력" required>
+        <button type="submit">검색</button>
+    </form>
 
-            <!-- 검색된 차량 목록 출력 테이블 -->
-            <table>
+    <!-- 검색 결과 있을 때 -->
+    <c:if test="${not empty carList}">
+        <table>
+            <thead>
                 <tr>
                     <th>차량번호</th>
                     <th>입차 시간</th>
                     <th>선택</th>
                 </tr>
-
-                <!-- 검색된 차량 리스트 반복 출력 -->
+            </thead>
+            <tbody>
                 <c:forEach var="car" items="${carList}">
                     <tr>
-                        <!-- 차량번호 -->
-                        <td>${car.car_num}</td>
-                        <!-- 입차 시간 -->
-                        <td>${car.in_time}</td>
-                        <!-- 선택 버튼: 선택 시 해당 차량번호를 store_parking.go로 전달 -->
+                        <td>🚗 ${car.car_num}</td>
+                        <td> ${car.in_time}</td>
                         <td>
                             <form action="store_parking.go" method="get">
                                 <input type="hidden" name="car_num" value="${car.car_num}">
@@ -78,13 +135,21 @@
                         </td>
                     </tr>
                 </c:forEach>
-            </table>
-        </c:if>
-        <!-- 매장 페이지로 돌아가기 버튼 -->
-	    <a href="store_page.go">
-	        <button>← 매장 페이지로 돌아가기</button>
-	    </a>
-    </div>
+            </tbody>
+        </table>
+    </c:if>
+
+    <!-- 검색 결과 없을 때 -->
+    <c:if test="${searched and empty carList}">
+	    <p style="margin-top: 20px; color: #dc3545;">검색된 차량이 없습니다. 다시 입력해 주세요.</p>
+	</c:if>
+	<hr class="custom-divider" />
+    <!-- 매장 페이지로 돌아가기 버튼 -->
+    <a href="store_page.go">
+        <button style="margin-top: 20px;">← 매장 페이지로 돌아가기</button>
+    </a>
+</div>
+
+
 </body>
 </html>
-

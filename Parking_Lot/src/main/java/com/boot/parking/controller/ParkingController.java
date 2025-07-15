@@ -298,10 +298,16 @@ public class ParkingController {
 		amount.setParking_id(pking.getPid());
 		amount.setPay_time(nowStr);
 		amount.setAmount(price);
+		
+		// 모달창에 현재 주차위치를 띄워야함.
+		floor = psdetail.getFloor();
+		// 특정 층수를 매개변수로 주차장 현황 리스트를 가져오는 메서드.
+		List<Pspace> pspace = this.mapper.getPspace(floor);
 
 		model.addAttribute("pking", pking);
 		model.addAttribute("amount", amount);
 		model.addAttribute("psdetail", psdetail);
+		model.addAttribute("Pspace", pspace);
 
 		return "parking/parking_amount";
 	}
@@ -370,6 +376,8 @@ public class ParkingController {
 		List<Parking> carList = mapper.search(carBack);
 		// 검색된 차량 리스트를 JSP에 전달
 		model.addAttribute("carList", carList);
+		// 검색 여부 flag 전달
+	    model.addAttribute("searched", true);
 		// 차량 선택 리스트 페이지로 이동
 		return "store/store_parking_list";
 	}
@@ -398,13 +406,15 @@ public class ParkingController {
 
 			String parkingTimeStr = (diffMinutes / 60) + "시간 " + (diffMinutes % 60) + "분";
 			String discountedTimeStr = (discountedTime / 60) + "시간 " + (discountedTime % 60) + "분";
+			String discountTimeStr = (currentDcTime / 60) + "시간 " + (currentDcTime % 60) + "분";
+			
 
 			model.addAttribute("car", car);
 			model.addAttribute("parkingTime", diffMinutes);
 			model.addAttribute("parkingTimeStr", parkingTimeStr);
 			model.addAttribute("discountedTime", discountedTime);
 			model.addAttribute("discountedTimeStr", discountedTimeStr);
-			model.addAttribute("discountTime", currentDcTime);
+			model.addAttribute("discountTime", discountTimeStr);
 		}
 
 		// 로그인한 매장 정보 가져오기
@@ -426,69 +436,62 @@ public class ParkingController {
 	}
 
 	@PostMapping("/apply_coupon.go")
-	public String applyCoupon(@RequestParam("car_num") String carNum, @RequestParam("discount") int discount,
-			HttpSession session, Model model) {
+	public void applyCoupon(@RequestParam("car_num") String carNum,
+	                        @RequestParam("discount") int discount,
+	                        HttpSession session,
+	                        HttpServletResponse response) throws IOException {
 
-		// 로그인한 매장 정보 가져오기
-		Member loginMember = (Member) session.getAttribute("loginMember");
-		int storeCode = loginMember.getStore_code();
+	    // 로그인한 매장 정보 가져오기
+	    Member loginMember = (Member) session.getAttribute("loginMember");
+	    int storeCode = loginMember.getStore_code();
 
-		// 매장 관리자 쿠폰 정보 가져오기
-		Admin admin = adminMapper.getAdminByStoreCode(storeCode);
+	    // 매장 관리자 쿠폰 정보 가져오기
+	    Admin admin = adminMapper.getAdminByStoreCode(storeCode);
 
-		// 차량 정보 가져오기
-		Parking car = mapper.pcar(carNum);
+	    // 차량 정보 가져오기
+	    Parking car = mapper.pcar(carNum);
 
-		// 현재까지 할인 시간 가져오기
-		int currentDcTime = car.getDc_time();
+	    // 현재까지 할인 시간 가져오기
+	    int currentDcTime = car.getDc_time();
 
-		// 할인 쿠폰 사용 처리
-		if (discount == 30 && admin.getDc_coupon_30m() > 0) {
-			admin.setDc_coupon_30m(admin.getDc_coupon_30m() - 1);
-			currentDcTime += 30;
-		} else if (discount == 60 && admin.getDc_coupon_1h() > 0) {
-			admin.setDc_coupon_1h(admin.getDc_coupon_1h() - 1);
-			currentDcTime += 60;
-		} else {
-			model.addAttribute("msg", "쿠폰이 부족합니다!");
-			return "store/store_parking";
-		}
+	    boolean hasCoupon = false;
 
-		// DB에 관리자 쿠폰 정보 업데이트
-		adminMapper.updateCoupons(admin);
+	    if (discount == 30 && admin.getDc_coupon_30m() > 0) {
+	        admin.setDc_coupon_30m(admin.getDc_coupon_30m() - 1);
+	        currentDcTime += 30;
+	        hasCoupon = true;
+	    } else if (discount == 60 && admin.getDc_coupon_1h() > 0) {
+	        admin.setDc_coupon_1h(admin.getDc_coupon_1h() - 1);
+	        currentDcTime += 60;
+	        hasCoupon = true;
+	    }
 
-		// DB에 할인 시간 업데이트
-		Map<String, Object> map = new HashMap<>();
-		map.put("pid", car.getPid());
-		map.put("dc_time", currentDcTime);
-		mapper.updateDcTime(map);
+	    response.setContentType("text/html; charset=UTF-8");
+	    PrintWriter out = response.getWriter();
 
-		// 차량 정보 다시 조회
-		car = mapper.pcar(carNum);
+	    if (hasCoupon) {
+	        // DB에 관리자 쿠폰 정보 업데이트
+	        adminMapper.updateCoupons(admin);
 
-		// 입차 시간과 현재 시간 비교
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-		LocalDateTime inTime = LocalDateTime.parse(car.getIn_time(), formatter);
-		LocalDateTime now = LocalDateTime.now();
-		long diffMinutes = Duration.between(inTime, now).toMinutes();
+	        // DB에 할인 시간 업데이트
+	        Map<String, Object> map = new HashMap<>();
+	        map.put("pid", car.getPid());
+	        map.put("dc_time", currentDcTime);
+	        mapper.updateDcTime(map);
 
-		long discountedTime = diffMinutes - currentDcTime;
-		if (discountedTime < 0)
-			discountedTime = 0;
-
-		String parkingTimeStr = (diffMinutes / 60) + "시간 " + (diffMinutes % 60) + "분";
-		String discountedTimeStr = (discountedTime / 60) + "시간 " + (discountedTime % 60) + "분";
-
-		model.addAttribute("car", car);
-		model.addAttribute("parkingTime", diffMinutes);
-		model.addAttribute("parkingTimeStr", parkingTimeStr);
-		model.addAttribute("discountedTime", discountedTime);
-		model.addAttribute("discountedTimeStr", discountedTimeStr);
-		model.addAttribute("discountTime", currentDcTime);
-		model.addAttribute("adminCoupons", admin);
-
-		return "store/store_parking";
+	        // 쿠폰 적용 후 다시 차량 정산 페이지로 리다이렉트
+	        out.println("<script>");
+	        out.println("location.href='store_parking.go?car_num=" + carNum + "'");
+	        out.println("</script>");
+	    } else {
+	        // 쿠폰 부족 시 alert만 띄움 후 뒤로가기
+	        out.println("<script>");
+	        out.println("alert('쿠폰이 부족합니다!')");
+	        out.println("history.back()");
+	        out.println("</script>");
+	    }
 	}
+
 
 	// 쿠폰 구매 처리
 	@PostMapping("/coupon_buy.go")

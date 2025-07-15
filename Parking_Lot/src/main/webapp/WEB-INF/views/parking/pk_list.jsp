@@ -20,7 +20,7 @@
 		<c:set var="pkList" value="${pkList }" />
 		<c:set var="paging" value="${Paging }" />
 
-		<div class="d-flex justify-content-center">
+		<div class="d-flex justify-content-center" style="flex: auto;">
 			<table class="table">
 
 				<thead>
