@@ -6,6 +6,13 @@
 <meta charset="UTF-8">
 <title>차량 선택 페이지</title>
 <style>
+/* 전체 배경 스타일 */
+body {
+   	background: linear-gradient(135deg, #bef7ed, #d0d7f7);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
 /* 전체 컨테이너 스타일 */
 #main-holder {
     max-width: 700px;
@@ -68,14 +75,14 @@ button {
     font-size: 0.95rem;
     border-radius: 8px;
     border: none;
-    background-color: #0d6efd;
+    background-color: #0dcaf0;
     color: #fff;
     cursor: pointer;
     transition: 0.3s;
 }
 
 button:hover {
-    background-color: #0b5ed7;
+    background-color: #45a049;
 }
 
 /* 검색 입력창 스타일 */
@@ -133,9 +140,9 @@ input[type="text"] {
     </c:if>
 
     <!-- 검색 결과 없을 때 -->
-    <c:if test="${empty carList}">
-        <p style="margin-top: 20px; color: #dc3545;">검색된 차량이 없습니다. 다시 입력해 주세요.</p>
-    </c:if>
+    <c:if test="${searched and empty carList}">
+	    <p style="margin-top: 20px; color: #dc3545;">검색된 차량이 없습니다. 다시 입력해 주세요.</p>
+	</c:if>
 	<hr class="custom-divider" />
     <!-- 매장 페이지로 돌아가기 버튼 -->
     <a href="store_page.go">
@@ -143,6 +150,6 @@ input[type="text"] {
     </a>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

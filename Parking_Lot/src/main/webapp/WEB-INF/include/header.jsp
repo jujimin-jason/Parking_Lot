@@ -25,6 +25,7 @@
 <style type="text/css">
 body {
 	display: flex;
+	background: linear-gradient(135deg, #dfe9f3, #ffffff);
 	justify-content: center;
 	align-items: center;
 	text-align: center;
@@ -47,6 +48,23 @@ body {
 	left: 10px;
 	top: 10px;
 	gap: 10px;
+}
+
+button {
+    padding: 5px 17px;
+    margin: 8px 5px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 7px;
+    background-color: #29b6f6;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background: #076ff7;
+
 }
 </style>
 

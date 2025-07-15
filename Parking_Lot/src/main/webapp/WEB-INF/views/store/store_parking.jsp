@@ -16,14 +16,14 @@ body {
 
 /* 메인 카드 스타일 */
 .card {
-    max-width: 500px;
-    margin: 60px auto;
-    background: #fff;
-    border-radius: 20px;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
-    overflow: hidden;
-    text-align: center;
-    padding: 40px 30px;
+    max-width: 700px;
+	width: 90%;
+	background: #fff;
+	border-radius: 15px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+	padding: 40px 30px;
+	text-align: center;
+	margin: 0px auto;
 }
 
 .card h1 {
@@ -39,7 +39,7 @@ body {
 }
 
 .info-section {
-    background: #f0f4ff;
+    background: #e4e6ed;
     border-radius: 12px;
     padding: 20px;
     margin: 20px 0;
@@ -54,18 +54,17 @@ button {
     padding: 5px 17px;
     margin: 8px 5px;
     font-size: 1rem;
-    border: none;
-    border-radius: 8px;
-    background: #0d6efd;
+    border: 1px solid black;
+    border-radius: 15px;
+    background: #0dcaf0;
     color: white;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 button:hover {
-    background: #0b5ed7;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    background: #45a049;
+
 }
 
 .no-car-text {
@@ -85,7 +84,7 @@ button:hover {
                 <p><strong>차량번호:</strong> ${car.car_num}</p>
                 <p><strong>입차 시간:</strong> ${car.in_time}</p>
                 <p><strong>주차 시간:</strong> ${parkingTimeStr}</p>
-                <p><strong>할인 시간:</strong> ${discountTime}분</p>
+                <p><strong>할인 시간:</strong> ${discountTime}</p>
                 <p><strong>할인 후 주차 시간:</strong> ${discountedTimeStr}</p>
 
                 <c:if test="${not empty adminCoupons}">
@@ -110,7 +109,6 @@ button:hover {
             <button style="margin-top: 15px;">← 매장 페이지로 돌아가기</button>
         </a>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
 </body>
 </html>
