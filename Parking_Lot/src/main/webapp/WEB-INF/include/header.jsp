@@ -25,8 +25,6 @@
 <style type="text/css">
 body {
 	display: flex;
-	background: linear-gradient(135deg, #dfe9f3, #ffffff);
-	
 	flex-direction:column;
 	justify-content: center;
 	align-items: center;
@@ -34,6 +32,7 @@ body {
 	margin: auto;
 	width: 100vw;
 	height: 100vh;
+	background: linear-gradient(135deg, #dfe9f3, #ffffff);
 }
 
 .header_right {
