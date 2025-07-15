@@ -26,63 +26,55 @@
 	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 	width: 100%;
 	max-width: 700px;
+	min-height: 300px;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
 	text-align: center;
-	margin: 0px auto;
+	margin: 100px auto;
 }
 
 h2 {
 	font-size: 2.2rem;
 	font-weight: 800;
 	color: #0d6efd;
-	margin-bottom: 30px;
+	margin-bottom: 20px;
 }
 
 .custom-divider {
 	border-top: 2px solid #dee2e6;
-	margin: 25px 0;
-}
-
-.btn-wrapper {
-	display: flex;
-	flex-direction: column;
-	gap: 20px;
-}
-
-.btn-wrapper form input[type="submit"] {
 	width: 100%;
-	padding: 14px;
-	font-size: 1.1rem;
-	font-weight: 600;
-	border-radius: 10px;
-	border: none;
-	color: #fff;
-	background-color: #0d6efd;
-	transition: background-color 0.3s ease;
+	margin-bottom: 30px;
 }
 
-.btn-wrapper form input[type="submit"]:hover {
-	background-color: #0a58ca;
-}
-
-.btn-wrapper form i {
-	margin-right: 10px;
+.btn-group-custom {
+	display: flex;
+	gap: 20px; /* 버튼 사이 간격 */
+	justify-content: center;
 }
 </style>
 </head>
 <body>
-	<jsp:include page="../../include/header.jsp" />
+ 
 
-
-	<div id="main-holder">
-		<h2>관리자 메인 페이지</h2>
-		<hr class="custom-divider" />
-
-		<button class="btn btn-primary"
-			onclick="location.href='/parking_out.go'">🔧 주차 사전 정산 페이지</button>
-		<button class="btn btn-primary"
-			onclick="location.href='/pk_list.go'">🚗 주차장 사용 내역</button>
-	</div>
-
+ 
+		<div id="main-holder">
+			<h2>관리자 메인 페이지</h2>
+			<hr class="custom-divider" />
+		
+			<div class="btn-group-custom">
+				<button class="btn btn-primary" onclick="location.href='/parking_out.go'">
+					🔧 주차 사전 정산 페이지
+				</button>
+				<button class="btn btn-primary" onclick="location.href='/pk_list.go'">
+					🚗 주차장 사용 내역
+				</button>
+			</div>
+		</div>
+ 
 	<!-- Bootstrap JS -->
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
