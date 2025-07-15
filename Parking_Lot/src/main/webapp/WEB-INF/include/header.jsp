@@ -25,12 +25,13 @@
 <style type="text/css">
 body {
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	text-align: center;
-	margin: auto;
 	width: 100vw;
 	height: 100vh;
+	background: linear-gradient(135deg, #dfe9f3, #ffffff);
 }
 
 .header_right {
@@ -47,6 +48,25 @@ body {
 	left: 10px;
 	top: 10px;
 	gap: 10px;
+}
+
+button {
+    padding: 5px 17px;
+    margin: 8px 5px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 7px;
+    background-color: #29b6f6;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background: #076ff7;
+    transform: translateY(-2px);
+	box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+
 }
 </style>
 

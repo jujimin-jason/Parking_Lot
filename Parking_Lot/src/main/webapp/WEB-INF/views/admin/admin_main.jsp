@@ -58,25 +58,17 @@ h2 {
 </style>
 </head>
 <body>
- 
 
- 
-		<div id="main-holder">
-			<h2>관리자 메인 페이지</h2>
-			<hr class="custom-divider" />
-		
-			<div class="btn-group-custom">
-				<button class="btn btn-primary" onclick="location.href='/parking_out.go'">
-					🔧 주차 사전 정산 페이지
-				</button>
-				<button class="btn btn-primary" onclick="location.href='/pk_list.go'">
-					🚗 주차장 사용 내역
-				</button>
-			</div>
-		</div>
- 
-	<!-- Bootstrap JS -->
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<jsp:include page="../../include/header.jsp" />
+
+	<div id="main-holder">
+		<h2>관리자 메인 페이지</h2>
+		<hr class="custom-divider" />
+
+		<button class="btn btn-primary"
+			onclick="location.href='/pk_now.go?floor=1'">🔧 주차장 현황 페이지</button>
+		<button class="btn btn-primary"
+			onclick="location.href='/pk_list.go'">🚗 주차장 사용 내역</button>
+	</div>
 </body>
 </html>
