@@ -25,10 +25,10 @@
 <style type="text/css">
 body {
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	text-align: center;
-	margin: auto;
 	width: 100vw;
 	height: 100vh;
 }
