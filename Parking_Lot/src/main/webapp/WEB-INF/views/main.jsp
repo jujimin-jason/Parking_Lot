@@ -36,6 +36,8 @@ input[type="submit"] {
 
 input[type="submit"]:hover {
 	background-color: #0a58ca;
+	transform: translateY(-2px);
+	box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
 
 #main-holder h3 {
@@ -62,16 +64,21 @@ input[type="submit"]:hover {
 	height: 60px;
 	margin: 8px;
 	font-size: 30px;
-	border-radius: 10px;
-	border: 1px solid #ccc;
-	background-color: #e9ecef;
+	border-radius: 12px;
+	border: 1px solid #ddd;
+	background: linear-gradient(to bottom, #ffffff, #d4d4d4);
+	box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+	color: #333;
 	cursor: pointer;
-	transition: background 0.2s;
+	transition: all 0.2s;
 }
 
 .numpad button:hover {
-	background-color: #d0d6dc;
+	background: linear-gradient(to bottom, #f0f0f0, #c0c0c0);
+	transform: translateY(-2px);
+	box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
+
 </style>
 </head>
 <body>
