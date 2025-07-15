@@ -26,6 +26,7 @@
 body {
 	display: flex;
 	background: linear-gradient(135deg, #dfe9f3, #ffffff);
+	flex-direction:column;
 	justify-content: center;
 	align-items: center;
 	text-align: center;
