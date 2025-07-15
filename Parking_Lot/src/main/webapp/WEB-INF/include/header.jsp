@@ -24,30 +24,29 @@
 
 <style type="text/css">
 body {
-	margin: 0 auto;
-	padding: 0;
-	height: 100vh;
-	width: 100vw;
-	max-width: 1080px;
-	justify-content: center;
-	text-align: center;
-}
-
-.body_div {
 	display: flex;
-	justify-content: space-between;
+	justify-content: center;
 	align-items: center;
-	padding: 20px 20px 0px 20px;
+	text-align: center;
+	margin: auto;
+	width: 100vw;
+	height: 100vh;
 }
 
-a {
-	text-decoration: none;
-	cursor: pointer;
-	color: black;
+.header_right {
+	display: flex;
+	position: fixed;
+	right: 10px;
+	top: 10px;
+	gap: 10px;
 }
 
-a:hover {
-	font-weight: bold;
+.header_left {
+	display: flex;
+	position: fixed;
+	left: 10px;
+	top: 10px;
+	gap: 10px;
 }
 </style>
 
@@ -55,7 +54,7 @@ a:hover {
 
 <body>
 
-	<div class="body_div">
+	<div class="header_left">
 		<c:choose>
 			<c:when test="${sessionScope.loginMember.store_code == 0}">
 				<a href="<%=request.getContextPath()%>/admin_main.go">header</a>
@@ -67,28 +66,26 @@ a:hover {
 				<a href="<%=request.getContextPath()%>/">header</a>
 			</c:otherwise>
 		</c:choose>
-
-		<div>
-			<button class="btn btn-secondary"
-				onclick="location.href='<%=request.getContextPath()%>/parking_in.go?floor=1'">입차</button>
-				
-			<button class="btn btn-secondary"
-				onclick="location.href='<%=request.getContextPath()%>/parking_out.go'">출차</button>
-		</div>
-
-		<div>
-			<c:choose>
-				<c:when test="${empty sessionScope.loginMember}">
-					<a href="<%=request.getContextPath()%>/admin_login.go">로그인</a>
-				</c:when>
-				<c:otherwise>
-					<a href="<%=request.getContextPath()%>/admin_logout.go">로그아웃</a>
-				</c:otherwise>
-			</c:choose>
-		</div>
-
 	</div>
-	<hr>
+
+	<div class="header_right">
+		<button class="btn btn-secondary"
+			onclick="location.href='<%=request.getContextPath()%>/parking_in.go?floor=1'">입차</button>
+
+		<button class="btn btn-secondary"
+			onclick="location.href='<%=request.getContextPath()%>/parking_out.go'">출차</button>
+
+		<c:choose>
+			<c:when test="${empty sessionScope.loginMember}">
+				<button class="btn btn-secondary"
+					onclick="location.href='<%=request.getContextPath()%>/admin_login.go'">로그인</button>
+			</c:when>
+			<c:otherwise>
+				<button class="btn btn-secondary"
+					onclick="location.href='<%=request.getContextPath()%>/admin_logout.go'">로그아웃</button>
+			</c:otherwise>
+		</c:choose>
+	</div>
 
 </body>
 </html>
