@@ -85,6 +85,8 @@
 
 .btn-wrapper input[type="submit"]:hover {
 	background-color: #0b5ed7;
+	transform: translateY(-2px);
+	box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
 
 .btn-wrapper input[type="reset"] {
@@ -93,6 +95,8 @@
 
 .btn-wrapper input[type="reset"]:hover {
 	background-color: #5c636a;
+	transform: translateY(-2px);
+	box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
 </style>
 </head>

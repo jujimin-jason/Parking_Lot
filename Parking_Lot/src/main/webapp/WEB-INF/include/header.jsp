@@ -64,6 +64,8 @@ button {
 
 button:hover {
     background: #076ff7;
+    transform: translateY(-2px);
+	box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 
 }
 </style>
