@@ -7,25 +7,13 @@
 <title>메인 페이지</title>
 
 <style>
-.button-container {
-	display: flex;
-	justify-content: center;
-	gap: 40px; /* 버튼 사이 간격 */
+.container {
+	text-align: center;
+	height: full;
 }
 
-button {
-	font-size: 24px;
-	padding: 20px 40px;
-	cursor: pointer;
-	border: none;
-	border-radius: 10px;
-	background-color: #4CAF50;
-	color: white;
-	transition: background-color 0.3s ease;
-}
-
-button:hover {
-	background-color: #45a049;
+h1 {
+	margin-bottom: 20px;
 }
 </style>
 
@@ -35,14 +23,18 @@ button:hover {
 
 	<jsp:include page="../include/header.jsp" />
 
+	<!-- parking_out.jsp 레퍼런스 -->
+	
+	<div class="container">
+		<h1>차량 검색</h1>
 
-	<div class="button-container">
-		<button
-			onclick="location.href='<%=request.getContextPath()%>/parking_out.go'">사전정산</button>
-		<button
-			onclick="location.href='<%=request.getContextPath()%>/pk_list.go'">주차기록</button>
-		<button
-			onclick="location.href='<%=request.getContextPath()%>/pk_now.go?floor=1'">주차장 현황</button>
+		<form method="post"
+			action="<%=request.getContextPath()%>/parking_search.go">
+			<input name="keyword" placeholder="차량 뒤 4자리 입력"> <input
+				type="submit" value="검색">
+		</form>
+
 	</div>
+	
 </body>
 </html>

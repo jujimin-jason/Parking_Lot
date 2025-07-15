@@ -298,10 +298,16 @@ public class ParkingController {
 		amount.setParking_id(pking.getPid());
 		amount.setPay_time(nowStr);
 		amount.setAmount(price);
+		
+		// 모달창에 현재 주차위치를 띄워야함.
+		floor = psdetail.getFloor();
+		// 특정 층수를 매개변수로 주차장 현황 리스트를 가져오는 메서드.
+		List<Pspace> pspace = this.mapper.getPspace(floor);
 
 		model.addAttribute("pking", pking);
 		model.addAttribute("amount", amount);
 		model.addAttribute("psdetail", psdetail);
+		model.addAttribute("Pspace", pspace);
 
 		return "parking/parking_amount";
 	}
