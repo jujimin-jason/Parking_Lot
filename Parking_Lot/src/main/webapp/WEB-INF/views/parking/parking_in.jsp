@@ -5,19 +5,46 @@
 <html>
 <head>
 <meta charset="EUC-KR">
-<title>주차장 현황 view page</title>
-<style type="text/css">
-	#full {
-		width: 5%;
-		height: 75px;
-		margin: 5px;
-	}
-	
-	#empty {
-		width: 5%;
-		height: 75px;
-		margin: 5px;
-	}
+<title>입차</title>
+<style type="text/css">		
+.container {
+	display: flex;
+	flex-direction: rows;
+	flex-wrap: nowrap;
+	justify-content: center;
+}
+
+.container-pspace {
+	flex: none;
+	order: 0;
+	padding-left: 250px;
+}
+
+.container-floor {
+	display: flex;
+	flex-direction: column;
+	order: 1;
+	justify-content: center;
+	flex: 1;	
+}
+
+.container-pspace > button {
+	width: 7.5%;
+	max-width: 53px;
+	min-width: 25px;
+	height: 75px;
+	margin: 5px;
+}
+
+.container-floor > button {
+	margin: 10px;
+	height: 50px;
+	width: 100px;
+}
+
+.description {
+	margin-top: 50px;
+}
 </style>
 </head>
 <body>
@@ -34,7 +61,7 @@
 		</div>
 		
 		<!-- 주차장 현황 출력 -->
-		<div>
+		<div class="container-pspace">
 		  <c:if test="${!empty pspace}">
 		    <c:forEach items="${pspace}" var="space" varStatus="status">
 		    	<c:if test="${space.state == 'N'}">
@@ -61,24 +88,27 @@
 		<br>
 		
 		<div class="d-grid gap-2 col-3 mx-auto">
-		    <c:forEach var="i" begin="1" end="3">
-		        <c:choose>
-		            <c:when test="${param.floor == i}">
-		                <button class="btn btn-primary" onclick="location.href='<%=request.getContextPath() %>/parking_in.go?floor=${i}'">
-		                    ${i}층
-		                </button>
-		            </c:when>
-		            <c:otherwise>
-		                <button class="btn btn-secondary" onclick="location.href='<%=request.getContextPath() %>/parking_in.go?floor=${i}'">
-		                    ${i}층
-		                </button>
-		            </c:otherwise>
-		        </c:choose>
-		    </c:forEach>
+			<div class="container-floor">
+			    <c:forEach var="i" begin="1" end="3">
+			        <c:choose>
+			            <c:when test="${param.floor == i}">
+			                <button class="btn btn-primary" onclick="location.href='<%=request.getContextPath() %>/parking_in.go?floor=${i}'">
+			                    ${i}층
+			                </button>
+			            </c:when>
+			            <c:otherwise>
+			                <button class="btn btn-secondary" onclick="location.href='<%=request.getContextPath() %>/parking_in.go?floor=${i}'">
+			                    ${i}층
+			                </button>
+			            </c:otherwise>
+			        </c:choose>
+			    </c:forEach>
+		    </div>
 		</div>
-		
-
-		
+	</div>
+	
+	<div class="description">
+		<p>※ 빈 자리를 선택해주시면 해당 자리에 랜덤한 차량이 입차합니다.</p>
 	</div>
 </body>
 </html>

@@ -55,6 +55,10 @@ h1 {
 #pspaceModalLabel {
 	align-content: center;
 }
+
+#floor-info {
+	font-weight: 800;
+}
 </style>
 
 </head>
@@ -94,7 +98,7 @@ h1 {
 					<div class="modal-content">
 						<div class="modal-header">
 							<h1 class="modal-title fs-5" id="pspaceModalLabel">
-								현재 차량 위치는 <b>${psdetail.floor }층 ${psdetail.sno }</b> 입니다
+								해당 차량 위치는 <b>${psdetail.floor }층 ${psdetail.sno }</b> 입니다
 							</h1>
 							<button type="button" class="btn-close" data-bs-dismiss="modal"
 								aria-label="Close"></button>
@@ -103,15 +107,17 @@ h1 {
 
 							<!-- pspace 현황 보여질 영역 -->
 							<div class="container-pspace">
+								<h1 id="floor-info">${psdetail.floor } 층</h1>
+							
 								<c:if test="${!empty pspace}">
 									<c:forEach items="${pspace}" var="space" varStatus="status">
 										<c:if test="${space.sid != psdetail.sid}">
-											<button class="btn btn-info" id="full" onclick="#">
+											<button class="btn btn-outline-dark" onclick="#">
 												${space.sno}</button>
 										</c:if>
 
 										<c:if test="${space.sid == psdetail.sid}">
-											<button class="btn btn-danger" id="empty" onclick="#">
+											<button class="btn btn-primary" onclick="#">
 												${space.sno}</button>
 										</c:if>
 										<c:if test="${status.count % 10 == 0}">

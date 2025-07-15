@@ -1,11 +1,33 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="EUC-KR">
 <title>Insert title here</title>
+<style type="text/css">
+.container {
+	max-width: 700px;
+	width: 100%;
+	background: #fff;
+	border-radius: 15px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+	padding: 40px 30px;
+	text-align: center;
+	margin: 0px auto;
+}
+
+#title {
+	font-size: 30px;
+	font-weight: 800	;
+}
+
+#button-goback {
+	float: right;
+	margin-right: 50px;
+}
+</style>
 </head>
 <body>
 	<jsp:include page="../../include/header.jsp" />	
@@ -13,36 +35,35 @@
 	<c:set var="psd" value="${Psdetail }" />
 	
 	<c:if test="${empty psd }">
-		<h1>psd ¾øÀ½</h1>
+		<h1>í•´ë‹¹ ì°¨ëŸ‰ì˜ ì •ë³´ë¥¼ ë¶ˆëŸ¬ì˜¤ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.</h1>
 	</c:if>
 	
 	<div class="container">
+		
+		<span id="title">ìƒì„¸ ì •ë³´</span>
+		
 		<table class="table table-hover">
-			<thead>	
-				<tr>
-					<th colspan="2">
-						»ó¼¼ Á¤º¸
-					</th>
-				</tr>
-			</thead>
-			
 			<tbody>
 				<tr>	
-					<th>ÁÖÂ÷À§Ä¡</th>
-					<td>${psd.floor }Ãş ${psd.sno }</td>
+					<th>ì£¼ì°¨ìœ„ì¹˜</th>
+					<td>${psd.floor }ì¸µ ${psd.sno }</td>
 				</tr>
 				
 				<tr>	
-					<th>Â÷·® ¹øÈ£ÆÇ</th>
+					<th>ì°¨ëŸ‰ ë²ˆí˜¸íŒ</th>
 					<td>${psd.car_num }</td>
 				</tr>
 				
 				<tr>	
-					<th>ÀÔÂ÷ ½Ã°£</th>
+					<th>ì…ì°¨ ì‹œê°„</th>
 					<td>${psd.in_time }</td>
 				</tr>
 			</tbody>
 		</table>
+		
+		<button class="btn btn-outline-secondary" id="button-goback"
+			onclick="history.back()">ë’¤ë¡œê°€ê¸°</button>
+		
 	</div>
 
 </body>
