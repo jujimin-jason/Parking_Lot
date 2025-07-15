@@ -22,6 +22,10 @@ table {
 	background: #fff;
 }
 
+.table-info {
+	
+}
+
 th, td {
 	border: 1px solid #444;
 	padding: 12px;
@@ -80,7 +84,7 @@ h1 {
 			<th>총 요금</th>
 
 		</tr>
-		<tr class="table-info">
+		<tr class="table-info align-middle">
 			<td>${pking.car_num}</td>
 			<td>${pking.in_time}</td>
 			<td>${amount.pay_time}</td>
