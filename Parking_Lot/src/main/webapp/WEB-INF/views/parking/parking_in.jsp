@@ -9,6 +9,7 @@
 <style type="text/css">
 #main-holder {
 	max-width: 900px;
+	width: 95%;
 	background: #fff;
 	border-radius: 15px;
 	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
@@ -48,24 +49,14 @@
 	transition: all 0.3s ease;
 }
 
-.line-row button.btn-info {
-	background-color: #0dcaf0;
-	color: black;
-}
+
 
 .line-row button.btn-info:hover {
-	background-color: #0aa5cc;
 	transform: translateY(-3px);
 	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-.line-row button.btn-danger {
-	background-color: #ff6b6b;
-	color: white;
-}
-
 .line-row button.btn-danger:hover {
-	background-color: #e55050;
 	transform: translateY(-3px);
 	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
@@ -138,7 +129,7 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		padding: 45px 20px;
+		padding: 0px;
 		gap: 20px;
 	}
 	.container-floor {
@@ -148,12 +139,16 @@
 		align-items: center;
 		gap: 10px;
 	}
+	.description {
+		font-size: 0.85rem;
+	}
 }
 </style>
 
 </head>
 <body>
 	<jsp:include page="../../include/header.jsp" />
+	<div id="main-holder">
 	<div class="cont">
 		<c:set var="pspace" value="${Pspace }" />
 		
@@ -212,6 +207,7 @@
 
 	<div class="description">
 		<p>※ 빈 자리를 선택해주시면 해당 자리에 랜덤한 차량이 입차합니다.</p>
+	</div>
 	</div>
 </body>
 </html>
