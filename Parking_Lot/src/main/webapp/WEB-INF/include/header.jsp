@@ -23,16 +23,21 @@
 	crossorigin="anonymous"></script>
 
 <style type="text/css">
+:root {
+	height: 100vh;
+	width: 100vw;
+	min-width: 1000px;
+}
+
 body {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	text-align: center;
-	height: 100vh;
-	min-height: 800px;
-	min-width: 800px;
 	background: linear-gradient(135deg, #dfe9f3, #ffffff);
+	position: relative;
+	min-height: 750px;
 }
 
 .header_right {
@@ -52,22 +57,21 @@ body {
 }
 
 button {
-    padding: 5px 17px;
-    margin: 8px 5px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 7px;
-    background-color: #29b6f6;
-    color: white;
-    cursor: pointer;
-    transition: all 0.3s ease;
+	padding: 5px 17px;
+	margin: 8px 5px;
+	font-size: 1rem;
+	border: none;
+	border-radius: 7px;
+	background-color: #29b6f6;
+	color: white;
+	cursor: pointer;
+	transition: all 0.3s ease;
 }
 
 button:hover {
-    background: #076ff7;
-    transform: translateY(-2px);
-	box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-
+	background: #076ff7;
+	transform: translateY(-2px);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 </style>
 
