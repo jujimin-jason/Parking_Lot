@@ -8,7 +8,6 @@
 <title>입차</title>
 <style type="text/css">
 
-/* 전체 컨테이너 */
 .container {
 	display: flex;
 	justify-content: center;
@@ -17,21 +16,18 @@
 	gap: 40px;
 }
 
-/* 주차 자리 영역 */
 .container-pspace {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 }
 
-/* 한 줄씩 라인 */
 .line-row {
 	display: flex;
 	justify-content: center;
 	margin-bottom: 10px;
 }
 
-/* 주차 버튼 공통 */
 .line-row button {
 	width: 50px;
 	height: 70px;
@@ -42,7 +38,6 @@
 	transition: all 0.3s ease;
 }
 
-/* 빈 자리 */
 .line-row button.btn-info {
 	background-color: #0dcaf0;
 	color: black;
@@ -53,7 +48,6 @@
 	box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-/* 사용 중 자리 */
 .line-row button.btn-danger {
 	background-color: #ff6b6b;
 	color: white;
@@ -64,7 +58,6 @@
 	box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-/* 층 버튼 영역 */
 .container-floor {
 	display: flex;
 	flex-direction: column;
@@ -98,7 +91,6 @@
 	box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-/* 설명 문구 */
 .description {
 	text-align: center;
 	margin-top: 30px;
