@@ -9,8 +9,6 @@
 <meta charset="EUC-KR">
 <title>Insert title here</title>
 <style type="text/css">
-
-
 #main-holder {
 	max-width: 700px;
 	width: 100%;
@@ -30,12 +28,12 @@
 }
 
 input[type="submit"] {
-border-radius: 50px;
-background-color: #0d6efd;
-color:#fff;
-flex: 1 1 45%;
-padding: 5px 10px;
-border: none;
+	border-radius: 50px;
+	background-color: #0d6efd;
+	color: #fff;
+	flex: 1 1 45%;
+	padding: 5px 10px;
+	border: none;
 }
 
 table {
@@ -45,15 +43,15 @@ table {
 }
 
 input {
-border-radius: 50px;
-padding: 5px 10px;
+	border-radius: 50px;
+	padding: 5px 10px;
 }
-input[type="submit"] {
 
-background-color: #0d6efd;
-color:#fff;
-flex: 1 1 45%;
-border: none;
+input[type="submit"] {
+	background-color: #0d6efd;
+	color: #fff;
+	flex: 1 1 45%;
+	border: none;
 }
 
 input[type="submit"]:hover, [type="button"]:hover {
@@ -61,13 +59,11 @@ input[type="submit"]:hover, [type="button"]:hover {
 }
 
 input[type="button"] {
-background-color: gray;
-color:#fff;
-flex: 1 1 45%;
-border: none;
+	background-color: gray;
+	color: #fff;
+	flex: 1 1 45%;
+	border: none;
 }
-
-
 
 table, th, td {
 	border: 1px solid #333;
@@ -79,10 +75,19 @@ th, td {
 
 th {
 	background-color: #0d6efd;
-	color:#fff;
+	color: #fff;
 }
 
+table tbody {
+	display: block;
+	max-height: 400px;
+	overflow-y: auto;
+}
 
+table thead, table tbody tr {
+	display: table;
+	width: 100%;
+}
 </style>
 </head>
 <body>
@@ -90,35 +95,44 @@ th {
 	<jsp:include page="../../include/header.jsp" />
 
 	<div id="main-holder">
-		<h3>차량 검색</h1>
+		<h3>차량 검색</h3>
 
 		<form method="post"
 			action="<%=request.getContextPath()%>/parking_search.go">
-			<input name="keyword"> <input type="submit" value="검색"> <input type="button" onclick="location.href='parking_out.go'" value="다시검색">
+			<input name="keyword"> <input type="submit" value="검색">
+			<input type="button" onclick="location.href='parking_out.go'"
+				value="다시검색">
 		</form>
 		<br> <br>
 
-		<table>
-			<tr>
-				<th>차량 번호</th>
-				<th>입차 시간</th>
-			</tr>
-
-
-			<c:if test="${!empty list }">
-				<c:forEach items="${list}" var="dto">
-					<tr onclick="location.href='<%= request.getContextPath()%>/parking_amount.go?num=${dto.car_num}'" style="cursor: pointer;">
-						<td>${dto.car_num}</td>
-						<td>${dto.in_time.substring(0, 19)}</td>
+		<div>
+			<table>
+				<thead>
+					<tr>
+						<th style="width: 220px;">차량 번호</th>
+						<th style="width: 360px;">입차 시간</th>
 					</tr>
-				</c:forEach>
-			</c:if>
-			<c:if test="${empty list }">
-				<tr>
-					<td colspan="3" align="center">입력하신 번호 차량이 없습니다</td>
-				</tr>
-			</c:if>
-		</table>
+				</thead>
+				<tbody>
+
+					<c:if test="${!empty list }">
+						<c:forEach items="${list}" var="dto">
+							<tr
+								onclick="location.href='<%= request.getContextPath()%>/parking_amount.go?num=${dto.car_num}'"
+								style="cursor: pointer;">
+								<td>${dto.car_num}</td>
+								<td>${dto.in_time.substring(0, 19)}</td>
+							</tr>
+						</c:forEach>
+					</c:if>
+					<c:if test="${empty list }">
+						<tr>
+							<td colspan="3" align="center">입력하신 번호 차량이 없습니다</td>
+						</tr>
+					</c:if>
+				</tbody>
+			</table>
+		</div>
 	</div>
 
 

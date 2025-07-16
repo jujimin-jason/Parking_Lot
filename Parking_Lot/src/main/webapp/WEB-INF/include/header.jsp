@@ -29,14 +29,15 @@ body {
 	justify-content: center;
 	align-items: center;
 	text-align: center;
-	width: 100vw;
 	height: 100vh;
+	min-height: 800px;
+	min-width: 800px;
 	background: linear-gradient(135deg, #dfe9f3, #ffffff);
 }
 
 .header_right {
 	display: flex;
-	position: fixed;
+	position: absolute;
 	right: 10px;
 	top: 10px;
 	gap: 10px;
@@ -44,7 +45,7 @@ body {
 
 .header_left {
 	display: flex;
-	position: fixed;
+	position: absolute;
 	left: 10px;
 	top: 10px;
 	gap: 10px;
