@@ -63,6 +63,11 @@ h1 {
 #floor-info {
 	font-weight: 800;
 }
+
+.modal-width {
+	--bs-modal-width: 800px;
+	min-width: var(--bs-modal-width);
+}
 </style>
 
 </head>
@@ -98,7 +103,7 @@ h1 {
 
 			<div class="modal fade" id="pspaceModal" tabindex="-1"
 				aria-labelledby="pspaceModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered modal-lg">
+				<div class="modal-dialog modal-dialog-centered modal-width">
 					<div class="modal-content">
 						<div class="modal-header">
 							<h1 class="modal-title fs-5" id="pspaceModalLabel">
@@ -111,8 +116,8 @@ h1 {
 
 							<!-- pspace 현황 보여질 영역 -->
 							<div class="container-pspace">
-								<h1 id="floor-info">${psdetail.floor } 층</h1>
-							
+								<h1 id="floor-info">${psdetail.floor }층</h1>
+
 								<c:if test="${!empty pspace}">
 									<c:forEach items="${pspace}" var="space" varStatus="status">
 										<c:if test="${space.sid != psdetail.sid}">
