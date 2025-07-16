@@ -122,8 +122,6 @@
 
 </head>
 <body>
-
-	<jsp:include page="../../include/header.jsp" />	
 	
 	<div class="container">
 		<c:set var="pspace" value="${Pspace }" />
