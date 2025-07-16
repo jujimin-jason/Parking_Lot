@@ -276,8 +276,6 @@ public class ParkingController {
 		// 입차 정보 조회
 		Parking pking = this.mapper.pcar(car_num);
 
-		System.out.println(pking);
-
 		// 차량 주차 위치
 		PspaceDetail psdetail = this.mapper.getPspaceDetail(pking.getPspace_id());
 
@@ -286,7 +284,8 @@ public class ParkingController {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		String nowStr = now.format(formatter);
 
-		System.out.println("*/******************************************");
+		// System.out.println("*/******************************************");
+		
 		// 입차 시간 → LocalDateTime 변환
 		LocalDateTime inTime = LocalDateTime.parse(pking.getIn_time(), formatter);
 
@@ -316,8 +315,6 @@ public class ParkingController {
 	public void processOut(@RequestParam("parking_id") int parking_id, @RequestParam("pay_time") String payTime,
 			@RequestParam("amount") int amount, HttpServletResponse response) throws IOException {
 
-		System.out.println("12");
-
 		Amount dto = new Amount();
 		dto.setParking_id(parking_id);
 		dto.setPay_time(payTime);
@@ -336,8 +333,6 @@ public class ParkingController {
 		response.setContentType("text/html; charset=UTF-8");
 
 		PrintWriter out = response.getWriter();
-
-		System.out.println(parking_id);
 
 		if (res > 0) {
 			// 출차 성공 후 pspace 테이블 업데이트
