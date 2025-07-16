@@ -6,46 +6,128 @@
 <head>
 <meta charset="EUC-KR">
 <title>입차</title>
-<style type="text/css">		
+<style type="text/css">
+
+/* 전체 컨테이너 */
 .container {
 	display: flex;
-	flex-direction: rows;
-	flex-wrap: nowrap;
 	justify-content: center;
+	align-items: flex-start;
+	padding: 45px 20px;
+	gap: 40px;
 }
 
+/* 주차 자리 영역 */
 .container-pspace {
-	flex: none;
-	order: 0;
-	padding-left: 250px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
+/* 한 줄씩 라인 */
+.line-row {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 10px;
+}
+
+/* 주차 버튼 공통 */
+.line-row button {
+	width: 50px;
+	height: 70px;
+	margin: 3px;
+	border: none;
+	border-radius: 8px;
+	font-weight: bold;
+	transition: all 0.3s ease;
+}
+
+/* 빈 자리 */
+.line-row button.btn-info {
+	background-color: #0dcaf0;
+	color: black;
+}
+.line-row button.btn-info:hover {
+	background-color: #0aa5cc;
+	transform: translateY(-3px);
+	box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* 사용 중 자리 */
+.line-row button.btn-danger {
+	background-color: #ff6b6b;
+	color: white;
+}
+.line-row button.btn-danger:hover {
+	background-color: #e55050;
+	transform: translateY(-3px);
+	box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* 층 버튼 영역 */
 .container-floor {
 	display: flex;
 	flex-direction: column;
-	order: 1;
-	justify-content: center;
-	flex: 1;	
+	align-items: center;
+	gap: 10px;
 }
-
-.container-pspace > button {
-	width: 7.5%;
-	max-width: 53px;
-	min-width: 25px;
-	height: 75px;
-	margin: 5px;
-}
-
-.container-floor > button {
-	margin: 10px;
+.container-floor button {
+	width: 80px;
 	height: 50px;
-	width: 100px;
+	font-weight: bold;
+	border: none;
+	border-radius: 8px;
+	transition: all 0.3s ease;
+}
+.container-floor button.btn-primary {
+	background-color: #0d6efd;
+	color: white;
+}
+.container-floor button.btn-primary:hover {
+	background-color: #0a58ca;
+	transform: translateY(-2px);
+	box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+.container-floor button.btn-secondary {
+	background-color: #6c757d;
+	color: white;
+}
+.container-floor button.btn-secondary:hover {
+	background-color: #565e64;
+	transform: translateY(-2px);
+	box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
+/* 설명 문구 */
 .description {
-	margin-top: 50px;
+	text-align: center;
+	margin-top: 30px;
+	font-size: 1.1rem;
+	color: #333;
+	font-weight: bold;
 }
+
+@media (max-width: 728px) {
+	.line-row button { /* 칸 */
+		width: 35px;
+		height: 55px;
+		font-size: 0.8rem;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.container-floor button {/* 층 */
+		width: 60px;
+		height: 40px;
+		font-size: 0.7rem;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+}
+
 </style>
+
 </head>
 <body>
 
@@ -55,7 +137,7 @@
 		<c:set var="pspace" value="${Pspace }" />
 		
 		<div>
-			<c:if test="${empty pspace }">
+			<c:if test="${empty pspace}">
 				<span>주차장 정보를 불러오지 못했습니다..</span>
 			</c:if>
 		</div>
@@ -64,8 +146,12 @@
 		<div class="container-pspace">
 		  <c:if test="${!empty pspace}">
 		    <c:forEach items="${pspace}" var="space" varStatus="status">
+		    	<c:if test="${status.first or status.index % 10 == 0}">
+		    		<div class="line-row">
+		    	</c:if>
+
 		    	<c:if test="${space.state == 'N'}">
-		      		<button class="btn btn-info" id="full" 
+		      		<button class="btn btn-info" 
 		      		onclick="if(confirm('${space.floor }층 ${space.sno } 에 입차하시겠습니까?')) {
 		      					location.href='parking_in_ok.go?sid=${space.sid }'
 		      					}else { return; }">
@@ -74,37 +160,35 @@
 		      	</c:if>
 		      	
 		      	<c:if test="${space.state == 'Y'}">
-		      		<button class="btn btn-danger" id="empty" 
+		      		<button class="btn btn-danger" 
 		      		onclick="alert('해당 자리에는 차량이 있습니다. 빈 자리를 찾아주세요.')">
 		      			${space.sno}
 		      		</button>
 		      	</c:if>
-		      <c:if test="${status.count % 10 == 0}">
-		        <br/>
-		      </c:if>
+		      	
+		      	<c:if test="${(status.index + 1) % 10 == 0 or status.last}">
+		      		</div>
+		      	</c:if>
 		    </c:forEach>
 		  </c:if>
 		</div>
-		<br>
-		
-		<div class="d-grid gap-2 col-3 mx-auto">
-			<div class="container-floor">
-			    <c:forEach var="i" begin="1" end="3">
-			        <c:choose>
-			            <c:when test="${param.floor == i}">
-			                <button class="btn btn-primary" onclick="location.href='<%=request.getContextPath() %>/parking_in.go?floor=${i}'">
-			                    ${i}층
-			                </button>
-			            </c:when>
-			            <c:otherwise>
-			                <button class="btn btn-secondary" onclick="location.href='<%=request.getContextPath() %>/parking_in.go?floor=${i}'">
-			                    ${i}층
-			                </button>
-			            </c:otherwise>
-			        </c:choose>
-			    </c:forEach>
-		    </div>
-		</div>
+
+		<div class="container-floor">
+		    <c:forEach var="i" begin="1" end="3">
+		        <c:choose>
+		            <c:when test="${param.floor == i}">
+		                <button class="btn btn-primary" onclick="location.href='<%=request.getContextPath() %>/parking_in.go?floor=${i}'">
+		                    ${i}층
+		                </button>
+		            </c:when>
+		            <c:otherwise>
+		                <button class="btn btn-secondary" onclick="location.href='<%=request.getContextPath() %>/parking_in.go?floor=${i}'">
+		                    ${i}층
+		                </button>
+		            </c:otherwise>
+		        </c:choose>
+		    </c:forEach>
+	    </div>
 	</div>
 	
 	<div class="description">

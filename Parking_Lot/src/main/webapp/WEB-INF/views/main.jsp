@@ -78,6 +78,28 @@ input[type="submit"]:hover {
 	transform: translateY(-2px);
 	box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
+/* 모바일/작은 화면 */
+@media (max-width: 700px) {
+	#main-holder {
+		max-width: 95%;
+		padding: 30px 20px; /* 패딩 축소 */
+	}
+
+	input {
+		font-size: 20px; /* 글자 크기 축소 */
+	}
+
+	input[type="submit"] {
+		height: 40px;
+		font-size: 0.9rem;
+	}
+
+	.numpad button {
+		width: 90px;
+		height: 60px;
+		font-size: 1.2rem;
+	}
+}
 
 </style>
 </head>
