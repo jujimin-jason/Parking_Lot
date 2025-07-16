@@ -8,22 +8,22 @@
 <script src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 
 <style>
-body {
-	font-family: sans-serif;
-	background-color: #f4f4f4;
-	padding: 30px;
-	text-align: center;
-}
-
-table {
-	margin: 0 auto;
-	border-collapse: collapse;
-	width: 600px;
+#main-holder {
+	width: 850px;
+	/* width: 100%; */
 	background: #fff;
+	border-radius: 15px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+	padding: 40px 0px;
+	text-align: center;
+	margin: 0px auto;
 }
 
-.table-info {
-	
+.title {
+	margin-bottom: 50px;
+	font-size: 2.2rem;
+	font-weight: 800;
+	color: #0d6efd;
 }
 
 th, td {
@@ -53,7 +53,7 @@ h1 {
 .container-pspace>button {
 	margin: 15px 15px 3px 3px;
 	width: 40px;
-	height: 60px;
+	height: 50px;
 }
 
 #pspaceModalLabel {
@@ -64,7 +64,11 @@ h1 {
 	font-weight: 800;
 }
 
+<<<<<<< HEAD
 .modal-width {
+=======
+.modal-cus {
+>>>>>>> branch 'main' of https://github.com/jhpark0623/Parking_Lot.git
 	--bs-modal-width: 800px;
 	min-width: var(--bs-modal-width);
 }
@@ -77,30 +81,27 @@ h1 {
 
 	<c:set var="pspace" value="${Pspace }" />
 
-	<h1>출차 결제 진행</h1>
+	<div id="main-holder">
 
-	<table class="table table-success table-striped"
-		style="width: 70%; margin: 0 auto;">
-		<tr>
-			<th>차량 번호</th>
-			<th>입차 시간</th>
-			<th>출차 시간</th>
-			<th>주차위치</th>
-			<th>총 요금</th>
+		<div class="title">
+			<p>출차 결제 진행</p>
+		</div>
 
-		</tr>
-		<tr class="table-info align-middle">
-			<td>${pking.car_num}</td>
-			<td>${pking.in_time}</td>
-			<td>${amount.pay_time}</td>
+		<table class="table table-striped" style="width: 80%; margin: 0 auto;">
+			<tr>
+				<th>차량 번호</th>
+				<th>입차 시간</th>
+				<th>출차 시간</th>
+				<th>주차위치</th>
+				<th>총 요금</th>
 
-			<!-- 차량 현재 위치 클릭시 모달창 팝업 -->
-			<td>
-				<button type="button" data-bs-toggle="modal"
-					data-bs-target="#pspaceModal">${psdetail.floor }층
-					${psdetail.sno }</button>
-			</td>
+			</tr>
+			<tr class="table align-middle">
+				<td>${pking.car_num}</td>
+				<td>${pking.in_time}</td>
+				<td>${amount.pay_time}</td>
 
+<<<<<<< HEAD
 			<div class="modal fade" id="pspaceModal" tabindex="-1"
 				aria-labelledby="pspaceModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-width">
@@ -113,7 +114,16 @@ h1 {
 								aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
+=======
+				<!-- 차량 현재 위치 클릭시 모달창 팝업 -->
+				<td>
+					<button class="btn btn-secondary" type="button"
+						data-bs-toggle="modal" data-bs-target="#pspaceModal">${psdetail.floor }층
+						${psdetail.sno }</button>
+				</td>
+>>>>>>> branch 'main' of https://github.com/jhpark0623/Parking_Lot.git
 
+<<<<<<< HEAD
 							<!-- pspace 현황 보여질 영역 -->
 							<div class="container-pspace">
 								<h1 id="floor-info">${psdetail.floor }층</h1>
@@ -134,28 +144,65 @@ h1 {
 										</c:if>
 									</c:forEach>
 								</c:if>
+=======
+				<div class="modal fade" id="pspaceModal" tabindex="-1"
+					aria-labelledby="pspaceModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered modal-cus">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h1 class="modal-title fs-5" id="pspaceModalLabel">
+									해당 차량 위치는 <b>${psdetail.floor }층 ${psdetail.sno }</b> 입니다
+								</h1>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"
+									aria-label="Close"></button>
+>>>>>>> branch 'main' of https://github.com/jhpark0623/Parking_Lot.git
 							</div>
+							<div class="modal-body">
 
-						</div>
-						<div class="modal-footer">
-							<button type="button" data-bs-dismiss="modal"
-								class="btn btn-secondary">확인</button>
+								<!-- pspace 현황 보여질 영역 -->
+								<div class="container-pspace">
+									<h1 id="floor-info">${psdetail.floor }층</h1>
+
+									<c:if test="${!empty pspace}">
+										<c:forEach items="${pspace}" var="space" varStatus="status">
+											<c:if test="${space.sid != psdetail.sid}">
+												<button class="btn btn-outline-dark" onclick="#">
+													${space.sno}</button>
+											</c:if>
+
+											<c:if test="${space.sid == psdetail.sid}">
+												<button class="btn btn-primary" onclick="#">
+													${space.sno}</button>
+											</c:if>
+											<c:if test="${status.count % 10 == 0}">
+												<br />
+											</c:if>
+										</c:forEach>
+									</c:if>
+								</div>
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" data-bs-dismiss="modal"
+									class="btn btn-secondary">확인</button>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 
 
-			<td>${amount.amount}원</td>
-		</tr>
-	</table>
+				<td>${amount.amount}원</td>
+			</tr>
+		</table>
 
-	<br />
+		<br />
 
-	<div>
-		<button onclick="requestPay()">결제하기</button>
-		&nbsp;&nbsp;&nbsp;
-		<button onclick="location.href='/'">취소</button>
+		<div>
+			<button class="btn btn-primary" onclick="requestPay()">결제하기</button>
+			&nbsp;&nbsp;&nbsp;
+			<button class="btn btn-primary" onclick="history.back()">취소</button>
+		</div>
+
 	</div>
 	<script>
   var IMP = window.IMP;
