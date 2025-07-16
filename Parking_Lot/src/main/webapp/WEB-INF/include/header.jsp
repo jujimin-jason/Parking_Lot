@@ -1,77 +1,47 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Header</title>
 
-<!-- <link type="text/css" rel="stylesheet" href="../css/header.css" /> -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
 
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT"
-	crossorigin="anonymous">
-
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
-	crossorigin="anonymous"></script>
-
-<style type="text/css">
-:root {
-	height: 100vh;
-	width: 100vw;
-	min-width: 1000px;
-}
-
+<style>
 body {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	text-align: center;
-	background: linear-gradient(135deg, #dfe9f3, #ffffff);
-	position: relative;
-	min-height: 750px;
+    margin: 0;
+    background: linear-gradient(135deg, #f0f4f9, #ffffff);
+    height: 100vh;
 }
 
-.header_right {
-	display: flex;
-	position: absolute;
-	right: 10px;
-	top: 10px;
-	gap: 10px;
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 32px;
+    backdrop-filter: blur(6px);
+    margin-bottom: 30px
 }
 
-.header_left {
-	display: flex;
-	position: absolute;
-	left: 10px;
-	top: 10px;
-	gap: 10px;
+.header-left a {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #333;
+    text-decoration: none;
+    transition: color 0.2s;
 }
 
-button {
-	padding: 5px 17px;
-	margin: 8px 5px;
-	font-size: 1rem;
-	border: none;
-	border-radius: 7px;
-	background-color: #29b6f6;
-	color: white;
-	cursor: pointer;
-	transition: all 0.3s ease;
+.header-left a:hover {
+    color: #0d6efd; /* Bootstrap primary color */
 }
 
-button:hover {
-	background: #076ff7;
-	transform: translateY(-2px);
-	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+.header-right button {
+    min-width: 70px;
 }
 </style>
 
@@ -79,38 +49,42 @@ button:hover {
 
 <body>
 
-	<div class="header_left">
-		<c:choose>
-			<c:when test="${sessionScope.loginMember.store_code == 0}">
-				<a href="<%=request.getContextPath()%>/admin_main.go">header</a>
-			</c:when>
-			<c:when test="${sessionScope.loginMember.store_code > 0}">
-				<a href="<%=request.getContextPath()%>/store_page.go">header</a>
-			</c:when>
-			<c:otherwise>
-				<a href="<%=request.getContextPath()%>/">header</a>
-			</c:otherwise>
-		</c:choose>
-	</div>
+    <div class="header-container">
 
-	<div class="header_right">
-		<button class="btn btn-secondary"
-			onclick="location.href='<%=request.getContextPath()%>/parking_in.go?floor=1'">입차</button>
+        <div class="header-left">
+            <c:choose>
+                <c:when test="${sessionScope.loginMember.store_code == 0}">
+                    <a href="<%=request.getContextPath()%>/admin_main.go">Admin Home</a>
+                </c:when>
+                <c:when test="${sessionScope.loginMember.store_code > 0}">
+                    <a href="<%=request.getContextPath()%>/store_page.go">Store Home</a>
+                </c:when>
+                <c:otherwise>
+                    <a href="<%=request.getContextPath()%>/">Home</a>
+                </c:otherwise>
+            </c:choose>
+        </div>
 
-		<button class="btn btn-secondary"
-			onclick="location.href='<%=request.getContextPath()%>/parking_out.go'">출차</button>
+        <div class="header-right">
+            <button class="btn btn-primary"
+                onclick="location.href='<%=request.getContextPath()%>/parking_in.go?floor=1'">입차</button>
 
-		<c:choose>
-			<c:when test="${empty sessionScope.loginMember}">
-				<button class="btn btn-secondary"
-					onclick="location.href='<%=request.getContextPath()%>/admin_login.go'">로그인</button>
-			</c:when>
-			<c:otherwise>
-				<button class="btn btn-secondary"
-					onclick="location.href='<%=request.getContextPath()%>/admin_logout.go'">로그아웃</button>
-			</c:otherwise>
-		</c:choose>
-	</div>
+            <button class="btn btn-primary"
+                onclick="location.href='<%=request.getContextPath()%>/parking_out.go'">출차</button>
+
+            <c:choose>
+                <c:when test="${empty sessionScope.loginMember}">
+                    <button class="btn btn-outline-secondary"
+                        onclick="location.href='<%=request.getContextPath()%>/admin_login.go'">로그인</button>
+                </c:when>
+                <c:otherwise>
+                    <button class="btn btn-outline-secondary"
+                        onclick="location.href='<%=request.getContextPath()%>/admin_logout.go'">로그아웃</button>
+                </c:otherwise>
+            </c:choose>
+        </div>
+
+    </div>
 
 </body>
 </html>

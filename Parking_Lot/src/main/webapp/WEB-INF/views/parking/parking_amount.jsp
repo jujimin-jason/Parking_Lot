@@ -55,6 +55,7 @@ h1 {
 	margin: 0px auto;
 	display: flex;
 	flex-wrap: wrap;
+	justify-content: center;
 }
 
 .container-pspace>div {
@@ -137,7 +138,7 @@ h1 {
 									<c:if test="${!empty pspace}">
 										<c:forEach items="${pspace}" var="space" varStatus="status">
 											<c:if test="${space.sid != psdetail.sid}">
-												<div>${space.sno}</div>
+												<div style="background:  #e6e6e6">${space.sno}</div>
 											</c:if>
 
 											<c:if test="${space.sid == psdetail.sid}">

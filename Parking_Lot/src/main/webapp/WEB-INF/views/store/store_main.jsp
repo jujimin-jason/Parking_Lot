@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>매장 메인 페이지</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- ✅ 모바일 대응용 뷰포트 설정 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
 <style>
@@ -36,20 +37,40 @@
     font-size: 1rem;
     color: #333;
 }
+
+/* 모바일/작은 화면 */
+@media (max-width: 700px) {
+    .card {
+    	max-width: 95%;
+        padding: 30px 20px;
+        margin: 30px auto;
+    }
+
+    .btn-custom {
+        font-size: 1rem;
+        padding: 10px 16px;
+    }
+
+    .info-text {
+        font-size: 0.95rem;
+    }
+}
 </style>
 </head>
 <body>
 
-    <jsp:include page="../../include/header.jsp" />
-    
+    <jsp:include page="../../include/header.jsp" /> <!-- ✅ 공통 헤더 포함 -->
+
     <div class="card bg-white text-center">
         <h2 class="mb-4 fw-bold text-primary">매장 메인 페이지</h2>
         
+        <!-- 로그인 정보 출력 -->
         <div class="mb-4">
             <p class="info-text"><strong>로그인 ID :</strong> ${loginMember.mem_id}</p>
             <p class="info-text"><strong>매장 Code :</strong> ${loginMember.store_code}</p>
         </div>
         
+        <!-- 버튼 영역 -->
         <div class="d-grid gap-3">
             <a href="store_parking_list.go" class="btn btn-primary btn-custom">
                 <i class="bi bi-car-front me-2"></i> 주차 차량선택 이동
