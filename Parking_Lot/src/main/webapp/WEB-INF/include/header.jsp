@@ -26,7 +26,6 @@
 :root {
 	height: 100vh;
 	width: 100vw;
-	min-width: 1000px;
 }
 
 body {
