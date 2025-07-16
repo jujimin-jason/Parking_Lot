@@ -64,11 +64,7 @@ h1 {
 	font-weight: 800;
 }
 
-<<<<<<< HEAD
-.modal-width {
-=======
 .modal-cus {
->>>>>>> branch 'main' of https://github.com/jhpark0623/Parking_Lot.git
 	--bs-modal-width: 800px;
 	min-width: var(--bs-modal-width);
 }
@@ -101,50 +97,12 @@ h1 {
 				<td>${pking.in_time}</td>
 				<td>${amount.pay_time}</td>
 
-<<<<<<< HEAD
-			<div class="modal fade" id="pspaceModal" tabindex="-1"
-				aria-labelledby="pspaceModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered modal-width">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="pspaceModalLabel">
-								해당 차량 위치는 <b>${psdetail.floor }층 ${psdetail.sno }</b> 입니다
-							</h1>
-							<button type="button" class="btn-close" data-bs-dismiss="modal"
-								aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-=======
 				<!-- 차량 현재 위치 클릭시 모달창 팝업 -->
 				<td>
 					<button class="btn btn-secondary" type="button"
 						data-bs-toggle="modal" data-bs-target="#pspaceModal">${psdetail.floor }층
 						${psdetail.sno }</button>
 				</td>
->>>>>>> branch 'main' of https://github.com/jhpark0623/Parking_Lot.git
-
-<<<<<<< HEAD
-							<!-- pspace 현황 보여질 영역 -->
-							<div class="container-pspace">
-								<h1 id="floor-info">${psdetail.floor }층</h1>
-
-								<c:if test="${!empty pspace}">
-									<c:forEach items="${pspace}" var="space" varStatus="status">
-										<c:if test="${space.sid != psdetail.sid}">
-											<button class="btn btn-outline-dark" onclick="#">
-												${space.sno}</button>
-										</c:if>
-
-										<c:if test="${space.sid == psdetail.sid}">
-											<button class="btn btn-primary" onclick="#">
-												${space.sno}</button>
-										</c:if>
-										<c:if test="${status.count % 10 == 0}">
-											<br />
-										</c:if>
-									</c:forEach>
-								</c:if>
-=======
 				<div class="modal fade" id="pspaceModal" tabindex="-1"
 					aria-labelledby="pspaceModalLabel" aria-hidden="true">
 					<div class="modal-dialog modal-dialog-centered modal-cus">
@@ -155,7 +113,6 @@ h1 {
 								</h1>
 								<button type="button" class="btn-close" data-bs-dismiss="modal"
 									aria-label="Close"></button>
->>>>>>> branch 'main' of https://github.com/jhpark0623/Parking_Lot.git
 							</div>
 							<div class="modal-body">
 
