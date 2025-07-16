@@ -81,7 +81,7 @@ th {
 table tbody {
 	display: block;
 	max-height: 400px;
-	overflow-y: scroll;
+	overflow-y: auto;
 }
 
 table thead, table tbody tr {

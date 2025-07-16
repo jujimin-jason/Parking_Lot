@@ -103,6 +103,7 @@ h1 {
 						data-bs-toggle="modal" data-bs-target="#pspaceModal">${psdetail.floor }층
 						${psdetail.sno }</button>
 				</td>
+
 				<div class="modal fade" id="pspaceModal" tabindex="-1"
 					aria-labelledby="pspaceModalLabel" aria-hidden="true">
 					<div class="modal-dialog modal-dialog-centered modal-cus">
