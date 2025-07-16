@@ -9,8 +9,7 @@
 
 <style type="text/css">
 #main-holder {
-	max-width: 1000px;
-	width: 100%;
+	max-width: 900px;
 	background: #fff;
 	border-radius: 15px;
 	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
@@ -19,7 +18,7 @@
 	margin: 0px auto;
 }
 
-.container {
+.con {
 	display: flex;
 	flex-wrap: nowrap;
 	justify-content: center;
@@ -37,7 +36,6 @@
 	flex-direction: column;
 	order: 1;
 	justify-content: center;
-	flex: 1;
 }
 
 .container-pspace>button {
@@ -63,7 +61,7 @@
 
 	<jsp:include page="../../include/header.jsp" />
 	<div id="main-holder">
-		<div class="container">
+		<div class="con">
 			<c:set var="pspace" value="${Pspace }" />
 
 			<div>
@@ -95,26 +93,25 @@
 					</c:forEach>
 				</c:if>
 			</div>
-			<br>
 
-			<div class="d-grid gap-2 col-3 mx-auto">
-				<div class="container-floor">
-					<c:forEach var="i" begin="1" end="3">
-						<c:choose>
-							<c:when test="${param.floor == i}">
-								<button class="btn btn-primary"
-									onclick="location.href='<%=request.getContextPath() %>/parking_in.go?floor=${i}'">
-									${i}類</button>
-							</c:when>
-							<c:otherwise>
-								<button class="btn btn-secondary"
-									onclick="location.href='<%=request.getContextPath() %>/parking_in.go?floor=${i}'">
-									${i}類</button>
-							</c:otherwise>
-						</c:choose>
-					</c:forEach>
-				</div>
+			<!-- <div class="d-grid gap-2 col-3 mx-auto"> -->
+			<div class="container-floor">
+				<c:forEach var="i" begin="1" end="3">
+					<c:choose>
+						<c:when test="${param.floor == i}">
+							<button class="btn btn-primary"
+								onclick="location.href='<%=request.getContextPath() %>/parking_in.go?floor=${i}'">
+								${i}類</button>
+						</c:when>
+						<c:otherwise>
+							<button class="btn btn-secondary"
+								onclick="location.href='<%=request.getContextPath() %>/parking_in.go?floor=${i}'">
+								${i}類</button>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
 			</div>
+			<!-- </div> -->
 		</div>
 
 		<div class="description">

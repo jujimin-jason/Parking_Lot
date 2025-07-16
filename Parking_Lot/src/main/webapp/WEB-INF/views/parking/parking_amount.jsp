@@ -50,10 +50,23 @@ h1 {
 	cursor: pointer;
 }
 
-.container-pspace>button {
-	margin: 15px 15px 3px 3px;
+.container-pspace {
+	width: 600px;
+	margin: 0px auto;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.container-pspace>div {
+	margin: 9px;
+	padding: 0px;
 	width: 40px;
 	height: 50px;
+	border: 1px solid #6c757d;
+	border-radius: 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 #pspaceModalLabel {
@@ -118,23 +131,20 @@ h1 {
 							<div class="modal-body">
 
 								<!-- pspace 현황 보여질 영역 -->
+								<h1 id="floor-info">${psdetail.floor }층</h1>
 								<div class="container-pspace">
-									<h1 id="floor-info">${psdetail.floor }층</h1>
 
 									<c:if test="${!empty pspace}">
 										<c:forEach items="${pspace}" var="space" varStatus="status">
 											<c:if test="${space.sid != psdetail.sid}">
-												<button class="btn btn-outline-dark" onclick="#">
-													${space.sno}</button>
+												<div>${space.sno}</div>
 											</c:if>
 
 											<c:if test="${space.sid == psdetail.sid}">
-												<button class="btn btn-primary" onclick="#">
-													${space.sno}</button>
+												<div
+													style="border: 0px; background-color: #0d6efd; color: white;">${space.sno}</div>
 											</c:if>
-											<c:if test="${status.count % 10 == 0}">
-												<br />
-											</c:if>
+
 										</c:forEach>
 									</c:if>
 								</div>
@@ -215,7 +225,8 @@ h1 {
 
         const form = document.createElement("form");
         form.method = "POST";
-        form.action = "<%=request.getContextPath()%>/parking_out_ok.go";
+        form.action = "<%=request.getContextPath()%>
+		/parking_out_ok.go";
 
 									const params = {
 										parking_id : "${pking.pid}",
