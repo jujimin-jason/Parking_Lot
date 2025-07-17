@@ -71,7 +71,7 @@ th, td {
 }
 
 /* 버튼 스타일 */
-button {
+.pp {
     padding: 8px 18px;
     font-size: 0.95rem;
     border-radius: 8px;
@@ -84,6 +84,8 @@ button {
 
 button:hover {
     background-color: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
 }
 
 /* 검색 입력창 스타일 */
@@ -136,7 +138,7 @@ input[type="text"] {
     <!-- ✅ 차량번호 뒷자리 검색 폼 -->
     <form action="store_parking_list_ok.go" method="get">
         <input type="text" name="car_back" maxlength="4" placeholder="뒷자리 4자리 입력" required>
-        <button type="submit">검색</button>
+        <button class="pp" type="submit">검색</button>
     </form>
 
     <!-- ✅ 검색 결과 있을 때 -->
@@ -157,7 +159,7 @@ input[type="text"] {
                         <td>
                             <form action="store_parking.go" method="get">
                                 <input type="hidden" name="car_num" value="${car.car_num}">
-                                <button type="submit">선택</button>
+                                <button class="pp" type="submit">선택</button>
                             </form>
                         </td>
                     </tr>
@@ -174,7 +176,7 @@ input[type="text"] {
 
     <!-- ✅ 매장 페이지로 돌아가기 버튼 -->
     <a href="store_page.go">
-        <button style="margin-top: 20px;">← 매장 페이지로 돌아가기</button>
+        <button class="pp" style="margin-top: 20px;">← 매장 페이지로 돌아가기</button>
     </a>
 </div>
 

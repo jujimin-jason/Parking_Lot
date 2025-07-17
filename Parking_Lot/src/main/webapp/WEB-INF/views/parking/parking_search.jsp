@@ -42,28 +42,28 @@ table {
 	width: 600px;
 }
 
-input {
+input, .re {
 	border-radius: 50px;
 	padding: 5px 10px;
 }
 
-input[type="submit"] {
-	background-color: #0d6efd;
+input[type="submit"], .re {
 	color: #fff;
 	flex: 1 1 45%;
 	border: none;
 }
 
+input[type="submit"]{
+background-color: #0d6efd;
+}
+.re {
+	background-color: gray;
+}
 input[type="submit"]:hover, [type="button"]:hover {
 	background-color: #0a58ca;
 }
 
-input[type="button"] {
-	background-color: gray;
-	color: #fff;
-	flex: 1 1 45%;
-	border: none;
-}
+
 
 table, th, td {
 	border: 1px solid #333;
@@ -87,6 +87,13 @@ table tbody {
 table thead, table tbody tr {
 	display: table;
 	width: 100%;
+
+}	
+
+.table-pr{
+--bs-table-bg: #0d6efd;
+
+--bs-table-color: white;
 }
 </style>
 </head>
@@ -100,14 +107,13 @@ table thead, table tbody tr {
 		<form method="post"
 			action="<%=request.getContextPath()%>/parking_search.go">
 			<input name="keyword"> <input type="submit" value="검색">
-			<input type="button" onclick="location.href='parking_out.go'"
-				value="다시검색">
+			<button class="re" onclick="location.href='parking_out.go'">다시검색</button>
 		</form>
 		<br> <br>
 
 		<div>
-			<table>
-				<thead>
+			<table class="table table-hover">
+				<thead class=" table-pr">
 					<tr>
 						<th style="width: 220px;">차량 번호</th>
 						<th style="width: 360px;">입차 시간</th>
@@ -121,7 +127,7 @@ table thead, table tbody tr {
 								onclick="location.href='<%= request.getContextPath()%>/parking_amount.go?num=${dto.car_num}'"
 								style="cursor: pointer;">
 								<td>${dto.car_num}</td>
-								<td>${dto.in_time.substring(0, 19)}</td>
+								<td style="width: 381px">${dto.in_time.substring(0, 19)}</td>
 							</tr>
 						</c:forEach>
 					</c:if>
