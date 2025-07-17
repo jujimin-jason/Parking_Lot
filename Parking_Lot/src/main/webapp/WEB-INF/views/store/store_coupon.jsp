@@ -52,12 +52,12 @@ select, input[type="number"] {
 }
 
 /* 버튼 스타일 */
-button {
+.pp {
     padding: 10px 25px;
     font-size: 1rem;
     border-radius: 8px;
     border: none;
-    background-color: #0d6efd;
+    background-color: #0dcaf0;
     color: #fff;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -67,6 +67,8 @@ button {
 /* 버튼 hover 효과 */
 button:hover {
     background-color: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
 }
 
 /* 모바일/작은 화면 */
@@ -110,12 +112,12 @@ button:hover {
             <label>수량:</label>
             <input type="number" name="quantity" min="1" value="1" required>
 
-            <button type="submit">구매하기</button>
+            <button class="pp" type="submit">구매하기</button>
         </form>
 
         <!-- ✅ 돌아가기 버튼 -->
         <a href="store_page.go">
-            <button style="margin-top: 10px;">← 매장 페이지로 돌아가기</button>
+            <button class="pp" style="margin-top: 10px;">← 매장 페이지로 돌아가기</button>
         </a>
     </div>
 </body>

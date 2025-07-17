@@ -43,6 +43,13 @@ body {
 .header-right button {
     min-width: 70px;
 }
+
+button:hover, input[type="submit"]:hover  {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+
 </style>
 
 </head>

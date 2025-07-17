@@ -32,7 +32,8 @@ body {
 .card h1 {
     margin: 0;
     color: #0d6efd;
-    font-size: 1.8rem;
+    font-size: 2rem;
+    font-weight: 800;
 }
 
 /* 설명 텍스트 */
@@ -40,6 +41,7 @@ body {
     margin: 10px 0;
     font-size: 1rem;
     color: #555;
+    font-weight: 800;
 }
 
 /* 차량 정보 영역 */
@@ -56,13 +58,13 @@ body {
 }
 
 /* 버튼 스타일 */
-button {
+.pp {
     padding: 5px 17px;
     margin: 8px 5px;
     font-size: 1rem;
-    border: 1px solid black;
-    border-radius: 15px;
-    background: #0dcaf0;
+    border: 0px solid black;
+    border-radius: 8px;
+    background: #0db7f0;
     color: white;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -71,6 +73,8 @@ button {
 /* 버튼 hover 효과 */
 button:hover {
     background: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
 }
 
 /* 차량 정보 없을 때 텍스트 */
@@ -127,8 +131,8 @@ button:hover {
             <!-- ✅ 할인 쿠폰 적용 폼 -->
             <form action="apply_coupon.go" method="post" style="display:inline;">
                 <input type="hidden" name="car_num" value="${car.car_num}">
-                <button type="submit" name="discount" value="30">30분 할인</button>
-                <button type="submit" name="discount" value="60">1시간 할인</button>
+                <button class="pp" type="submit" name="discount" value="30">30분 할인</button>
+                <button class="pp" type="submit" name="discount" value="60">1시간 할인</button>
             </form>
         </c:if>
 
@@ -139,7 +143,7 @@ button:hover {
 
         <!-- ✅ 돌아가기 버튼 -->
         <a href="store_page.go">
-            <button style="margin-top: 15px;">← 매장 페이지로 돌아가기</button>
+            <button class="pp" style="margin-top: 15px;">← 매장 페이지로 돌아가기</button>
         </a>
     </div>
     
