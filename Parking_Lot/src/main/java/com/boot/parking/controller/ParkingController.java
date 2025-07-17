@@ -261,11 +261,23 @@ public class ParkingController {
 	}
 
 	@PostMapping("parking_search.go")
-	public String search(Model model, @RequestParam("keyword") String keyword) {
+	public String search(Model model, @RequestParam("keyword") String keyword, HttpServletResponse response) throws IOException {
 
 		List<Parking> list = this.mapper.search(keyword);
 
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		
 		model.addAttribute("list", list);
+		
+		if(list == null || list.isEmpty()) {
+			out.println("<script>");
+			out.println("alert('일치하는 차량이 없습니다')");
+			out.println("history.back()");
+			out.println("</script>");
+		    return null;
+			
+		}
 
 		return "parking/parking_search";
 	}
